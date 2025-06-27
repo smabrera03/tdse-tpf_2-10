@@ -1,0 +1,3 @@
+../app/src/task_system.c:80:6:task_system_init	2
+../app/src/task_system.c:115:6:prender_leds	2
+../app/src/task_system.c:126:6:task_system_update	9

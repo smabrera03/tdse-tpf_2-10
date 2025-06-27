@@ -1,0 +1,24 @@
+En este proyecto vamos a hacer andar el teclado
+
+De izq a der primero van las ROWs y dsp las COLs
+
+Objetivos: 
+#0) Prender y apagar 2 LED´s con el KEYPAD
+#1) leer una tecla e imprimirla por consola
+#2) Leer varias tecals seguidas
+
+PINES:
+
+ROWS(INPUTS)
+D2--> PA10
+D4--> PB5
+D5--> PB4
+D6--> PB10
+
+COLS(OUTPUTS)
+D7--> PA8
+D8--> PA9
+D9--> PC7
+D10--> PB6
+
+LED: D11-->PA7

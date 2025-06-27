@@ -1,0 +1,31 @@
+  task_system.c (task_system.h, task_system_attribute.h) 
+   Non-Blocking Code -> System Modeling
+  
+  task_system_interface.c (task_system_interface.h)
+   Non-Blocking Code
+
+...
+				MIS NOTAS:
+
+Dentro del bloque switch de task_system.c debería haber algo así:
+
+switch(p_task_system_dta->event){
+	case ALGÚN_ESTADO:
+		if((p_task_system_dta->flag == true && p_task_system_dta->event == ALGÚN_EVENTO)){
+			p_task_system_dta->flag = flase; (bajar la bandera)
+			ACTUAR
+		} 
+		break;
+	case ALGÚN_OTRO_ESTADO:
+		if((p_task_system_dta->flag == true && p_task_system_dta->event == ALGÚN_OTRO_EVENTO)){
+			ACTUAR
+		} 
+		break;
+	case ALGÚN_OTRO_ESTADO:
+		if(p_task_system_dta->event == ALGÚN_OTRO_EVENTO){
+			ACTUAR, aunque no haya nuevo evento registrado. Podría necesitarlo
+		}
+		break;
+}
+
+NUNCA OVLIDAR REVISAR EL FLAG SI HACE FALTA NI EL BREAK

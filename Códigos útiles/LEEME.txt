@@ -1,0 +1,11 @@
+En esta carpeta guardamos códigos útiles y reutilizables
+
+--->Proyecto_básico: tiene todo lo necesario para configurar los sensores, sistema y actuadores. Dejé escrito un código viejo a modo de ejemplo. Para hacer un proyecto nuevo hay que reconfigurar los sensores y actuadores y redefinir la máquina de estados del sistema
+
+NOTA: Para iniciar un nuevo proyecto hay que crear un workspace. El workspace NO puede ser la misma carpeta del proyecto. Importar el proyecto directamente desde el IDE
+
+--->Display: .c y .h necesarios para usar el LCD en modo 4 bits. Es el que usamos en el tp3
+
+--->KEYPAD: .librería necesaria para usar el KEYPAD. Hay que probarla. Fuente: https://deepbluembedded.com/stm32-keypad-interfacing-library/ 
+
+Agregar las librerías del PWM y el ADC (aunque tal vez ni las usemos)

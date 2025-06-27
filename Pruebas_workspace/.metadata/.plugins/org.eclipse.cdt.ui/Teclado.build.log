@@ -1,0 +1,10 @@
+18:13:08 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-size  Teclado.elf 
+   text	   data	    bss	    dec	    hex	filename
+  17600	    112	   2256	  19968	   4e00	Teclado.elf
+Finished building: default.size.stdout
+ 
+
+18:13:08 Build Finished. 0 errors, 0 warnings. (took 569ms)
+
