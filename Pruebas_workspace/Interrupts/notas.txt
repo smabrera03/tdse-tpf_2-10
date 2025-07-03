@@ -1,0 +1,27 @@
+NOTAS SOBRE ESTE PROYECTO
+
+Las interrupciones hacen el código más rápido. En lugar de leer todos los pines y esperar a que uno se encienda,
+la interrupción hace que se dispare un código especial (ISR) en el momento en el que se apreta un botón
+
+APRENDÍ QUE:
+	1) NO HAY QUE USAR HAL_DELAY(); DENTRO DE LA ISR, NUNCA JAMÁS DE LOS JAMASES.
+Esto es xq HAL_Delay(); internamente usa interrupciones. Una vez que se dispara la ISR de los botones, el resto
+de interrupciones de menor o igual prioridad no se ejecutan hasta que termine la del botón.
+En el .ioc se pueden modificar las prioridades y darle más prioridad a HAL_Delay(); Ahí sí que anda
+De todas formas no resuelve el problema del rebote por lo siguiente:
+	2)ANTI-REBOTE PARA LOS BOTONES
+Las interrupciones se disparan con los flancos de la señal de los botones. 
+Mientras se ejecuta una interrupción se puede detectar otra. 
+Si la segunda interr. tiene mejor prioridad, la ISR que se ejecutaba originalmente se pone
+en pausa y se ejecuta la nueva interr.
+Si no tiene más prioridad, se termina de ejecutar la ISR en curso y luego se empieza a ejecutar la siguiente interr.
+
+Por todo esto si yo pongo un delay luego de ejecutar la ISR de un botón NO voy a dejar de ejecutar la ISR que produjo
+el flanco del rebote, es decir, no resolví el problema.
+
+Se resuelve así: pongo una variable global last_interr que guarda el tick en el que se terminó de ejecutar la interr.
+anterior. 
+Cuando empiece a ejecutar la interr. nueva, me fijo hace cuánto fue la última interr. Si fue hace muuuy poco, debe ser
+un rebote, y si es un rebote no hago nada
+
+Tremendos

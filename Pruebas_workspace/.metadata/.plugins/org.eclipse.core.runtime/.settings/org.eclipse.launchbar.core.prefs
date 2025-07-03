@@ -1,8 +1,10 @@
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch=x86_64
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/name=Local
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=win32
-configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Proyecto_basico,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Teclado Debug
+configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Proyecto_basico,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Teclado Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Interrupts
 eclipse.preferences.version=1
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Interrupts/activeLaunchMode=debug
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Interrupts/activeLaunchTarget=null\:---
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Proyecto_basico/activeLaunchMode=run
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Proyecto_basico/activeLaunchTarget=null\:---
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Teclado\ Debug/activeLaunchMode=debug
