@@ -21,7 +21,7 @@ typedef struct
 
 static KEYPAD_info gs_KEYPAD_info[KEYPAD_UNITS] = {0};
 
-
+const char char_list[16] = {'1', '2', '3', 'A', '4', '5', '6', 'B', '7', '8', '9', 'C', '*', '0', '#', 'D'};
 
 void KEYPAD_Init(uint16_t au16_Instance, uint8_t* au8_KeyStates)
 {
@@ -405,4 +405,16 @@ void KEYPAD_Scan(uint16_t au16_Instance)
 	{
 		HAL_GPIO_WritePin(KEYPAD_CfgParam[au16_Instance].COL_GPIO[i], KEYPAD_CfgParam[au16_Instance].COL_PIN[i], 1);
 	}
+}
+
+void KEYPAD_GetChar(uint16_t au16_Instance, char *charaddrs){
+	KEYPAD_Scan(au16_Instance);
+	uint8_t *states = gs_KEYPAD_info[au16_Instance].KEY_States;
+	for(int i = 0; i < KEYS; i++){
+		if(states[i] == 1){
+			*charaddrs = char_list[i];
+			return;
+		}
+	}
+	return;
 }

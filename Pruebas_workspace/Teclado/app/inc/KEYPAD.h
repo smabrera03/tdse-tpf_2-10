@@ -43,4 +43,7 @@ void KEYPAD_Init(uint16_t au16_Instance, uint8_t* au8_KeyStates);
 //au16_Instance es el KEYPAD que se lee. Puede haber varios KEYPADS
 void KEYPAD_Scan(uint16_t au16_Instance);
 
+//Esta función la agregué
+void KEYPAD_GetChar(uint16_t au16_Instance, char *charaddrs);
+
 #endif /* KEYPAD_H_ */

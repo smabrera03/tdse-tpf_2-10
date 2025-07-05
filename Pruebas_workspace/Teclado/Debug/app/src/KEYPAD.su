@@ -1,2 +1,3 @@
 ../app/src/KEYPAD.c:26:6:KEYPAD_Init	80	static
 ../app/src/KEYPAD.c:100:6:KEYPAD_Scan	32	static
+../app/src/KEYPAD.c:410:6:KEYPAD_GetChar	24	static

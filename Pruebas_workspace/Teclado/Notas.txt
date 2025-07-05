@@ -22,3 +22,5 @@ D9--> PC7
 D10--> PB6
 
 LED: D11-->PA7
+
+5/7: Me di cuenta de que está roto el teclado. Las teclas 3, 6 y 9 no andan, no se forma el cortocircuito que debería

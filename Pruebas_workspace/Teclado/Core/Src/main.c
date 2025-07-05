@@ -67,6 +67,7 @@ static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN 0 */
 extern void initialise_monitor_handles(void);
 uint8_t gu8_KeyStatesArr[KEYS] = {0}; //Este array guarda los estados de las teclas
+char letra;
 /* USER CODE END 0 */
 
 /**
@@ -117,12 +118,8 @@ int main(void)
 
 	  /* Application Update */
 	  //app_update();
-	  KEYPAD_Scan(0);
-	  HAL_Delay(100);
-
-	  if(gu8_KeyStatesArr[0] == KEY_PRESSED){
-		  LOGGER_LOG("Apretaste la tecla 1 \n");
-	  }
+	  KEYPAD_GetChar(0, &letra);
+	  HAL_Delay(1000);
 
   }
   /* USER CODE END 3 */
@@ -254,7 +251,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : R0_Pin */
   GPIO_InitStruct.Pin = R0_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(R0_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : C3_Pin */
