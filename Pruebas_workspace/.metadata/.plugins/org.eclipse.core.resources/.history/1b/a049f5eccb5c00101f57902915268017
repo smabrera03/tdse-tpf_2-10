@@ -1,0 +1,56 @@
+Objetivo de este proyecto: contar las pulsaciones de un botón en una ventana de 3 segundos con interrupciones. En paralelo se
+ejecuta otro código en el while(1) (prender y apagar una LED, por ejemplo)
+Pseudo-código:
+
+->se aprieta el botón y de dispara la interrupción
+->contador = 0
+->contador_provisional = 0
+-->si no se había iniciado el timer, inciar el timer
+-->por cada vez que se aprieta el bóton, contador_provisional++
+->cuando termine el timer, contador = contador_provisional
+
+Más en detalle:
+
+1) Llega una interrupción del botón
+->Me fijo si está corriendo el timer con: 
+
+if (HAL_TIM_Base_GetState(&htim2) == HAL_TIM_STATE_READY){
+    // El contador está esperando. Lo activo
+}
+
+fuente: GPT
+
+->Si no está activo, lo activo.
+
+2)por cada interrupción del botón, cnt_provisional++
+
+3) Cuando expire el timer:
+cnt = cnt_provisiona
+//detengo el timer
+HAL_TIM_Base_Stop_IT(&htim2);
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+Resultado: funcionó, pero ¿a qué costo?
+
+son MUY importantes las siguientes lineas:
+
+(en void main())
+HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0);
+HAL_NVIC_EnableIRQ(TIM2_IRQn);
+
+(en void Callback_B1()):
+if ((htim2.Instance->CR1 & TIM_CR1_CEN) == 0){
+	// El contador está apagado
+	__HAL_TIM_CLEAR_FLAG(&htim2, TIM_FLAG_UPDATE);  // Limpiar UIF, bajar el flag (por qué no lo hace la HAL?)
+	__HAL_TIM_SET_COUNTER(&htim2, 0); --> resetear el contador
+	HAL_TIM_Base_Start_IT(&htim2); //pongo a correr el timer
+}
+(en void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)):
+HAL_TIM_Base_Stop_IT(&htim2); -->apagar el timer
+---------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
+Estuve haciendo pruebas con las funciones del timmer. Son bastante confusas.
+
+Conclusiones:
+-->HAL_TIM_Base_Start_IT(); DISPARA UNA INTERRUPCIÓN NI BIEN ARRANCA, por la razón que sea???????????

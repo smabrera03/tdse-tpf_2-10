@@ -1,0 +1,17 @@
+En este proyecto me puse a probar el timer.
+
+Configuré el timer con un prescaler de 63999 y un period de 500. Con una frecuencia de reloj de 64MHz eso da que el 
+timer se reinica cada medio segundo.
+
+Lo hice de 2 formas. Por polling y por interrupciones
+
+Por polling: una variable global uint32_t time "le pregunta"(polling) al contador del timer por qué numero va con la función
+
+__HAL_TIM_GET_COUNTER();
+
+Cuando la función devuelva 0, cambia el estado de la LED
+
+Por interrupt:
+
+Cada vez que el timer llega a 0 se ejecuta la ISR de la interrupción. La ISR está definida en la función
+HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim2)

@@ -24,3 +24,23 @@ D10--> PB6
 LED: D11-->PA7
 
 5/7: Me di cuenta de que está roto el teclado. Las teclas 3, 6 y 9 no andan, no se forma el cortocircuito que debería
+Agregué la función KEYPAD_GetChar(), que devuelve el char de la tecla presionada
+
+Quiero que el Keypad funcione por interrupciones. Cambio los GPIO que eran inputs a EXTI
+
+Me encontré con el siguiente problema: no puedo usar los pines PA10 y PB10 como generadores de interrupciones porque usan la misma linea
+de interrupción (EXTI10). Para solucionar esto reconfiguro los pines:
+
+ROWS(EXTI´s):
+R0)D11-->PA7
+R1)D4--> PB5
+R2)D5--> PB4
+R3)D6--> PB10
+
+COLS(OUTPUTS):(estos no los cambié)
+C0)D7--> PA8
+C1=D8--> PA9
+C2)D9--> PC7
+C3)D10--> PB6
+
+Resultado: Anduvo a medias. A veces la interrupción se dispara, pero no se actualiza la letra leída

@@ -1,0 +1,58 @@
+Objetivo de este proyecto: contar las pulsaciones de un botón en una ventana de 3 segundos con interrupciones. En paralelo se
+ejecuta otro código en el while(1) (prender y apagar una LED, por ejemplo)
+Pseudo-código:
+
+Un timer que cada 3 segundos dispare una interrupción
+2 variables globales: cnt_provisional, cnt
+
+ISR del timer:
+cnt = cnt_provisional
+cnt_provisional = 0
+
+ISR del botón:
+***anti-rebote***
+cnt_provisional++
+
+
+El timer tiene que tener más prioridad sobre el botón
+
+No es exactamente lo que queiero. Esto cuenta las interrupciones independientemente de si se aprete o no el botón
+Yo quiero que la primera vez que se apreta el botón empiece a correr el timer
+
+->se aprieta el botón y de dispara la interrupción
+->contador = 0
+->contador_provisional = 0
+-->si no se había iniciado el timer, inciar el timer
+-->por cada vez que se aprieta el bóton, contador_provisional++
+->cuando termine el timer, contador = contador_provisional
+
+Más en detalle:
+
+1) Llega una interrupción del botón
+->Me fijo si está corriendo el timer con: 
+
+if ((htim2.Instance->CR1 & TIM_CR1_CEN) != 0) {
+    // El contador está activo
+}
+
+fuente: GPT
+
+->Si no está activo, lo activo.
+
+2)por cada interrupción del botón, cnt_provisional++
+
+3) Cuando expire el timer:
+cnt = cnt_provisiona
+//detengo el timer
+HAL_TIM_Base_Stop_IT(&htim2);
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+Resultado: funcionó, pero ¿a qué costo?
+
+son MUY importantes las siguientes lineas:
+
+(en void main())
+HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0);
+HAL_NVIC_EnableIRQ(TIM2_IRQn);
+

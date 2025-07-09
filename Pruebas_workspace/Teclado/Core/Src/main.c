@@ -52,7 +52,10 @@
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+uint8_t gu8_KeyStatesArr[KEYS] = {0}; //Este array guarda los estados de las teclas
+char letra;
+uint32_t last_interr = 0;//instante de la última interrupción
+uint32_t InterCount = 0; //contados de cuantas veces se ejecuta la ISR. Para debuggear
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -66,8 +69,16 @@ static void MX_USART2_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 extern void initialise_monitor_handles(void);
-uint8_t gu8_KeyStatesArr[KEYS] = {0}; //Este array guarda los estados de las teclas
-char letra;
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+	if(HAL_GetTick() - last_interr < 100){
+		return;
+	}
+	InterCount++;
+	KEYPAD_GetChar(0, &letra);
+
+	last_interr = HAL_GetTick();
+}
 /* USER CODE END 0 */
 
 /**
@@ -116,10 +127,6 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-	  /* Application Update */
-	  //app_update();
-	  KEYPAD_GetChar(0, &letra);
-	  HAL_Delay(1000);
 
   }
   /* USER CODE END 3 */
@@ -235,9 +242,15 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : R0_Pin */
+  GPIO_InitStruct.Pin = R0_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(R0_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pins : R3_Pin R2_Pin R1_Pin */
   GPIO_InitStruct.Pin = R3_Pin|R2_Pin|R1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
@@ -248,18 +261,22 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(C2_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : R0_Pin */
-  GPIO_InitStruct.Pin = R0_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(R0_GPIO_Port, &GPIO_InitStruct);
-
   /*Configure GPIO pin : C3_Pin */
   GPIO_InitStruct.Pin = C3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(C3_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI4_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
