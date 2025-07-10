@@ -75,12 +75,12 @@ static void MX_USART2_UART_Init(void);
 extern void initialise_monitor_handles(void);
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	if(HAL_GetTick() - last_interr < 50){
+	if(HAL_GetTick() - last_interr < 100){
 		return;
 	}
 	InterCount++;
 
-	if(!flag_L0){
+	if(!letra0){
 		//hay que leer la letra 0
 		KEYPAD_GetChar(0, &letra0);
 		flag_L0 = true;

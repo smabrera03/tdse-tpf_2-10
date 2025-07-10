@@ -54,5 +54,4 @@ El sensor envía la información lo más cruda posible, luego el sistema resuelv
 Me imagino lo siguiente: podemos enviar el array que produce el keypad.c, y que el sistema procese.
 
 Descubrimos un bug: Si tocás una letra y después una tecla de la misma fila de la letra, no se apaga el bit de la
-letra.
-Solución: limpiar el array después de cada lectura
+letra

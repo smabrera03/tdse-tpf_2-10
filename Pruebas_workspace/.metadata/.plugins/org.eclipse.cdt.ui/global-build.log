@@ -1,28 +1,244 @@
-10:26:32 **** Incremental Build of configuration Debug for project Interrupts ****
+17:00:25 **** Incremental Build of configuration Debug for project Teclado ****
 make -j4 all 
-arm-none-eabi-size  Interrupts.elf 
+arm-none-eabi-size  Teclado.elf 
    text	   data	    bss	    dec	    hex	filename
-   5960	     16	   1648	   7624	   1dc8	Interrupts.elf
+  14072	    112	   2176	  16360	   3fe8	Teclado.elf
 Finished building: default.size.stdout
  
-10:26:41 **** Incremental Build of configuration Debug for project Pulsaciones ****
+17:00:32 **** Incremental Build of configuration Debug for project Teclado ****
 make -j4 all 
-arm-none-eabi-size  Pulsaciones.elf 
+arm-none-eabi-size  Teclado.elf 
    text	   data	    bss	    dec	    hex	filename
-   8292	     12	   1740	  10044	   273c	Pulsaciones.elf
+  14072	    112	   2176	  16360	   3fe8	Teclado.elf
 Finished building: default.size.stdout
  
-10:27:06 **** Incremental Build of configuration Debug for project Interrupts ****
+17:06:24 **** Incremental Build of configuration Debug for project Teclado ****
 make -j4 all 
-arm-none-eabi-size  Interrupts.elf 
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
+arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
    text	   data	    bss	    dec	    hex	filename
-   5960	     16	   1648	   7624	   1dc8	Interrupts.elf
+  14072	    112	   2176	  16360	   3fe8	Teclado.elf
 Finished building: default.size.stdout
  
-10:29:11 **** Incremental Build of configuration Debug for project Interrupts ****
+Finished building: Teclado.list
+ 
+17:08:33 **** Incremental Build of configuration Debug for project Teclado ****
 make -j4 all 
-arm-none-eabi-size  Interrupts.elf 
+arm-none-eabi-size  Teclado.elf 
    text	   data	    bss	    dec	    hex	filename
-   5960	     16	   1648	   7624	   1dc8	Interrupts.elf
+  14072	    112	   2176	  16360	   3fe8	Teclado.elf
 Finished building: default.size.stdout
+ 
+17:11:53 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
+arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
+   text	   data	    bss	    dec	    hex	filename
+  14076	    112	   2176	  16364	   3fec	Teclado.elf
+Finished building: default.size.stdout
+ 
+Finished building: Teclado.list
+ 
+17:14:43 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
+arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
+   text	   data	    bss	    dec	    hex	filename
+  14072	    112	   2176	  16360	   3fe8	Teclado.elf
+Finished building: default.size.stdout
+ 
+Finished building: Teclado.list
+ 
+17:33:48 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
+arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
+   text	   data	    bss	    dec	    hex	filename
+  14096	    112	   2176	  16384	   4000	Teclado.elf
+Finished building: default.size.stdout
+ 
+Finished building: Teclado.list
+ 
+17:36:41 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
+arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
+   text	   data	    bss	    dec	    hex	filename
+  14112	    112	   2176	  16400	   4010	Teclado.elf
+Finished building: default.size.stdout
+ 
+Finished building: Teclado.list
+ 
+17:39:08 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
+arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
+   text	   data	    bss	    dec	    hex	filename
+  14116	    112	   2176	  16404	   4014	Teclado.elf
+Finished building: default.size.stdout
+ 
+Finished building: Teclado.list
+ 
+17:40:10 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
+arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
+   text	   data	    bss	    dec	    hex	filename
+  14120	    112	   2176	  16408	   4018	Teclado.elf
+Finished building: default.size.stdout
+ 
+Finished building: Teclado.list
+ 
+17:42:01 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
+arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
+   text	   data	    bss	    dec	    hex	filename
+  14116	    112	   2176	  16404	   4014	Teclado.elf
+Finished building: default.size.stdout
+ 
+Finished building: Teclado.list
+ 
+17:47:28 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
+arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
+   text	   data	    bss	    dec	    hex	filename
+  14120	    112	   2176	  16408	   4018	Teclado.elf
+Finished building: default.size.stdout
+ 
+Finished building: Teclado.list
+ 
+17:49:01 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
+arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
+   text	   data	    bss	    dec	    hex	filename
+  14120	    112	   2176	  16408	   4018	Teclado.elf
+Finished building: default.size.stdout
+ 
+Finished building: Teclado.list
+ 
+17:58:22 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-size  Teclado.elf 
+   text	   data	    bss	    dec	    hex	filename
+  14120	    112	   2176	  16408	   4018	Teclado.elf
+Finished building: default.size.stdout
+ 
+17:59:14 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
+arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
+   text	   data	    bss	    dec	    hex	filename
+  14116	    112	   2176	  16404	   4014	Teclado.elf
+Finished building: default.size.stdout
+ 
+Finished building: Teclado.list
+ 
+18:34:13 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-size  Teclado.elf 
+   text	   data	    bss	    dec	    hex	filename
+  14116	    112	   2176	  16404	   4014	Teclado.elf
+Finished building: default.size.stdout
+ 
+18:37:23 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
+arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
+   text	   data	    bss	    dec	    hex	filename
+  14120	    112	   2176	  16408	   4018	Teclado.elf
+Finished building: default.size.stdout
+ 
+Finished building: Teclado.list
+ 
+18:39:15 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-size  Teclado.elf 
+   text	   data	    bss	    dec	    hex	filename
+  14120	    112	   2176	  16408	   4018	Teclado.elf
+Finished building: default.size.stdout
+ 
+18:42:39 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-size  Teclado.elf 
+   text	   data	    bss	    dec	    hex	filename
+  14120	    112	   2176	  16408	   4018	Teclado.elf
+Finished building: default.size.stdout
+ 
+18:43:43 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
+arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
+   text	   data	    bss	    dec	    hex	filename
+  14116	    112	   2176	  16404	   4014	Teclado.elf
+Finished building: default.size.stdout
+ 
+Finished building: Teclado.list
+ 
+18:48:05 **** Incremental Build of configuration Debug for project Teclado ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
+arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
+   text	   data	    bss	    dec	    hex	filename
+  14116	    112	   2176	  16404	   4014	Teclado.elf
+Finished building: default.size.stdout
+ 
+Finished building: Teclado.list
  

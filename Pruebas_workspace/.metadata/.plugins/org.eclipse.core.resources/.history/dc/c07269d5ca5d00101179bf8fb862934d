@@ -45,14 +45,4 @@ C3)D10--> PB6
 
 Resultado: Anduvo a medias. A veces la interrupción se dispara, pero no se actualiza la letra leída
 
-NOTA: Por alguna razón que no pude determinar, las interrupciones no se disparan de entrada. Solo se empiezan a disparar 
-luego de que aprieto el botón azul (que tmb dispara una interrupción)
-
-Me di cuenta de lo siguiente: creo que conviene que el sensor no haga cuentas ni procese datos
-El sensor envía la información lo más cruda posible, luego el sistema resuelve.
-
-Me imagino lo siguiente: podemos enviar el array que produce el keypad.c, y que el sistema procese.
-
-Descubrimos un bug: Si tocás una letra y después una tecla de la misma fila de la letra, no se apaga el bit de la
-letra.
-Solución: limpiar el array después de cada lectura
+NOTA: 

@@ -31,7 +31,6 @@
 #include "KEYPAD.h"
 #include "KEYPAD_cfg.h"
 
-#include <stdbool.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -54,12 +53,9 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 uint8_t gu8_KeyStatesArr[KEYS] = {0}; //Este array guarda los estados de las teclas
+char letra;
 uint32_t last_interr = 0;//instante de la última interrupción
 uint32_t InterCount = 0; //contados de cuantas veces se ejecuta la ISR. Para debuggear
-
-char letra0;
-char letra1;
-bool flag_L0 = false; //flag. Cuando ya se leyó la letra 0 es true. Si no es false
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -75,20 +71,11 @@ static void MX_USART2_UART_Init(void);
 extern void initialise_monitor_handles(void);
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	if(HAL_GetTick() - last_interr < 50){
+	if(HAL_GetTick() - last_interr < 100){
 		return;
 	}
 	InterCount++;
-
-	if(!flag_L0){
-		//hay que leer la letra 0
-		KEYPAD_GetChar(0, &letra0);
-		flag_L0 = true;
-	}else{
-		//hay que leer la letra 1
-		KEYPAD_GetChar(0, &letra1);
-		flag_L0 = false;
-	}
+	KEYPAD_GetChar(0, &letra);
 
 	last_interr = HAL_GetTick();
 }
