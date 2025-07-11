@@ -171,7 +171,9 @@ int main(void)
   while (1)
   {
 	  //observación: acá no va nada
+	time = __HAL_TIM_GET_COUNTER(&htim2);
     /* USER CODE END WHILE */
+
 
     /* USER CODE BEGIN 3 */
   }

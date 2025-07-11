@@ -44,9 +44,10 @@
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-uint16_t tDelay = 1000;
+uint16_t tDelay = 100;
 bool finterr = false; //flag para ver si se detectó una interr.
 uint32_t last_interr = 0; //instante de la última interrupción
+uint32_t interr_count = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -64,10 +65,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	if(HAL_GetTick() - last_interr < 100){
 		return;
 	}
+	interr_count++;
 	switch(GPIO_Pin){
 			case B1_Pin:
 				//ISR del btn azul
-				tDelay = 1000;
+				tDelay = tDelay + 50;
 				break;
 			case D2_Pin:
 				//ISR btn externo
@@ -230,7 +232,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LD2_Pin */

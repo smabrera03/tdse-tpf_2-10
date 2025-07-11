@@ -102,7 +102,10 @@ void KEYPAD_Scan(uint16_t au16_Instance)
 	uint8_t au8_ReadState[ROWS] = {0};
 	uint8_t au8_ReadSt;
 	uint8_t i=0;
-
+	//Esta linea la agrego yo: borro los estados anteriores.
+	for(int i = 0; i < KEYS; i++){
+		gs_KEYPAD_info[au16_Instance].KEY_States[i] = 0;
+	}
 	/* Steady State: Output The Pattern [1 1 1 1] To The COL Pins */
 	for(i=0; i<COLS; i++)
 	{

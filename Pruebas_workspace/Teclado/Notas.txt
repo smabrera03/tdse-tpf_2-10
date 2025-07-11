@@ -55,4 +55,18 @@ Me imagino lo siguiente: podemos enviar el array que produce el keypad.c, y que 
 
 Descubrimos un bug: Si tocás una letra y después una tecla de la misma fila de la letra, no se apaga el bit de la
 letra.
-Solución: limpiar el array después de cada lectura
+Solución: limpiar el array después de cada lectura --> Hecho
+
+Impresionante la mala calidad de este teclado
+
+Creo que encontré el probelma: Cuando suelto algún botón también se dispara una interrupción (que no debería pasar)
+Al soltar el botón se produce un flanco descendente. No es que el flanco descendente dispare la interrupción,
+sino que al soltar el botón este rebota, lo que produce un flanco descendente y luego uno ascendente (que es el que
+dispara una interrupción espuria que rompe todo)
+
+LO RESOLVÍ!!!!!!!!!!!!!!!!!!!!
+Explicación: La idea es, una vez que comienza la ISR espero un tiempito con la linea:
+for(int i = 0; i < 32767; i++);
+El número 32767 es arbitrario.
+Luego leo el pin que disparó la interrupción. Si el pin está apagado, el botón no está apretado y la interrupción
+fue espuria. 

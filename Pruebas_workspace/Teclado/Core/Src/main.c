@@ -60,6 +60,9 @@ uint32_t InterCount = 0; //contados de cuantas veces se ejecuta la ISR. Para deb
 char letra0;
 char letra1;
 bool flag_L0 = false; //flag. Cuando ya se leyó la letra 0 es true. Si no es false
+GPIO_PinState estado = GPIO_PIN_RESET; //Estado del pin que disparó la interrupción
+
+uint32_t delay = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -75,10 +78,38 @@ static void MX_USART2_UART_Init(void);
 extern void initialise_monitor_handles(void);
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
-	if(HAL_GetTick() - last_interr < 50){
+	if(HAL_GetTick() - last_interr < 250){
 		return;
 	}
+
+	for(int i = 0; i < 32767; i++); //Tengo que esperar hasta que el botón se estabilice para poder leerlo
+	//¿Cuántos ms son estos? ¿Puedo hacer la espera más corta para hacer la ISR más rápida?
+	switch(GPIO_Pin){
+		case R0_Pin:
+			estado = HAL_GPIO_ReadPin(R0_GPIO_Port, R0_Pin);
+			break;
+		case R1_Pin:
+			estado = HAL_GPIO_ReadPin(R1_GPIO_Port, R1_Pin);
+			break;
+		case R2_Pin:
+			estado = HAL_GPIO_ReadPin(R2_GPIO_Port, R2_Pin);
+			break;
+		case R3_Pin:
+			estado = HAL_GPIO_ReadPin(R3_GPIO_Port, R3_Pin);
+			break;
+		default:
+			break;
+	}
+	if(estado == GPIO_PIN_RESET)return;
+
 	InterCount++;
+
+
+	//--------Una vez registrada la interrupción, deshabilito las interrupciones para que el teclado funcione normalmente
+	HAL_NVIC_DisableIRQ(EXTI4_IRQn);
+	HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
+	HAL_NVIC_DisableIRQ(EXTI15_10_IRQn);
+	//--------------------------------------
 
 	if(!flag_L0){
 		//hay que leer la letra 0
@@ -91,6 +122,18 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
 	}
 
 	last_interr = HAL_GetTick();
+
+	//Vuelvo a activar las interrupciones
+
+	HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+	HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+	HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+	HAL_NVIC_ClearPendingIRQ(EXTI4_IRQn);
+	HAL_NVIC_ClearPendingIRQ(EXTI9_5_IRQn);
+	HAL_NVIC_ClearPendingIRQ(EXTI15_10_IRQn);
+
+	estado = GPIO_PIN_RESET;
+
 }
 /* USER CODE END 0 */
 
@@ -130,12 +173,18 @@ int main(void)
 	/* Application Init */
 	//app_init();
   KEYPAD_Init(0, gu8_KeyStatesArr);
+  KEYPAD_Scan(0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	 int maximo = 32767;
+	 uint32_t t_ini = HAL_GetTick();
+	 for(int i = 0; i < maximo; i++);
+	 uint32_t t_fin = HAL_GetTick();
+	 delay = t_fin - t_ini;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
