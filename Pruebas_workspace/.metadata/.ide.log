@@ -2216,3 +2216,4 @@ java.lang.NullPointerException: Cannot invoke "javax.swing.JTextField.getText()"
 2025-07-11 18:10:02,079 [INFO] WebApp:187 - Connection restablished
 2025-07-11 18:10:05,725 [INFO] WebApp:190 - Connection lost
 2025-07-11 18:10:05,914 [INFO] WebApp:187 - Connection restablished
+2025-07-11 18:12:01,418 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 

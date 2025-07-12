@@ -3,5 +3,6 @@ letra1
 flag_L0
 gu8_KeyStatesArr
 InterCount
-Pin_interr
-interr_count
+estado
+cnt
+cnt_provisional
