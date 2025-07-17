@@ -1,0 +1,10 @@
+En este proyecto voy a intentar hacer andar el LCD con I2C
+
+Del repo del tutorial descargué:
+
+>>>Util.h y .c
+
+>>>I2C_LCD_cfg.h y .c
+
+
+>>>I2C_LCD.h y .c
