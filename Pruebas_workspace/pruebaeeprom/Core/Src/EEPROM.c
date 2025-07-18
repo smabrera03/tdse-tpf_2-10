@@ -1,0 +1,114 @@
+#include <stdint.h>
+#include <math.h>
+#include "main.h"
+#include <string.h>
+// Define the I2C
+extern I2C_HandleTypeDef hi2c1;
+#define EEPROM_I2C &hi2c1
+// EEPROM ADDRESS (8bits)
+#define EEPROM_ADDR 0xA0
+// Define the Page Size and number of pages
+#define PAGE_SIZE 64     // in Bytes
+#define PAGE_NUM  512    // number of pages
+
+
+
+uint16_t bytestowrite(uint16_t size, uint16_t offset) {//Esta es una función auxiliar necesaria para las demás. Me la tiró el chat, esperemos que funque
+    // Calcula cuántos bytes se pueden escribir en la página actual
+    uint16_t space_left = PAGE_SIZE - offset;
+
+    if (size <= space_left) {
+        return size;
+    } else {
+        return space_left;
+    }
+}
+
+
+
+void EEPROM_Write (uint16_t page, uint16_t offset, uint8_t *data, uint16_t size){
+    /*Primero, que cuernos son estos parámetros
+    page es el numero de página en la que iniciamos a escribir (va desde cero a PAGE_NUM-1)
+    
+    offset es el número de bytes de offset que va a tener para empezar a escribir, 
+    básicamente por donde queres arrancar a escribir (va desde cero a PAGE_SIZE-1)
+    
+    data es el puntero a los datos que quiero escribir 
+
+    size es el tamaño de la data
+    */
+
+    /*La memoria se organiza del siguiente modo
+    Direcciones de memoria para la dirección de página -> 0 a 511
+    Direcciones de memoria para la dirección de bytes -> 0 a 63
+    Bien ahora el problema que nos surge es el siguiente. Cuando escribimos mucha data de una 
+    la dirección de bytes aumenta automáticamente, pero eso no sucede con la de página. Para esto hacemos lo siguiente:
+    */
+    
+    // Find out the number of bit, where the page addressing starts
+    int paddrposition = log(PAGE_SIZE)/log(2);
+    //Esto encuentra el número de bit con el que la dirección de página comienza (depende del PAGE_SIZE)
+
+    // calculate the start page and the end page
+    uint16_t startPage = page;
+    uint16_t endPage = page + ((size+offset)/PAGE_SIZE);
+    // number of pages to be written
+    uint16_t numofpages = (endPage-startPage) + 1;
+    uint16_t pos=0;
+    //Acá nos fijamos cuantas páginas vamos a tener que escribir con el size de data que pasamos
+
+
+    // write the data
+    for (int i=0; i<numofpages; i++){
+        /* calculate the address of the memory location
+        * Here we add the page address with the byte address
+        */
+        uint16_t MemAddress = startPage<<paddrposition | offset;
+        //Esto parece durísimo pero simplemente lo que hace es ubicar la dirección exacta en la que hay que arrancar a escribir
+
+        uint16_t bytesremaining = bytestowrite(size, offset);  // calculate the remaining bytes to be written
+        //Esta funcion bytestowrite no sé si hay que craftearla o no
+
+        HAL_I2C_Mem_Write(EEPROM_I2C, EEPROM_ADDR, MemAddress, 2, &data[pos], bytesremaining, 1000);  // write the data to the EEPROM
+        startPage += 1;  // increment the page, so that a new page address can be selected for further write
+        offset=0;   // since we will be writing to a new page, so offset will be 0
+        size = size-bytesremaining;  // reduce the size of the bytes
+        pos += bytesremaining;  // update the position for the data buffer
+        HAL_Delay (5);  // Write cycle delay (5ms)
+        //Esto último simplemente gestiona como va a escribir el bichito y el cambio de página
+    }
+}
+
+
+void EEPROM_Read (uint16_t page, uint16_t offset, uint8_t *data, uint16_t size){
+    int paddrposition = log(PAGE_SIZE)/log(2);
+    uint16_t startPage = page;
+    uint16_t endPage = page + ((size+offset)/PAGE_SIZE);
+    uint16_t numofpages = (endPage-startPage) + 1;
+    uint16_t pos=0;
+    for (int i=0; i<numofpages; i++){
+        uint16_t MemAddress = startPage<<paddrposition | offset;
+        uint16_t bytesremaining = bytestowrite(size, offset);
+        HAL_I2C_Mem_Read(EEPROM_I2C, EEPROM_ADDR, MemAddress, 2, &data[pos], bytesremaining, 1000);
+        startPage += 1;
+        offset=0;
+        size = size-bytesremaining;
+        pos += bytesremaining;
+    }
+    //La función es muy similar a la de escribir. Lo único que cambia es que usa HAL_I2C_Mem_Read y que no tiene delay
+}
+
+void EEPROM_PageErase (uint16_t page){//Esta función es para borrar una página de la memoria
+    /*Es poco intuitivo como funciona, pero la idea es la siguiente:
+    en lugar de borrar la memoria y dejarla vacía, le asigna un valor de reseteo a cada uno de los bytes de la página
+    Es decir, en lugar de borrar el contenido de los bytes los reemplaza por un valor que el bichito reconoce como vacío*/
+    // calculate the memory address based on the page number
+    int paddrposition = log(PAGE_SIZE)/log(2);
+    uint16_t MemAddress = page<<paddrposition;
+    // create a buffer to store the reset values
+    uint8_t data[PAGE_SIZE];
+    memset(data,0xff,PAGE_SIZE);
+    // write the data to the EEPROM
+    HAL_I2C_Mem_Write(EEPROM_I2C, EEPROM_ADDR, MemAddress, 2, data, PAGE_SIZE, 1000);
+    HAL_Delay (5);  // write cycle delay
+}

@@ -1,0 +1,41 @@
+En este proyecto hacemos funcionar la eeprom en base al tutorial
+
+>>>Primer problema: Este proyecto fue creado en la 6.15 y yo tengo instalada la versión 6.13, así que no puedo abrir
+el .ioc, por lo que no puedo acceder a los pines. Sin embargo parece que puedo debuggear normalmente. Raro.
+Lo que hice fue abrir el .ioc del proyecto LCD_I2C y fijarme cuáles son los pines de I2C1
+
+PB6>>>SCL (D10)
+PB7>>>SDA
+
+Lo pude hacer andar sin actualizar
+
+opción a) actualizo ¿Que pasa con los proyectos ya existentes? ¿Siguen andando? Más importante ¿siguen andando los 
+códigos de juanma? Quiero creer que la gente de stm se ocupó de la retrocompatibilidad. que palabra. 
+opción b) no actualizo y sigo trabajando sobre este proyecto, a pesar de que no pueda acceder al .ioc
+opción c) abro otro proyecto (desde esta compu) que tenga los mismos archivos que este y trabajo sobre eso?
+
+Hoy tengo poco tiempo. Voy por la opción b. Mañana temprano pruebo lo de la actualización
+
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+
+Sobreescribí el código de la siguiente forma: 
+2 formas de funcionar: ESCRIBIR y LEER
+
+>>>cuando el define ESCRIBIR no está comentado y el LEER sí:
+este main escribe los caracteres de la A a la J en la memoria.
+Desconecto la memoria y la vuelvo a conectar
+
+>>>Cuando el define LEER no está comentado y el ESCRIBIR sí: 
+Leo la memoria, a ver qué quedó
+En efecto, se guardan los datos
+
+Cabe aclarar que según esta librería solo se pueden escribir datos del tipo uint8_t en la EEPROM
+Para evitar que el compilador se queje puse el casteo (uint8_t *)
+Justo se da que el char y el uint8_t ocupan el mismo espacio (8 bits) y como las funciones de la librería no usan
+los enteros para hacer cuentas no pasa nada. Pero ojo con el casteo
+
+Mas allá de eso, el código funciona como debería
+
+Observación: podríamos agregar la función EEPROM_Erase que limpie la memoria completa llamando 512 veces a EEPROM_PageErase();
+Tarda bastante en borrar todas las páginas (casi 4 segundos) 

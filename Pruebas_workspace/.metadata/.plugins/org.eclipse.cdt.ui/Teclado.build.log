@@ -1,4 +1,4 @@
-10:20:39 **** Build of configuration Debug for project Teclado ****
+15:15:52 **** Build of configuration Debug for project Teclado ****
 make -j4 all 
 arm-none-eabi-gcc "../app/src/KEYPAD.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/KEYPAD.d" -MT"app/src/KEYPAD.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/KEYPAD.o"
 arm-none-eabi-gcc "../app/src/KEYPAD_cfg.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/KEYPAD_cfg.d" -MT"app/src/KEYPAD_cfg.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/KEYPAD_cfg.o"
@@ -33,5 +33,5 @@ Finished building: default.size.stdout
 Finished building: Teclado.list
  
 
-10:20:45 Build Finished. 0 errors, 0 warnings. (took 6s.194ms)
+15:16:02 Build Finished. 0 errors, 0 warnings. (took 9s.813ms)
 

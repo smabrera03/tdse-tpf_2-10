@@ -1,0 +1,8 @@
+En este proyecto hacemos funcionar la eeprom en base al tutorial
+
+>>>Primer problema: Este proyecto fue creado en la 6.15 y yo tengo instalada la versión 6.13, así que no puedo abrir
+el .ioc, por lo que no puedo acceder a los pines. Sin embargo parece que puedo debuggear normalmente. Raro.
+Lo que hice fue abrir el .ioc del proyecto LCD_I2C y fijarme cuáles son los pines de I2C1
+
+PB6>>>SCL (D10)
+PB7>>>SDA
