@@ -825,3 +825,5 @@ java.lang.NullPointerException: Cannot invoke "javax.swing.JTextField.getText()"
 2025-07-18 15:43:36,346 [WARN] IP:2251 - Analog_Filter not found: check if there is a RefParameter without a condition.
 2025-07-18 15:43:36,351 [WARN] IP:2251 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
 2025-07-18 15:43:36,351 [WARN] IP:2251 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-07-18 17:23:19,614 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 
+2025-07-18 17:23:19,651 [ERROR] LogOutputStream:75 - [STDERR_REDIRECT] 
