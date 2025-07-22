@@ -1,0 +1,6 @@
+GeneratorModel for create::c {
+
+	const PROJECT : string = ""
+
+	const FOLDER : string = ""
+}

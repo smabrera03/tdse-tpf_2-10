@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Máquina de estados (V.1)/Statechart.ysc&apos; to &apos;V1.ysc&apos;" description="Rename resource &apos;Statechart.ysc&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Statechart.ysc" name="V1.ysc" stamp="1753105916255" updateReferences="true"/>
+</session>

@@ -1,0 +1,9 @@
+12:50:51 **** Clean-only build of configuration Debug for project Prueba Funciones ****
+make clean 
+Cannot run program "make": Launching failed
+
+Error: Program "make" not found in PATH
+PATH=[C:/Users/Santiago/Desktop/itemis_create-win32.win32.x86_64/itemis_CREATE//plugins/org.eclipse.justj.openjdk.hotspot.jre.full.stripped.win32.x86_64_23.0.2.v20250131-0604/jre/bin/server;C:/Users/Santiago/Desktop/itemis_create-win32.win32.x86_64/itemis_CREATE//plugins/org.eclipse.justj.openjdk.hotspot.jre.full.stripped.win32.x86_64_23.0.2.v20250131-0604/jre/bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\Polyspace\R2021a\runtime\win64;C:\Program Files\Polyspace\R2021a\bin;C:\Program Files\Polyspace\R2021a\polyspace\bin;C:\Users\Santiago\AppData\Local\Microsoft\WindowsApps;C:\Users\Santiago\AppData\Local\Programs\Microsoft VS Code\bin;;C:\Users\Santiago\Desktop\itemis_create-win32.win32.x86_64\itemis_CREATE;]
+
+12:50:52 Build Failed. 1 errors, 0 warnings. (took 452ms)
+

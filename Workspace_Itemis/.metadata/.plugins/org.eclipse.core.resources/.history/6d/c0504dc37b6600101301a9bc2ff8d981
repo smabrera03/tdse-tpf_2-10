@@ -1,0 +1,11 @@
+En este proyecto desarrollamos la máquina de estados en fases.
+Me estoy dando cuenta de que pierdo más tiempo intentando hacer andar el itemis que en cualquier otra cosa. No está bueno este programa
+Además, la generación de código en C parece solo funcionar en UNIX
+
+Intenté crear mis propias funciones en C y agregarlas desde itemis y facasé rotundamente. 
+Este programa solo sirve para tener una guía visual de la máquina de estados. No va a servir para debuggear.
+Para eso hubiera usado powerpoint.
+
+¿Máquina de estados compuesta? ¿Máquina de estados como función? --> investigar
+
+>>>Fase 1 (V1). Máquina de estados básica, sin truco, envido o irse al mazo
