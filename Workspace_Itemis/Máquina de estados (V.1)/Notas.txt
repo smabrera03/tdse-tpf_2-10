@@ -18,3 +18,49 @@ no sirve
 >>>V2: Máquina de estados con truco y envido, pero sin la lógica de la ronda
 
 >>>V3: Mejora de la máquina de estados V1. Más simple y clara, con algunos "estados" que en nuestro código serían funciones
+
+>>>V4: Combinación de V2 y V3. Bastante compleja y con muchos subdiagramas. No necesariamente es la versión final, pero nos vamos acercando
+
+
+¿Cuántos envidos posibles hay?
+E-E-RE-FE
+ \-RE-FE
+  \-FE
+  
+RE-FE
+
+FE
+Hay 10 envidos posibles
+
+	>>>Sobre pEnv_NQ<<<
+
+El caso de no querer el envido es bastante complejo xq se suman los puntos del anterior canto. O sea que necesitamos saber cuál es el anterior
+canto, necesitamos algún tipo de memoria en el sistema.
+
+Para eso creé la variable pEnv_NQ (puntos del envido si no se quiere)
+>>>Si se canta un solo E debería ser 1
+>>>Si se canta EE debería ser 2
+>>>Si se canta RE debería ser 1
+>>>Si se canta FE debería ser 1
+etc, etc
+
+En general se puede decir que pEnv_NQ guarda los puntos que se jugaban en el canto anterior, excepto cuando haya un solo canto, en cuyo caso vale 1
+Esto explica la choice en el estado ST_ENVIDO_PENDIENTE
+
+
+	>>>Sobre el falta envido<<<
+Los puntos que se suman en el falta envido dependen de quién gane. 
+Acá en el itemis puse que cuando se canta FE se juega por 30 puntos.
+En el código quedaría algo así:
+
+if(pEnv == 30){
+	if(ganador == J1){
+		pJ1 = pJ1 + (30 - pJ2);
+	} else {
+		pJ2 = pJ2 + (30 - pJ1); 
+	}
+}
+
+Hacer esto en el itemis sería demasiado complejo, tendría que agregar estados que en el código final no existirían. 
+Considerando que esto es solo un mapa visual del código no me voy a gastar en hacerlo. 
+Mientras seamos concientes de esto estamos bien.  
