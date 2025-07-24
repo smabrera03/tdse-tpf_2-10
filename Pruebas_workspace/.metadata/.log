@@ -3166,3 +3166,24 @@ Please check for update: Help > Check for Updates
 
 This file has been generated with STM32CubeMX version '6.15.0'.Your current STM32CubeMX version is '6.13.0'.
 Please check for update: Help > Check for Updates
+!SESSION 2025-07-23 18:30:47.355 -----------------------------------------------
+eclipse.buildId=Version 1.17.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=es_AR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-07-23 18:32:40.597
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-07-23 18:32:40.600
+!MESSAGE Log4j2 initialized with config file C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-07-23 18:32:58.588
+!MESSAGE Started RMI Server, listening on port 41338
+
+!ENTRY org.eclipse.cdt.core 1 0 2025-07-23 18:34:31.997
+!MESSAGE Indexed 'tdse-tp2_01-model_integration' (24 sources, 98 headers) in 11 sec: 7,474 declarations; 31,565 references; 2 unresolved inclusions; 35 syntax errors; 186 unresolved names (0.47%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2025-07-23 18:34:56.941
+!MESSAGE Indexed 'MdeE' (0 sources, 0 headers) in 0.001 sec: 0 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
