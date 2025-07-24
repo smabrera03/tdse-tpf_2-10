@@ -1,0 +1,11 @@
+ROWs(EXIT´s, R-Pull Down):
+R0)D4>>>PB5
+R1)D5>>>PB4
+R2)D6>>>PB10
+R3)D7>>>PA8
+
+COLS (outputs)
+C0)D8>>>
+C1)D9>>>
+C2)D10>>>
+C3)D11>>>
