@@ -1,102 +1,72 @@
-16:42:23 **** Build of configuration Debug for project Teclado ****
+16:39:42 **** Incremental Build of configuration Debug for project MdeE ****
 make -j4 all 
-arm-none-eabi-size  Teclado.elf 
-   text	   data	    bss	    dec	    hex	filename
-  14612	    112	   2176	  16900	   4204	Teclado.elf
-Finished building: default.size.stdout
- 
-16:42:29 **** Incremental Build of configuration Debug for project Teclado ****
-make -j4 all 
-arm-none-eabi-size  Teclado.elf 
-   text	   data	    bss	    dec	    hex	filename
-  14612	    112	   2176	  16900	   4204	Teclado.elf
-Finished building: default.size.stdout
- 
-16:44:06 **** Incremental Build of configuration Debug for project MdeE ****
-make -j4 all 
-arm-none-eabi-size  MdeE.elf 
-   text	   data	    bss	    dec	    hex	filename
-  19904	    140	   2276	  22320	   5730	MdeE.elf
-Finished building: default.size.stdout
- 
-16:44:34 **** Incremental Build of configuration Debug for project MdeE ****
-make -j4 all 
-arm-none-eabi-size  MdeE.elf 
-   text	   data	    bss	    dec	    hex	filename
-  19904	    140	   2276	  22320	   5730	MdeE.elf
-Finished building: default.size.stdout
- 
-16:46:43 **** Incremental Build of configuration Debug for project MdeE ****
-make -j4 all 
-arm-none-eabi-size  MdeE.elf 
-   text	   data	    bss	    dec	    hex	filename
-  19904	    140	   2276	  22320	   5730	MdeE.elf
-Finished building: default.size.stdout
- 
-16:51:38 **** Incremental Build of configuration Debug for project MdeE ****
-make -j4 all 
-arm-none-eabi-size  MdeE.elf 
-   text	   data	    bss	    dec	    hex	filename
-  19904	    140	   2276	  22320	   5730	MdeE.elf
-Finished building: default.size.stdout
- 
-16:51:42 **** Incremental Build of configuration Debug for project MdeE ****
-make -j4 all 
-arm-none-eabi-size  MdeE.elf 
-   text	   data	    bss	    dec	    hex	filename
-  19904	    140	   2276	  22320	   5730	MdeE.elf
-Finished building: default.size.stdout
- 
-16:52:38 **** Incremental Build of configuration Debug for project MdeE ****
-make -j4 all 
-arm-none-eabi-size  MdeE.elf 
-   text	   data	    bss	    dec	    hex	filename
-  19904	    140	   2276	  22320	   5730	MdeE.elf
-Finished building: default.size.stdout
- 
-16:58:56 **** Incremental Build of configuration Debug for project MdeE ****
-make -j4 all 
-arm-none-eabi-gcc "../Core/Src/stm32f1xx_it.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f1xx_it.d" -MT"Core/Src/stm32f1xx_it.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/stm32f1xx_it.o"
-../Core/Src/stm32f1xx_it.c: In function 'HAL_GPIO_EXTI_Callback':
-../Core/Src/stm32f1xx_it.c:262:31: warning: variable 'estado' set but not used [-Wunused-but-set-variable]
-  262 |                 GPIO_PinState estado = GPIO_PIN_RESET;
-      |                               ^~~~~~
-arm-none-eabi-gcc -o "MdeE.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\Compu de santi\Proyectos personales\Binarios\Workspace\MdeE\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+arm-none-eabi-gcc "../app/src/task_sensor.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_sensor.d" -MT"app/src/task_sensor.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_sensor.o"
+arm-none-eabi-gcc -o "MdeE.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: MdeE.elf
  
 arm-none-eabi-size  MdeE.elf 
 arm-none-eabi-objdump -h -S MdeE.elf  > "MdeE.list"
    text	   data	    bss	    dec	    hex	filename
-  19896	    140	   2276	  22312	   5728	MdeE.elf
+  20820	    188	   2308	  23316	   5b14	MdeE.elf
 Finished building: default.size.stdout
  
 Finished building: MdeE.list
  
-17:07:04 **** Incremental Build of configuration Debug for project MdeE ****
+16:40:02 **** Incremental Build of configuration Debug for project MdeE ****
 make -j4 all 
 arm-none-eabi-size  MdeE.elf 
    text	   data	    bss	    dec	    hex	filename
-  19896	    140	   2276	  22312	   5728	MdeE.elf
+  20820	    188	   2308	  23316	   5b14	MdeE.elf
 Finished building: default.size.stdout
  
-17:07:23 **** Incremental Build of configuration Debug for project MdeE ****
+16:51:02 **** Incremental Build of configuration Debug for project MdeE ****
 make -j4 all 
+arm-none-eabi-gcc "../app/src/task_sensor.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_sensor.d" -MT"app/src/task_sensor.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_sensor.o"
+arm-none-eabi-gcc -o "MdeE.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MdeE.elf
+ 
 arm-none-eabi-size  MdeE.elf 
+arm-none-eabi-objdump -h -S MdeE.elf  > "MdeE.list"
    text	   data	    bss	    dec	    hex	filename
-  19896	    140	   2276	  22312	   5728	MdeE.elf
+  20812	    188	   2308	  23308	   5b0c	MdeE.elf
 Finished building: default.size.stdout
  
-17:08:46 **** Incremental Build of configuration Debug for project MdeE ****
+Finished building: MdeE.list
+ 
+16:53:02 **** Incremental Build of configuration Debug for project MdeE ****
 make -j4 all 
+arm-none-eabi-gcc "../app/src/KEYPAD_cfg.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/KEYPAD_cfg.d" -MT"app/src/KEYPAD_cfg.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/KEYPAD_cfg.o"
+arm-none-eabi-gcc "../app/src/app.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/app.d" -MT"app/src/app.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/app.o"
+arm-none-eabi-gcc "../app/src/logger.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/logger.d" -MT"app/src/logger.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/logger.o"
+arm-none-eabi-gcc "../app/src/task_actuator_interface.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_actuator_interface.d" -MT"app/src/task_actuator_interface.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_actuator_interface.o"
+arm-none-eabi-gcc "../app/src/task_sensor.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_sensor.d" -MT"app/src/task_sensor.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_sensor.o"
+arm-none-eabi-gcc "../app/src/task_system_interface.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_system_interface.d" -MT"app/src/task_system_interface.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_system_interface.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/stm32f1xx_hal_msp.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f1xx_hal_msp.d" -MT"Core/Src/stm32f1xx_hal_msp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/stm32f1xx_hal_msp.o"
+arm-none-eabi-gcc "../Core/Src/stm32f1xx_it.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f1xx_it.d" -MT"Core/Src/stm32f1xx_it.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/stm32f1xx_it.o"
+arm-none-eabi-gcc -o "MdeE.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MdeE.elf
+ 
 arm-none-eabi-size  MdeE.elf 
+arm-none-eabi-objdump -h -S MdeE.elf  > "MdeE.list"
    text	   data	    bss	    dec	    hex	filename
-  19896	    140	   2276	  22312	   5728	MdeE.elf
+  20844	    188	   2308	  23340	   5b2c	MdeE.elf
 Finished building: default.size.stdout
  
-17:09:58 **** Incremental Build of configuration Debug for project MdeE ****
+Finished building: MdeE.list
+ 
+16:57:01 **** Incremental Build of configuration Debug for project MdeE ****
 make -j4 all 
+arm-none-eabi-gcc "../app/src/task_sensor.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_sensor.d" -MT"app/src/task_sensor.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_sensor.o"
+arm-none-eabi-gcc "../app/src/task_system_interface.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_system_interface.d" -MT"app/src/task_system_interface.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_system_interface.o"
+arm-none-eabi-gcc -o "MdeE.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MdeE.elf
+ 
 arm-none-eabi-size  MdeE.elf 
+arm-none-eabi-objdump -h -S MdeE.elf  > "MdeE.list"
    text	   data	    bss	    dec	    hex	filename
-  19896	    140	   2276	  22312	   5728	MdeE.elf
+  20876	    188	   2308	  23372	   5b4c	MdeE.elf
 Finished building: default.size.stdout
+ 
+Finished building: MdeE.list
  

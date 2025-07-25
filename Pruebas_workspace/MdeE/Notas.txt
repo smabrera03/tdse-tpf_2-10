@@ -1,0 +1,3 @@
+La idea de este proyecto es implementar una primera versión del trabajo
+
+Leer los archivos task_sensor/system/actuatos.txt para info sobre el teclado/botones sistema y actuadores respectivamente

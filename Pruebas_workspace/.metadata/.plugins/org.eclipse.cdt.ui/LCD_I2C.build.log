@@ -1,4 +1,4 @@
-15:15:35 **** Build of configuration Debug for project LCD_I2C ****
+10:23:12 **** Build of configuration Debug for project LCD_I2C ****
 make -j4 all 
 arm-none-eabi-gcc "../Librerias Tuto/I2C_LCD.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Librerias Tuto/I2C_LCD.d" -MT"Librerias Tuto/I2C_LCD.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Librerias Tuto/I2C_LCD.o"
 arm-none-eabi-gcc "../Librerias Tuto/I2C_LCD_cfg.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Librerias Tuto/I2C_LCD_cfg.d" -MT"Librerias Tuto/I2C_LCD_cfg.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Librerias Tuto/I2C_LCD_cfg.o"
@@ -36,5 +36,5 @@ Finished building: default.size.stdout
 Finished building: LCD_I2C.list
  
 
-15:15:44 Build Finished. 0 errors, 0 warnings. (took 9s.204ms)
+10:23:19 Build Finished. 0 errors, 0 warnings. (took 7s.233ms)
 

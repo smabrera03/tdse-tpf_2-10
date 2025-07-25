@@ -1,10 +1,30 @@
-16:42:29 **** Incremental Build of configuration Debug for project Teclado ****
+10:45:21 **** Incremental Build of configuration Debug for project Teclado ****
 make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:181:17: warning: unused variable 'lecturaC3' [-Wunused-variable]
+  181 |   GPIO_PinState lecturaC3 = HAL_GPIO_ReadPin(C3_GPIO_Port, C3_Pin);
+      |                 ^~~~~~~~~
+../Core/Src/main.c:180:17: warning: unused variable 'lecturaC2' [-Wunused-variable]
+  180 |   GPIO_PinState lecturaC2 = HAL_GPIO_ReadPin(C2_GPIO_Port, C2_Pin);
+      |                 ^~~~~~~~~
+../Core/Src/main.c:179:17: warning: unused variable 'lecturaC1' [-Wunused-variable]
+  179 |   GPIO_PinState lecturaC1 = HAL_GPIO_ReadPin(C1_GPIO_Port, C1_Pin);
+      |                 ^~~~~~~~~
+../Core/Src/main.c:178:17: warning: unused variable 'lecturaC0' [-Wunused-variable]
+  178 |   GPIO_PinState lecturaC0 = HAL_GPIO_ReadPin(C0_GPIO_Port, C0_Pin);
+      |                 ^~~~~~~~~
+arm-none-eabi-gcc -o "Teclado.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Teclado.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: Teclado.elf
+ 
 arm-none-eabi-size  Teclado.elf 
+arm-none-eabi-objdump -h -S Teclado.elf  > "Teclado.list"
    text	   data	    bss	    dec	    hex	filename
-  14612	    112	   2176	  16900	   4204	Teclado.elf
+  14676	    112	   2176	  16964	   4244	Teclado.elf
 Finished building: default.size.stdout
  
+Finished building: Teclado.list
+ 
 
-16:42:29 Build Finished. 0 errors, 0 warnings. (took 470ms)
+10:45:22 Build Finished. 0 errors, 4 warnings. (took 1s.427ms)
 
