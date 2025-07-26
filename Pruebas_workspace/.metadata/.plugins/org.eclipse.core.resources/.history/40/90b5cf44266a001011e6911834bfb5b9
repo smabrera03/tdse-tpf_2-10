@@ -1,0 +1,38 @@
+>>>Sobre task_system.c en general<<<
+				MIS NOTAS:
+
+Dentro del bloque switch de task_system.c debería haber algo así:
+
+switch(p_task_system_dta->event){
+	case ALGÚN_ESTADO:
+		if((p_task_system_dta->flag == true && p_task_system_dta->event == ALGÚN_EVENTO)){
+			p_task_system_dta->flag = flase; (bajar la bandera)
+			ACTUAR
+		} 
+		break;
+	case ALGÚN_OTRO_ESTADO:
+		if((p_task_system_dta->flag == true && p_task_system_dta->event == ALGÚN_OTRO_EVENTO)){
+			ACTUAR
+		} 
+		break;
+	case ALGÚN_OTRO_ESTADO:
+		if(p_task_system_dta->event == ALGÚN_OTRO_EVENTO){
+			ACTUAR, aunque no haya nuevo evento registrado. Podría necesitarlo
+		}
+		break;
+}
+
+NUNCA OVLIDAR REVISAR EL FLAG SI HACE FALTA NI EL BREAK
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+¿Qué toca hacer hoy?
+1) definir los atributos del sistema (en task_system_attribute.h) ¿Cómo manejamos el tema de las cartas?
+2)Escribir las funciones auxiliares que necesitamos para hacer andar la máquina de estados
+3)Escribir la máquina de estados que hicimos en el itemis.
+3.a) MdeE sin truco ni envido
+3.b) con truco, sin envido
+3.c) con envido y truco
+
+
+>>>1) opción A: tipo carta_t, palo, valor y prioridad. En system_dta hay un array de 3 cartas para cada jugador

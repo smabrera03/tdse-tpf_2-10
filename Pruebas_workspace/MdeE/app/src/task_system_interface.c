@@ -66,6 +66,10 @@ struct
 	task_system_ev_t	queue[MAX_EVENTS];
 } queue_task_a;
 
+carta_t ultima_carta = {0};
+//un buffer de una sola carta? Vamos a necesitar más?
+//no deberíamos, xq ni bien se carga la carta también se extrae
+
 /********************** external data declaration ****************************/
 
 /********************** external functions definition ************************/
@@ -109,4 +113,59 @@ bool any_event_task_system(void)
   return (queue_task_a.head != queue_task_a.tail);
 }
 
+void put_Carta(palo_t palo, uint8_t valor){
+	ultima_carta.palo = palo;
+	ultima_carta.valor = valor;
+	switch(valor){
+		case 1:
+			if(palo == COPA || palo == ORO){
+				ultima_carta.prioridad = 7;
+			}else if(palo == BASTO){
+				ultima_carta.prioridad = 12;
+			}else{
+				ultima_carta.prioridad = 13;
+			}
+			break;
+		case 2:
+			ultima_carta.prioridad = 8;
+			break;
+		case 3:
+			ultima_carta.prioridad = 9;
+			break;
+		case 4:
+			ultima_carta.prioridad = 0;
+			break;
+		case 5:
+			ultima_carta.prioridad = 1;
+			break;
+		case 6:
+			ultima_carta.prioridad = 2;
+			break;
+		case 7:
+			if(palo == BASTO || palo == COPA){
+				ultima_carta.prioridad = 3;
+			}else if(palo == ORO){
+				ultima_carta.prioridad = 10;
+			}else{
+				ultima_carta.prioridad = 11;
+			}
+			break;
+		case 10:
+			ultima_carta.prioridad = 4;
+			break;
+		case 11:
+			ultima_carta.prioridad = 5;
+			break;
+		case 12:
+			ultima_carta.prioridad = 6;
+			break;
+	}
+	//NOTA: ver task_system.txt para entender las prioridades
+}
+
+void get_Carta(carta_t *carta_addrs){
+	carta_addrs->palo = ultima_carta.palo;
+	carta_addrs->valor = ultima_carta.valor;
+	carta_addrs->prioridad = ultima_carta.prioridad;
+}
 /********************** end of file ******************************************/

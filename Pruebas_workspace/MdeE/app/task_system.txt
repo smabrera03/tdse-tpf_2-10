@@ -1,10 +1,4 @@
-  task_system.c (task_system.h, task_system_attribute.h) 
-   Non-Blocking Code -> System Modeling
-  
-  task_system_interface.c (task_system_interface.h)
-   Non-Blocking Code
-
-...
+>>>Sobre task_system.c en general<<<
 				MIS NOTAS:
 
 Dentro del bloque switch de task_system.c debería haber algo así:
@@ -29,3 +23,36 @@ switch(p_task_system_dta->event){
 }
 
 NUNCA OVLIDAR REVISAR EL FLAG SI HACE FALTA NI EL BREAK
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------
+¿Qué toca hacer hoy?
+1) definir los atributos del sistema (en task_system_attribute.h) ¿Cómo manejamos el tema de las cartas?
+2)Escribir las funciones auxiliares que necesitamos para hacer andar la máquina de estados
+3)Escribir la máquina de estados que hicimos en el itemis.
+3.a) MdeE sin truco ni envido
+3.b) con truco, sin envido
+3.c) con envido y truco
+
+
+>>>1) opción A: tipo carta_t, palo, valor y prioridad. En system_dta hay un array de 3 cartas para cada jugador
+
+>>>Pregunta: ¿Cómo recibe el sistema las cartas? put_carta() y get_carta?
+Carta es una variable global en system_interface.c put_carta escribe sobre ella y get carte lee de ella
+
+Prioridades de las cartas:
+
+4 (cualquier palo, CP)--->0
+5 (CP)------------------->1
+6 (CP)------------------->2
+7 de Copas o Basto------->3
+10 (CP)------------------>4
+11 (CP)------------------>5
+12 (CP)------------------>6
+1 de copa u oro---------->7
+2 (CP)------------------->8
+3 (CP)------------------->9
+7 de oro----------------->10
+7 de espada-------------->11
+1 de basto--------------->12
+1 de espada-------------->13

@@ -178,6 +178,10 @@ void task_sensor_update(void *parameters)
 				//evento registrado, bajo el flag
 			}else{
 				continue; //pasar al siguiente elemento de la lista
+				/*
+				 * ¿Quiero que la máquina de estados solo funcione cuando hay un evento nuevo? En general puede que sí
+				 * como puede que no. Dejo la observación. Pensar qué pasa en la máquina de estados del sistema.
+				 */
 			}
 			switch(p_task_sensor_dta->state)
 			{
@@ -220,6 +224,7 @@ void task_sensor_update(void *parameters)
 						if(lectura == '#'){
 							//carta confirmada
 							put_event_task_system(p_task_sensor_cfg->signal_OK); //en este caso, EV_CARTA_NUEVA
+							put_Carta(p_task_sensor_dta->paloCarta, p_task_sensor_dta->valorCarta);
 							DB_signal = p_task_sensor_cfg->signal_OK;
 							p_task_sensor_dta->state = ST_KEY_ESCRIBIR_VALOR;
 						}else{
@@ -254,76 +259,7 @@ void task_sensor_update(void *parameters)
 					break;
 				default:
 					break;
-
 			}
-			//guarda con el flag. if(evento_nuevo == true)
-			/*
-			if (p_task_sensor_cfg->pressed == HAL_GPIO_ReadPin(p_task_sensor_cfg->gpio_port, p_task_sensor_cfg->pin))
-			{
-				p_task_sensor_dta->event =	EV_BTN_XX_DOWN;
-			}
-			else
-			{
-				p_task_sensor_dta->event =	EV_BTN_XX_UP;
-			}
-
-			switch (p_task_sensor_dta->state)
-			{
-				case ST_BTN_XX_UP:
-
-					if (EV_BTN_XX_DOWN == p_task_sensor_dta->event)
-					{
-						p_task_sensor_dta->tick = p_task_sensor_cfg->tick_max;
-						p_task_sensor_dta->state = ST_BTN_XX_FALLING;
-					}
-
-					break;
-
-				case ST_BTN_XX_FALLING:
-
-					if(p_task_sensor_dta->tick > 0){
-						--p_task_sensor_dta->tick;
-						break;
-					} else if(p_task_sensor_dta->tick == 0){
-						if(p_task_sensor_dta->event == EV_BTN_XX_UP){
-							p_task_sensor_dta->state = ST_BTN_XX_UP;
-						}else{
-							p_task_sensor_dta->state = ST_BTN_XX_DOWN;
-							put_event_task_system(p_task_sensor_cfg->signal_down);
-						}
-					}
-					break;
-
-				case ST_BTN_XX_DOWN:
-
-					if(EV_BTN_XX_UP == p_task_sensor_dta->event){
-						p_task_sensor_dta->tick = p_task_sensor_cfg->tick_max;
-						p_task_sensor_dta->state = ST_BTN_XX_RISING;
-					}
-
-					break;
-
-				case ST_BTN_XX_RISING:
-
-					if(p_task_sensor_dta->tick > 0){
-						--p_task_sensor_dta->tick;
-						break;
-					}else if(p_task_sensor_dta->tick == 0){
-						if(p_task_sensor_dta->event == EV_BTN_XX_DOWN){
-							p_task_sensor_dta->state = ST_BTN_XX_DOWN;
-						}else{
-							p_task_sensor_dta->state = ST_BTN_XX_UP;
-							//put_event_task_system(p_task_sensor_cfg->signal_up);
-							//esta vez no necesito avisarle nada al sistema, así que ni le mando señal
-						}
-					}
-					break;
-
-				default:
-
-					break;
-			}
-			*/
 		}
     }
 }

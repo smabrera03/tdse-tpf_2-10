@@ -1,0 +1,6 @@
+../app/src/task_system.c:86:6:task_system_init	2
+../app/src/task_system.c:121:6:task_system_update	11
+../app/src/task_system.c:192:13:Maquina_de_estados_M1	11
+../app/src/task_system.c:261:13:Maquina_de_estados_M2	13
+../app/src/task_system.c:330:13:Maquina_de_estados_M3	13
+../app/src/task_system.c:399:13:finalizar_ronda	5

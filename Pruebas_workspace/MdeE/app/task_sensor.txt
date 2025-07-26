@@ -108,3 +108,10 @@ Para el caso de los botones sobran los siguientes campos:
 			   paloCarta
 ¿Está muy mal que sobren? ¿Qué valor les pongo?
 4) Escribir la máquina de estados?
+
+
+>>>Duda existencial: ¿Hace falta la máquina de estados de los botones?
+Podría mandarle la señal al sistema directamente desde task_sensor_it_handler();
+Ya no necesitaría poner los botones en _dta_list y _cfg_list, quedaría solo el teclado
+
+Dejo la idea, pero como así como está anduvo no lo voy a cambiar por ahora

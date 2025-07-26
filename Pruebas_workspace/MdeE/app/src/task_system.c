@@ -62,13 +62,18 @@
 
 /********************** internal data declaration ****************************/
 task_system_dta_t task_system_dta =
-	{DEL_SYS_XX_MIN, false, EV_SYS_CARTA_NUEVA, ST_SYS_RONDA, ST_SYS_M1, ST_SYS_TJ1, 0, J1, 0, 0, 0, 0,
-	NINGUNO, 0, NINGUNO, 0, 0};
+	{DEL_SYS_XX_MIN, false, EV_SYS_CARTA_NUEVA, ST_SYS_RONDA, ST_SYS_M1, ST_SYS_TJ1, 0, J1, 0, 0,
+			{{0, ESPADA, 0}, {0, ESPADA, 0}, {0, ESPADA, 0}}, //3 cartas iniciales de J1
+			{{0, ESPADA, 0},{0, ESPADA, 0}, {0, ESPADA, 0}}, //3 cartas iniciales de J2
+			0, 0, NINGUNO, 1, NINGUNO, 0, 0};
 
 #define SYSTEM_DTA_QTY	(sizeof(task_system_dta)/sizeof(task_system_dta_t))
 
 /********************** internal functions declaration ***********************/
-
+static void Maquina_de_estados_M1(task_system_dta_t *p_task_system_dta);
+static void Maquina_de_estados_M2(task_system_dta_t *p_task_system_dta);
+static void Maquina_de_estados_M3(task_system_dta_t *p_task_system_dta);
+static void finalizar_ronda(task_system_dta_t *p_task_system_dta);
 /********************** internal data definition *****************************/
 const char *p_task_system 		= "Task System (System Statechart)";
 const char *p_task_system_ 		= "Non-Blocking & Update By Time Code";
@@ -154,24 +159,282 @@ void task_system_update(void *parameters)
 			p_task_system_dta->event = get_event_task_system();
 		}
 		switch (p_task_system_dta->state){
-			case ST_SYS_STATE:
-				if(p_task_system_dta->flag == true){
-					if(p_task_system_dta->event == EV_SYS_BTN_SUMA_PUSHED){
-						p_task_system_dta->flag = false;
-						p_task_system_dta->numero = (p_task_system_dta->numero + 1)%16;
-						prender_leds(p_task_system_dta->numero);
+			case ST_SYS_RONDA:
+				if(p_task_system_dta->flag == false)break; //Si no hay eventos no hay que hacer nada en el caso de la ronda
+				//conviene ponerlo acá o directamente afuera del bloque switch? Existe una transición que no sea disparada x
+				//un evento nuevo? No es fácil evaluarlo a priori. Pensar.
 
-					}else if(p_task_system_dta->event == EV_SYS_BTN_RESTA_PUSHED){
-						p_task_system_dta->flag = false;
-						p_task_system_dta->numero = (p_task_system_dta->numero - 1 + 16)%16;
-						prender_leds(p_task_system_dta->numero);
-					}else{}
+				p_task_system_dta->flag = false;
+				switch (p_task_system_dta->mano){
+				//un bloque switch adentro de un bloque switch? ponerlo en una función?
+				//podría fijarme qué evento hay acá y sería un bloque if menos en las funciones Maquina_de_estados
+					case ST_SYS_M1:
+						Maquina_de_estados_M1(p_task_system_dta);
+						break;
+					case ST_SYS_M2:
+						Maquina_de_estados_M2(p_task_system_dta);
+						break;
+					case ST_SYS_M3:
+						Maquina_de_estados_M3(p_task_system_dta);
+						break;
+					default:
+						break;
+				}
 				break;
 			default:
 				break;
-				}
-		}//MORALEJAS: MUY IMPORTANTES LOS BREAKES Y PONER LAS GUARDAS DEL FLAG
+
+		}
 	}
 }
 
+
+static void Maquina_de_estados_M1(task_system_dta_t *p_task_system_dta){
+	switch(p_task_system_dta->turno){
+		case ST_SYS_TJ1:
+			if(p_task_system_dta->event == EV_SYS_CARTA_NUEVA){
+				//get_Carta(&p_task_system_dta->cartasJ1[0]); //ilegible
+				carta_t *carta_addrs = &(p_task_system_dta->cartasJ1[0]);
+				get_Carta(carta_addrs);
+				//mejor? Sería mejor que crear una carta local, que la función devuelva la carta y hacer la asignación acá?
+				//le estoy dando muchas vueltas. Consultar con los pibes
+				p_task_system_dta->nCartas++;
+				if(p_task_system_dta->nCartas == 2){
+					uint8_t prioridad_cartaJ1 = p_task_system_dta->cartasJ1[0].prioridad;
+					uint8_t prioridad_cartaJ2 = p_task_system_dta->cartasJ2[0].prioridad;
+					if(prioridad_cartaJ1 > prioridad_cartaJ2){
+						//ganó J1
+						p_task_system_dta->mano = ST_SYS_M2;
+						p_task_system_dta->manos_ganadasJ1++;
+						p_task_system_dta->turno = ST_SYS_TJ1;
+					}else if(prioridad_cartaJ1 < prioridad_cartaJ2){
+						//ganó J2
+						p_task_system_dta->mano = ST_SYS_M2;
+						p_task_system_dta->manos_ganadasJ2++;
+						p_task_system_dta->turno = ST_SYS_TJ2;
+					}else{
+						//empataron
+						p_task_system_dta->mano = ST_SYS_M2;
+						p_task_system_dta->turno = ST_SYS_TJ2;
+					}
+				}else{
+					//Pasar a turno de J2
+					p_task_system_dta->turno = ST_SYS_TJ2;
+				}
+			}
+			break;
+		case ST_SYS_TJ2:
+			if(p_task_system_dta->event == EV_SYS_CARTA_NUEVA){
+				carta_t *carta_addrs = &(p_task_system_dta->cartasJ2[0]);
+				get_Carta(carta_addrs);
+				p_task_system_dta->nCartas++;
+
+				if(p_task_system_dta->nCartas == 2){
+					//este bloque if es muy parecido al del TJ2 ¿Meterlo en una fucnión? Solo se repite 2 veces
+					uint8_t prioridad_cartaJ1 = p_task_system_dta->cartasJ1[0].prioridad;
+					uint8_t prioridad_cartaJ2 = p_task_system_dta->cartasJ2[0].prioridad;
+					if(prioridad_cartaJ1 > prioridad_cartaJ2){
+						//ganó J1
+						p_task_system_dta->mano = ST_SYS_M2;
+						p_task_system_dta->manos_ganadasJ1++;
+						p_task_system_dta->turno = ST_SYS_TJ1;
+					}else if(prioridad_cartaJ1 < prioridad_cartaJ2){
+						//ganó J2
+						p_task_system_dta->mano = ST_SYS_M2;
+						p_task_system_dta->manos_ganadasJ2++;
+						p_task_system_dta->turno = ST_SYS_TJ2;
+					}else{
+						//empataron
+						p_task_system_dta->mano = ST_SYS_M2;
+						p_task_system_dta->turno = ST_SYS_TJ1;
+					}
+				}else{
+					p_task_system_dta->turno = ST_SYS_TJ1;
+				}
+			}
+			break;
+		default:
+			break;
+	}
+}
+
+static void Maquina_de_estados_M2(task_system_dta_t *p_task_system_dta){
+	switch(p_task_system_dta->turno){
+		case ST_SYS_TJ1:
+			if(p_task_system_dta->event == EV_SYS_CARTA_NUEVA){
+				carta_t *carta_addrs = &(p_task_system_dta->cartasJ1[1]);
+				get_Carta(carta_addrs);
+				p_task_system_dta->nCartas++;
+
+				if(p_task_system_dta->nCartas == 4){
+					uint8_t prioridad_cartaJ1 = p_task_system_dta->cartasJ1[1].prioridad;
+					uint8_t prioridad_cartaJ2 = p_task_system_dta->cartasJ2[1].prioridad;
+					if(prioridad_cartaJ1 > prioridad_cartaJ2){
+						//ganó J1
+						p_task_system_dta->manos_ganadasJ1++;
+						p_task_system_dta->turno = ST_SYS_TJ1;
+					}else if(prioridad_cartaJ1 < prioridad_cartaJ2){
+						//ganó J2
+						p_task_system_dta->manos_ganadasJ2++;
+						p_task_system_dta->turno = ST_SYS_TJ2;
+					}else{
+						//empataron
+						p_task_system_dta->turno = ST_SYS_TJ2;
+					}
+					if(p_task_system_dta->manos_ganadasJ1 == p_task_system_dta->manos_ganadasJ2){//Si en las 2 primeras manos hay empate, se define en la tercera
+						p_task_system_dta->mano = ST_SYS_M3;
+					}else{ //hay un ganador
+						finalizar_ronda(p_task_system_dta);
+					}
+				}else{
+					p_task_system_dta->turno = ST_SYS_TJ2;
+				}
+			}
+			break;
+		case ST_SYS_TJ2:
+			if(p_task_system_dta->event == EV_SYS_CARTA_NUEVA){
+				carta_t *carta_addrs = &(p_task_system_dta->cartasJ2[1]);
+				get_Carta(carta_addrs);
+				p_task_system_dta->nCartas++;
+
+				if(p_task_system_dta->nCartas == 4){
+					uint8_t prioridad_cartaJ1 = p_task_system_dta->cartasJ1[1].prioridad;
+					uint8_t prioridad_cartaJ2 = p_task_system_dta->cartasJ2[1].prioridad;
+					if(prioridad_cartaJ1 > prioridad_cartaJ2){
+						//ganó J1
+						p_task_system_dta->manos_ganadasJ1++;
+						p_task_system_dta->turno = ST_SYS_TJ1;
+					}else if(prioridad_cartaJ1 < prioridad_cartaJ2){
+						//ganó J2
+						p_task_system_dta->manos_ganadasJ2++;
+						p_task_system_dta->turno = ST_SYS_TJ2;
+					}else{
+						//empataron
+						p_task_system_dta->turno = ST_SYS_TJ1;
+					}
+					if(p_task_system_dta->manos_ganadasJ1 == p_task_system_dta->manos_ganadasJ2){//Si en las 2 primeras manos hay empate, se define en la tercera
+						p_task_system_dta->mano = ST_SYS_M3;
+					}else{ //hay un ganador
+						finalizar_ronda(p_task_system_dta);
+					}
+				}else{
+					p_task_system_dta->turno = ST_SYS_TJ1;
+				}
+			}
+			break;
+		default:
+			break;
+	}
+}
+
+static void Maquina_de_estados_M3(task_system_dta_t *p_task_system_dta){
+	switch(p_task_system_dta->turno){
+		case ST_SYS_TJ1:
+			if(p_task_system_dta->event == EV_SYS_CARTA_NUEVA){
+				carta_t *carta_addrs = &(p_task_system_dta->cartasJ1[2]);
+				get_Carta(carta_addrs);
+				p_task_system_dta->nCartas++;
+
+				if(p_task_system_dta->nCartas == 6){
+					uint8_t prioridad_cartaJ1 = p_task_system_dta->cartasJ1[2].prioridad;
+					uint8_t prioridad_cartaJ2 = p_task_system_dta->cartasJ2[2].prioridad;
+					if(prioridad_cartaJ1 > prioridad_cartaJ2){
+						//ganó J1
+						p_task_system_dta->manos_ganadasJ1++;
+					}else if(prioridad_cartaJ1 < prioridad_cartaJ2){
+						//ganó J2
+						p_task_system_dta->manos_ganadasJ2++;
+					}else{
+						//empataron
+						//parda tercera gana primera ¿Qué hago acá???? Fijate en las cartas que guardaste
+						uint8_t primer_cartaJ1 = p_task_system_dta->cartasJ1[0].prioridad;
+						uint8_t primer_cartaJ2 = p_task_system_dta->cartasJ2[0].prioridad;
+						if(primer_cartaJ1 > primer_cartaJ2){
+							p_task_system_dta->manos_ganadasJ1++;
+						}else{
+							//empataron las 3 veces. Se resuelve en finalizar_ronda();
+						}
+					}
+					finalizar_ronda(p_task_system_dta);
+				}else{
+					p_task_system_dta->turno = ST_SYS_TJ2;
+				}
+			}
+			break;
+		case ST_SYS_TJ2:
+			if(p_task_system_dta->event == EV_SYS_CARTA_NUEVA){
+				carta_t *carta_addrs = &(p_task_system_dta->cartasJ2[2]);
+				get_Carta(carta_addrs);
+				p_task_system_dta->nCartas++;
+
+				if(p_task_system_dta->nCartas == 6){
+					uint8_t prioridad_cartaJ1 = p_task_system_dta->cartasJ1[2].prioridad;
+					uint8_t prioridad_cartaJ2 = p_task_system_dta->cartasJ2[2].prioridad;
+					if(prioridad_cartaJ1 > prioridad_cartaJ2){
+						//ganó J1
+						p_task_system_dta->manos_ganadasJ1++;
+					}else if(prioridad_cartaJ1 < prioridad_cartaJ2){
+						//ganó J2
+						p_task_system_dta->manos_ganadasJ2++;
+					}else{
+						uint8_t primer_cartaJ1 = p_task_system_dta->cartasJ1[0].prioridad;
+						uint8_t primer_cartaJ2 = p_task_system_dta->cartasJ2[0].prioridad;
+						if(primer_cartaJ1 > primer_cartaJ2){
+							p_task_system_dta->manos_ganadasJ1++;
+						}else{
+							//empataron las 3 veces. Se resuelve en finalizar_ronda();
+						}
+					}
+					finalizar_ronda(p_task_system_dta);
+				}else{
+					p_task_system_dta->turno = ST_SYS_TJ1;
+				}
+			}
+			break;
+		default:
+			break;
+	}
+}
+
+static void finalizar_ronda(task_system_dta_t *p_task_system_dta){
+	uint8_t manos_ganadasJ1 = p_task_system_dta->manos_ganadasJ1;
+	uint8_t manos_ganadasJ2 = p_task_system_dta->manos_ganadasJ2;
+	if(manos_ganadasJ1 > manos_ganadasJ2){ //ganó J1
+
+		p_task_system_dta->puntosJ1 += p_task_system_dta->puntos_TRU; //sumo puntos
+
+	}else if(manos_ganadasJ1 < manos_ganadasJ2){ //ganó 2
+
+		p_task_system_dta->puntosJ2 += p_task_system_dta->puntos_TRU; //sumo puntos
+
+	}else{ //empate
+
+		if(p_task_system_dta->jugador_mano == J1){
+			p_task_system_dta->puntosJ1 += p_task_system_dta->puntos_TRU; //sumo puntos
+		}else{
+			p_task_system_dta->puntosJ2 += p_task_system_dta->puntos_TRU; //sumo puntos
+		}
+	}
+	//reseteo los parámetros
+	p_task_system_dta->state = ST_SYS_RONDA;
+	p_task_system_dta->mano = ST_SYS_M1;
+	p_task_system_dta->jugador_mano = (p_task_system_dta->jugador_mano)%2 + 1; //con esto, si J1 era la mano de la ronda, ahora pasa a ser J2 y viceversa
+	if(p_task_system_dta->jugador_mano == J1){
+		p_task_system_dta->turno = ST_SYS_TJ1;
+	}else{
+		p_task_system_dta->turno = ST_SYS_TJ2;
+	}
+
+	p_task_system_dta->nCartas = 0;
+
+	p_task_system_dta->manos_ganadasJ1 = 0;
+	p_task_system_dta->manos_ganadasJ2 = 0;
+
+	p_task_system_dta->jugador_truco = NINGUNO;
+	p_task_system_dta->puntos_TRU = 1;
+
+	p_task_system_dta->jugador_envido = NINGUNO;
+	p_task_system_dta->puntos_ENV = 0;
+	p_task_system_dta->puntos_ENV_NQ = 0;
+}
 /********************** end of file ******************************************/

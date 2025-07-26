@@ -101,6 +101,12 @@ en cada caso, como hicimos en el itmis, especialmente en el caso del envido, don
 
 typedef enum palo {ESPADA, BASTO, COPA, ORO, PALO_ERR} palo_t;
 
+typedef struct{
+	uint8_t valor;
+	palo_t 	palo;
+	uint8_t prioridad; //las cartas con mayor prioridad ganan
+}carta_t;
+
 typedef struct
 {
 	uint32_t			tick;
@@ -117,8 +123,11 @@ typedef struct
 	uint8_t				puntosJ1;
 	uint8_t				puntosJ2;
 
-	uint8_t				manos_ganadas1;
-	uint8_t				manos_ganadas2;
+	carta_t				cartasJ1[3];
+	carta_t				cartasJ2[3];
+
+	uint8_t				manos_ganadasJ1;
+	uint8_t				manos_ganadasJ2;
 
 	jugador_enum_t		jugador_truco; //jugaodr que cantó el truco. No sé si vamos a usar esta variable al final, pero en el itemis la pusimos. Por las dudas la dejo y de última se borra
 	uint8_t 			puntos_TRU; //puntos del truco en juego

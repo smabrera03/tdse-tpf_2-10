@@ -1,5 +1,5 @@
 ../app/src/task_sensor.c:102:6:task_sensor_init	40	static,ignoring_inline_asm
 ../app/src/task_sensor.c:136:6:task_sensor_update	40	static,ignoring_inline_asm
-../app/src/task_sensor.c:331:6:task_sensor_it_handler	24	static
-../app/src/task_sensor.c:379:16:Carta_Valor	16	static
-../app/src/task_sensor.c:396:15:Carta_Palo	16	static
+../app/src/task_sensor.c:267:6:task_sensor_it_handler	24	static
+../app/src/task_sensor.c:315:16:Carta_Valor	16	static
+../app/src/task_sensor.c:332:15:Carta_Palo	16	static
