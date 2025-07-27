@@ -63,12 +63,6 @@ typedef enum task_system_ev {EV_SYS_CARTA_NUEVA,
 
 /* State of Task System */
 typedef enum task_system_st {ST_SYS_RONDA,
-	//dentro de ronda existen los siguientes subestados:
-	ST_SYS_M1,
-	ST_SYS_M2,
-	ST_SYS_M3, //manos
-	ST_SYS_TJ1,
-	ST_SYS_TJ2, //turnos
 
 	ST_SYS_TRUCO_PENDIENTE,
 	//dentro de truco_pendiente existen los siguientes subestados:
@@ -87,8 +81,17 @@ typedef enum task_system_st {ST_SYS_RONDA,
 	ST_SYS_DEFINIR_GANADOR
 } task_system_st_t;
 
+
+typedef enum turno {ST_SYS_TJ1, ST_SYS_TJ2} turno_t;
+//si bien estos 2 valores son un estado, los defino a parte porque me va a permitir actualizarlos más fácil
+//p_task_system_dta->turno != p_task_system_dta->turno -->esto significa pasar al siguiente turno
+
+typedef enum mano {ST_SYS_M1, ST_SYS_M2, ST_SYS_M3} mano_t;
+//idem turno_t. definir la mano a parte me va a permitir acceder a las cartas más facilmente. cartas_J1[ST_STS_M1] es la primer carta de J1. cartas_J2[ST_SYS_M3] es la tercer carta de J2 y así
+
 typedef enum jugador_enum {NINGUNO, J1, J2} jugador_enum_t; //enum que identifica a los jugadores
 //así si quiero alternar entre jugadores puedo hacer jugador = (jugador)%2 + 1;
+//si bien parece que representa lo mismo que turno_t, son conceptos distintos. Tener ambos tipos hace al código redundante, pero más legible
 
 /*
 //qué se cantó
@@ -114,9 +117,9 @@ typedef struct
 
 	task_system_ev_t	event;
 	task_system_st_t	state;
-	task_system_st_t	mano; //mano actual
-	task_system_st_t	turno; //a parte del estado actualmente activo, debo guardar la mano y el turno dentro de RONDA para saber a qué estado regresar
-
+	mano_t				mano; //mano actual
+	turno_t				turno; //a parte del estado actualmente activo, debo guardar la mano y el turno dentro de RONDA para saber a qué estado regresar
+	//tal vez el turno tenga más sentido como una variable del tipo jugador_enum_t? Más fácil de actualizar?
 	uint8_t 			nCartas;
 	jugador_enum_t		jugador_mano; //jugador que es mano
 

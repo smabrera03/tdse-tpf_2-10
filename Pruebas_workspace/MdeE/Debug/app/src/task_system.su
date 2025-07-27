@@ -1,6 +1,4 @@
-../app/src/task_system.c:86:6:task_system_init	32	static,ignoring_inline_asm
-../app/src/task_system.c:121:6:task_system_update	24	static,ignoring_inline_asm
-../app/src/task_system.c:192:13:Maquina_de_estados_M1	32	static
-../app/src/task_system.c:261:13:Maquina_de_estados_M2	32	static
-../app/src/task_system.c:330:13:Maquina_de_estados_M3	32	static
-../app/src/task_system.c:399:13:finalizar_ronda	24	static
+../app/src/task_system.c:84:6:task_system_init	32	static,ignoring_inline_asm
+../app/src/task_system.c:119:6:task_system_update	24	static,ignoring_inline_asm
+../app/src/task_system.c:176:6:Maquina_de_estados_ronda	32	static
+../app/src/task_system.c:247:13:finalizar_ronda	24	static
