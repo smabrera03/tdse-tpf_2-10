@@ -1,4 +1,4 @@
-10:16:07 **** Incremental Build of configuration Debug for project MdeE ****
+16:07:14 **** Incremental Build of configuration Debug for project MdeE ****
 make -j4 all 
 arm-none-eabi-gcc "../app/src/task_system.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_system.d" -MT"app/src/task_system.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_system.o"
 arm-none-eabi-gcc -o "MdeE.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
@@ -7,15 +7,43 @@ Finished building target: MdeE.elf
 arm-none-eabi-size  MdeE.elf 
 arm-none-eabi-objdump -h -S MdeE.elf  > "MdeE.list"
    text	   data	    bss	    dec	    hex	filename
-  22792	    236	   2324	  25352	   6308	MdeE.elf
+  23712	    236	   2324	  26272	   66a0	MdeE.elf
 Finished building: default.size.stdout
  
 Finished building: MdeE.list
  
-10:35:55 **** Incremental Build of configuration Debug for project MdeE ****
+16:07:34 **** Incremental Build of configuration Debug for project MdeE ****
 make -j4 all 
 arm-none-eabi-size  MdeE.elf 
    text	   data	    bss	    dec	    hex	filename
-  22792	    236	   2324	  25352	   6308	MdeE.elf
+  23712	    236	   2324	  26272	   66a0	MdeE.elf
 Finished building: default.size.stdout
+ 
+16:10:11 **** Incremental Build of configuration Debug for project MdeE ****
+make -j4 all 
+arm-none-eabi-gcc "../app/src/task_system.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_system.d" -MT"app/src/task_system.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_system.o"
+arm-none-eabi-gcc -o "MdeE.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MdeE.elf
+ 
+arm-none-eabi-size  MdeE.elf 
+arm-none-eabi-objdump -h -S MdeE.elf  > "MdeE.list"
+   text	   data	    bss	    dec	    hex	filename
+  23724	    236	   2324	  26284	   66ac	MdeE.elf
+Finished building: default.size.stdout
+ 
+Finished building: MdeE.list
+ 
+16:16:22 **** Incremental Build of configuration Debug for project MdeE ****
+make -j4 all 
+arm-none-eabi-gcc "../app/src/task_system.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_system.d" -MT"app/src/task_system.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_system.o"
+arm-none-eabi-gcc -o "MdeE.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MdeE.elf
+ 
+arm-none-eabi-size  MdeE.elf 
+arm-none-eabi-objdump -h -S MdeE.elf  > "MdeE.list"
+   text	   data	    bss	    dec	    hex	filename
+  23732	    236	   2324	  26292	   66b4	MdeE.elf
+Finished building: default.size.stdout
+ 
+Finished building: MdeE.list
  

@@ -1,0 +1,156 @@
+/*
+ * Copyright (c) 2023 Juan Manuel Cruz <jcruz@fi.uba.ar> <jcruz@frba.utn.edu.ar>.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @file   : task_system_attribute.h
+ * @date   : Set 26, 2023
+ * @author : Juan Manuel Cruz <jcruz@fi.uba.ar> <jcruz@frba.utn.edu.ar>
+ * @version	v1.0.0
+ */
+
+#ifndef TASK_INC_TASK_SYSTEM_ATTRIBUTE_H_
+#define TASK_INC_TASK_SYSTEM_ATTRIBUTE_H_
+
+/********************** CPP guard ********************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/********************** inclusions *******************************************/
+
+/********************** macros ***********************************************/
+
+/********************** typedef **********************************************/
+
+/* Events to excite Task System */
+//typedef enum task_system_ev {EV_SYS_XX_IDLE, EV_SYS_XX_ACTIVE} task_system_ev_t;
+typedef enum task_system_ev {EV_SYS_CARTA_NUEVA,
+	EV_SYS_CARTA_ERR,
+	EV_SYS_BTN_TRU,
+	EV_SYS_BTN_ENV,
+	EV_SYS_BTN_Q, //botón quiero
+	EV_SYS_BTN_NQ //botón no quiero
+} task_system_ev_t;
+
+
+
+/* State of Task System */
+typedef enum task_system_st {ST_SYS_RONDA,
+
+	ST_SYS_TRUCO_PENDIENTE,
+	//dentro de truco_pendiente existen los siguientes subestados:
+	ST_SYS_J1_RESPONDE,
+	ST_SYS_J2_RESPONDE,
+
+	ST_SYS_SELECCIONAR_ENVIDO,
+	//dentro de SELECCIONAR_ENVIDO existen los siguientes subestados:
+	ST_SYS_E,//envido
+	ST_SYS_RE,//real envido
+	ST_SYS_FE,//falta envido
+
+	ST_SYS_ENVIDO_PENDIENTE,
+	//dentro de ENVIDO_PENDIENTE existen los siguientes subestados:
+	ST_SYS_RTA_PENDIENTE,
+	ST_SYS_DEFINIR_GANADOR
+} task_system_st_t;
+
+
+typedef enum turno {ST_SYS_TJ1, ST_SYS_TJ2} turno_t;
+//si bien estos 2 valores son un estado, los defino a parte porque me va a permitir actualizarlos más fácil
+//p_task_system_dta->turno != p_task_system_dta->turno -->esto significa pasar al siguiente turno
+
+typedef enum mano {ST_SYS_M1, ST_SYS_M2, ST_SYS_M3} mano_t;
+//idem turno_t. definir la mano a parte me va a permitir acceder a las cartas más facilmente. cartas_J1[ST_STS_M1] es la primer carta de J1. cartas_J2[ST_SYS_M3] es la tercer carta de J2 y así
+
+typedef enum jugador_enum {NINGUNO, J1, J2} jugador_enum_t; //enum que identifica a los jugadores
+//así si quiero alternar entre jugadores puedo hacer jugador = (jugador)%2 + 1;
+//si bien parece que representa lo mismo que turno_t, son conceptos distintos. Tener ambos tipos hace al código redundante, pero más legible
+
+/*
+//qué se cantó
+typedef enum truco {NO_SE_CANTO, TRU, RETRU, QV4} truco_t;
+
+typedef enum envido {NO_SE_CANTO, E, EE, RE, FE} envido_t;
+NOTA: estos typedef no me convencen. Es más fácil llevar la cuenta de cuántos puntos hay que sumar
+en cada caso, como hicimos en el itmis, especialmente en el caso del envido, donde los puntos se van acumulando
+*/
+
+typedef enum palo {ESPADA, BASTO, COPA, ORO, PALO_ERR} palo_t;
+
+typedef struct{
+	uint8_t valor;
+	palo_t 	palo;
+	uint8_t prioridad; //las cartas con mayor prioridad ganan
+}carta_t;
+
+typedef struct
+{
+	uint32_t			tick;
+	bool				flag; //flag para saber si hay un evento nuevo
+
+	task_system_ev_t	event;
+	task_system_st_t	state;
+	mano_t				mano; //mano actual
+	turno_t				turno; //a parte del estado actualmente activo, debo guardar la mano y el turno dentro de RONDA para saber a qué estado regresar
+	//tal vez el turno tenga más sentido como una variable del tipo jugador_enum_t? Más fácil de actualizar?
+	uint8_t 			nCartas;
+	jugador_enum_t		jugador_mano; //jugador que es mano
+
+	uint8_t				puntosJ1;
+	uint8_t				puntosJ2;
+
+	carta_t				cartasJ1[3];
+	carta_t				cartasJ2[3];
+
+	uint8_t				manos_ganadasJ1;
+	uint8_t				manos_ganadasJ2;
+
+	jugador_enum_t		jugador_truco; //jugaodr que cantó el truco. No sé si vamos a usar esta variable al final, pero en el itemis la pusimos. Por las dudas la dejo y de última se borra
+	uint8_t 			puntos_TRU; //puntos del truco en juego
+
+	jugador_enum_t		jugador_envido; //idem jugador_truco
+	uint8_t				puntos_ENV; //puntos del envido en juego
+	uint8_t				puntos_ENV_NQ; //puntos que se ganan en caso de que el otro jugador diga no quiero
+
+} task_system_dta_t;
+
+/********************** external data declaration ****************************/
+extern task_system_dta_t task_system_dta;
+
+/********************** external functions declaration ***********************/
+
+/********************** End of CPP guard *************************************/
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* TASK_INC_TASK_SYSTEM_ATTRIBUTE_H_ */
+
+/********************** end of file ******************************************/

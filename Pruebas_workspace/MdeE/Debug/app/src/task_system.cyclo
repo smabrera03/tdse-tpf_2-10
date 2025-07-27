@@ -1,4 +1,4 @@
 ../app/src/task_system.c:84:6:task_system_init	2
-../app/src/task_system.c:119:6:task_system_update	7
-../app/src/task_system.c:176:6:Maquina_de_estados_ronda	9
-../app/src/task_system.c:247:13:finalizar_ronda	5
+../app/src/task_system.c:119:6:task_system_update	48
+../app/src/task_system.c:341:6:Maquina_de_estados_ronda	8
+../app/src/task_system.c:413:13:finalizar_ronda	5

@@ -156,15 +156,180 @@ void task_system_update(void *parameters)
 			p_task_system_dta->flag = true;
 			p_task_system_dta->event = get_event_task_system();
 		}
+		task_system_ev_t evento = p_task_system_dta->event;
 		switch (p_task_system_dta->state){
 			case ST_SYS_RONDA:
 				if(p_task_system_dta->flag == false)break; //Si no hay eventos no hay que hacer nada en el caso de la ronda
 				//conviene ponerlo acá o directamente afuera del bloque switch? Existe una transición que no sea disparada x
 				//un evento nuevo? No es fácil evaluarlo a priori. Pensar.
-
 				p_task_system_dta->flag = false;
-				Maquina_de_estados_ronda(p_task_system_dta);
+
+				if(evento == EV_SYS_CARTA_NUEVA){
+					Maquina_de_estados_ronda(p_task_system_dta);
+					return;
+				}
+
+				if(evento == EV_SYS_BTN_NQ){
+					if(p_task_system_dta->turno == ST_SYS_TJ1){
+						p_task_system_dta->manos_ganadasJ1 = -1; //BUG: si defino manos_ganadasJ1 como uint8_t, esta asignación hace que valga 255. Lo cambié a int8_t para que pueda ser negativo
+					}else{
+						p_task_system_dta->manos_ganadasJ2 = -1;
+					}
+					finalizar_ronda(p_task_system_dta);
+					return;
+				}
+
+				if(evento == EV_SYS_BTN_TRU){
+
+					if(p_task_system_dta->turno == ST_SYS_TJ1){
+						p_task_system_dta->jugador_truco = J1;
+					}else{
+						p_task_system_dta->jugador_truco = J2;
+					}
+
+					//acá tengo que prender una LED para avisar que el sistema está esperando una respuesta
+					p_task_system_dta->state = ST_SYS_TRUCO_PENDIENTE;
+					p_task_system_dta->puntos_TRU++;
+					return;
+				}
+
+				if(evento == EV_SYS_BTN_ENV){
+					if(p_task_system_dta->nCartas < 2 && p_task_system_dta->puntos_ENV == 0){
+						p_task_system_dta->state = ST_SYS_E;
+
+						if(p_task_system_dta->turno == ST_SYS_TJ1){
+							p_task_system_dta->jugador_envido = J1;
+						}else{
+							p_task_system_dta->jugador_envido = J2;
+						}
+						//mostrar la selección en el display. Algo del tipo "->E	RE	FE"
+					}
+				}
 				break;
+			case ST_SYS_TRUCO_PENDIENTE:
+				if(p_task_system_dta->flag == false)break;
+				p_task_system_dta->flag = false;
+				//Misma duda que en el caso de ST_SYS_RONDA. ¿Hay alguna transición que no la dispare ningún evento?
+				//¿Vale la pena poner esto acá? ¿O conviene más ponerlo afuera del switch?
+
+				if(evento == EV_SYS_BTN_TRU){
+					if(p_task_system_dta->puntos_TRU < 4){
+						p_task_system_dta->puntos_TRU++;
+						p_task_system_dta->jugador_truco = !p_task_system_dta->jugador_truco;
+					}
+				}
+
+				if(evento == EV_SYS_BTN_Q){
+					p_task_system_dta->state = ST_SYS_RONDA;
+				}
+
+				if(evento == EV_SYS_BTN_NQ){
+					p_task_system_dta->puntos_TRU--;
+
+					//al que dijo no quiero le quito las manos ganadas
+					if(p_task_system_dta->jugador_truco == J1){
+						p_task_system_dta->manos_ganadasJ2 = -1;
+					}else{
+						p_task_system_dta->manos_ganadasJ1 = -1;
+					}
+					finalizar_ronda(p_task_system_dta);
+					return;
+				}
+				break;
+
+			case ST_SYS_E:
+				if(p_task_system_dta->flag == false)break;
+				p_task_system_dta->flag = false;
+
+				if(evento == EV_SYS_BTN_ENV){
+					p_task_system_dta->state = ST_SYS_RE;
+					//en el display "E    ->RE    FE"
+				}
+				if(evento == EV_SYS_BTN_Q){
+					p_task_system_dta->puntos_ENV_NQ = p_task_system_dta->puntos_ENV;
+					p_task_system_dta->puntos_ENV += 2;
+					p_task_system_dta->state = ST_SYS_ENVIDO_PENDIENTE;
+				}
+				break;
+
+			case ST_SYS_RE:
+				if(p_task_system_dta->flag == false)break;
+				p_task_system_dta->flag = false;
+
+				if(evento == EV_SYS_BTN_ENV){
+					p_task_system_dta->state = ST_SYS_FE;
+				}
+
+				if(evento == EV_SYS_BTN_Q){
+					p_task_system_dta->puntos_ENV_NQ = p_task_system_dta->puntos_ENV;
+					p_task_system_dta->puntos_ENV += 3;
+					p_task_system_dta->state = ST_SYS_ENVIDO_PENDIENTE;
+				}
+				break;
+			case ST_SYS_FE: //Tengo que poder simplificar los estados ST_SYS_E, ST_SYS_RE y ST_SYS_FE
+				if(p_task_system_dta->flag == false)break;
+				p_task_system_dta->flag = false;
+
+				if(evento == EV_SYS_BTN_ENV){
+					p_task_system_dta->state = ST_SYS_E;
+				}
+
+				if(evento == EV_SYS_BTN_Q){
+					p_task_system_dta->puntos_ENV_NQ = p_task_system_dta->puntos_ENV;
+					p_task_system_dta->puntos_ENV = 30;
+					p_task_system_dta->state = ST_SYS_ENVIDO_PENDIENTE;
+
+				}
+				break;
+
+			case ST_SYS_ENVIDO_PENDIENTE:
+				if(p_task_system_dta->flag == false)break;
+				p_task_system_dta->flag = false;
+
+				if(evento == EV_SYS_BTN_Q){
+					p_task_system_dta->state = ST_SYS_DEFINIR_GANADOR;
+				}
+
+				if(evento == EV_SYS_BTN_NQ){
+					if(p_task_system_dta->puntos_ENV_NQ == 0){
+						p_task_system_dta->puntos_ENV_NQ = 1;
+					}
+					if(p_task_system_dta->jugador_envido == J1){
+						p_task_system_dta->puntosJ1 += p_task_system_dta->puntos_ENV_NQ;
+					}else{
+						p_task_system_dta->puntosJ2 += p_task_system_dta->puntos_ENV_NQ;
+					}
+					p_task_system_dta->state = ST_SYS_RONDA;
+				}
+
+				if(evento == EV_SYS_BTN_ENV){
+					p_task_system_dta->jugador_envido = !p_task_system_dta->jugador_envido;
+					p_task_system_dta->state = ST_SYS_E;
+				}
+				break;
+			case ST_SYS_DEFINIR_GANADOR:
+				if(p_task_system_dta->flag == false)break;
+				p_task_system_dta->flag = false;
+
+				if(evento == EV_SYS_BTN_Q){//ganó J1
+					if(p_task_system_dta->puntos_ENV == 30){
+						p_task_system_dta->puntos_ENV = 30 - p_task_system_dta->puntosJ2;
+					}
+
+					p_task_system_dta->puntosJ1 += p_task_system_dta->puntos_ENV;
+					p_task_system_dta->state = ST_SYS_RONDA;
+				}
+
+				if(evento == EV_SYS_BTN_NQ){//ganó J2
+					if(p_task_system_dta->puntos_ENV == 30){
+						p_task_system_dta->puntos_ENV = 30 - p_task_system_dta->puntosJ1;
+					}
+
+					p_task_system_dta->puntosJ2 += p_task_system_dta->puntos_ENV;
+					p_task_system_dta->state = ST_SYS_RONDA;
+				}
+				break;
+
 			default:
 				break;
 
@@ -176,77 +341,78 @@ void task_system_update(void *parameters)
 void Maquina_de_estados_ronda(task_system_dta_t *p_task_system_dta){
 	turno_t turno = p_task_system_dta->turno; //¿es el turno de quién?
 	mano_t mano = p_task_system_dta->mano;//¿Por qué mano vamos?
-	task_system_ev_t evento = p_task_system_dta->event; //¿Qué evento se registró?
 
-	if(evento == EV_SYS_CARTA_NUEVA){
-		//dentro de este bloque hay 3 etapas: 1) cargar la carta. 2) definir quién ganó (si hiciera falta). 3) pasar al siguiente estado
 
-		//1)cargo la carta. ¿A quién? ¿Qué carta?
-		carta_t *carta_addrs;
-		//elijo la dirección de la carta
+	//dentro de este bloque hay 3 etapas: 1) cargar la carta. 2) definir quién ganó (si hiciera falta). 3) pasar al siguiente estado
 
-		if(turno == ST_SYS_TJ1){
-			carta_addrs = &(p_task_system_dta->cartasJ1[mano]);
+	//1)cargo la carta. ¿A quién? ¿Qué carta?
+	carta_t *carta_addrs;
+	//elijo la dirección de la carta
+
+	if(turno == ST_SYS_TJ1){
+		carta_addrs = &(p_task_system_dta->cartasJ1[mano]);
+	}else{
+		carta_addrs = &(p_task_system_dta->cartasJ2[mano]);
+	}
+	//esto tal vez sería más fácil con una matriz de carta???? Primera fila J1 y segunda fila J2
+	get_Carta(carta_addrs);
+	p_task_system_dta->nCartas++;
+
+	//2)Defino el ganador si nCartas es par
+	if(p_task_system_dta->nCartas%2 == 0){
+		uint8_t prioridad_J1 = p_task_system_dta->cartasJ1[mano].prioridad;
+		uint8_t prioridad_J2 = p_task_system_dta->cartasJ2[mano].prioridad;
+
+		if(prioridad_J1 > prioridad_J2){
+			//ganó J1
+			p_task_system_dta->manos_ganadasJ1++;
+			p_task_system_dta->turno = ST_SYS_TJ1; //si pasara a la siguiente mano, ya se de quién es el siguiente turno (aunque tal vez no avance de mano
+		}else if(prioridad_J1 < prioridad_J2){
+			//ganó J2
+			p_task_system_dta->manos_ganadasJ2++;
+			p_task_system_dta->turno = ST_SYS_TJ2;
 		}else{
-			carta_addrs = &(p_task_system_dta->cartasJ2[mano]);
+			//empataron
+			p_task_system_dta->turno = !p_task_system_dta->turno;
 		}
-		//esto tal vez sería más fácil con una matriz de carta???? Primera fila J1 y segunda fila J2
-		get_Carta(carta_addrs);
-		p_task_system_dta->nCartas++;
+		//3)ya definida la mano, tengo que avanzar de estado
+		if(mano == ST_SYS_M1){
 
-		//2)Defino el ganador si nCartas es par
-		if(p_task_system_dta->nCartas%2 == 0){
-			uint8_t prioridad_J1 = p_task_system_dta->cartasJ1[mano].prioridad;
-			uint8_t prioridad_J2 = p_task_system_dta->cartasJ2[mano].prioridad;
+			p_task_system_dta->mano = ST_SYS_M2;
+			return; //no hace falta, pero me ayuda a ver dónde termina la función
 
-			if(prioridad_J1 > prioridad_J2){
-				//ganó J1
-				p_task_system_dta->manos_ganadasJ1++;
-				p_task_system_dta->turno = ST_SYS_TJ1; //si pasara a la siguiente mano, ya se de quién es el siguiente turno (aunque tal vez no avance de mano
-			}else if(prioridad_J1 < prioridad_J2){
-				//ganó J2
-				p_task_system_dta->manos_ganadasJ2++;
-				p_task_system_dta->turno = ST_SYS_TJ2;
-			}else{
-				//empataron
-				p_task_system_dta->turno = !p_task_system_dta->turno;
-			}
-			//ya definida la mano, tengo que avanzar la mano
-			if(mano == ST_SYS_M1){
+		}else if(mano == ST_SYS_M2){
 
-				p_task_system_dta->mano = ST_SYS_M2;
-				return; //no hace falta, pero me ayuda a ver dónde termina la función
-
-			}else if(mano == ST_SYS_M2){
-
-				if(p_task_system_dta->manos_ganadasJ1 == p_task_system_dta->manos_ganadasJ2){
-					p_task_system_dta->mano = ST_SYS_M3;
-					return;
-
-				}else{
-
-					finalizar_ronda(p_task_system_dta);
-					return;
-				}
+			if(p_task_system_dta->manos_ganadasJ1 == p_task_system_dta->manos_ganadasJ2){
+				p_task_system_dta->mano = ST_SYS_M3;
+				return;
 
 			}else{
 
 				finalizar_ronda(p_task_system_dta);
 				return;
-
 			}
+
 		}else{
 
-			//avanzo al turno del otro jugador
-			p_task_system_dta->turno = !p_task_system_dta->turno;
+			finalizar_ronda(p_task_system_dta);
+			return;
+
 		}
+	}else{
+
+		//avanzo al turno del otro jugador
+		p_task_system_dta->turno = !p_task_system_dta->turno;
+		return;
 	}
+
+
 }
 
 
 static void finalizar_ronda(task_system_dta_t *p_task_system_dta){
-	uint8_t manos_ganadasJ1 = p_task_system_dta->manos_ganadasJ1;
-	uint8_t manos_ganadasJ2 = p_task_system_dta->manos_ganadasJ2;
+	int8_t manos_ganadasJ1 = p_task_system_dta->manos_ganadasJ1;
+	int8_t manos_ganadasJ2 = p_task_system_dta->manos_ganadasJ2;
 
 	if(manos_ganadasJ1 > manos_ganadasJ2){ //ganó J1
 
@@ -267,7 +433,7 @@ static void finalizar_ronda(task_system_dta_t *p_task_system_dta){
 	//reseteo los parámetros
 	p_task_system_dta->state = ST_SYS_RONDA;
 	p_task_system_dta->mano = ST_SYS_M1;
-	p_task_system_dta->jugador_mano = (p_task_system_dta->jugador_mano)%2 + 1; //con esto, si J1 era la mano de la ronda, ahora pasa a ser J2 y viceversa
+	p_task_system_dta->jugador_mano = !p_task_system_dta->jugador_mano; //con esto, si J1 era la mano de la ronda, ahora pasa a ser J2 y viceversa
 	if(p_task_system_dta->jugador_mano == J1){
 		p_task_system_dta->turno = ST_SYS_TJ1;
 	}else{

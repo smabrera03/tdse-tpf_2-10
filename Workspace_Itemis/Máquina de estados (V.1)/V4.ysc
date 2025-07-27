@@ -261,14 +261,14 @@
           </vertices>
         </regions>
       </vertices>
-      <vertices xsi:type="sgraph:State" xmi:id="_wzVacGfEEfCkaJsO--7iyA" name="ST_ENVIDO_PENDIENTE" incomingTransitions="_1YNT0GfEEfCkaJsO--7iyA">
+      <vertices xsi:type="sgraph:State" xmi:id="_wzVacGfEEfCkaJsO--7iyA" name="ST_RTA_PENDIENTE" incomingTransitions="_1YNT0GfEEfCkaJsO--7iyA">
         <outgoingTransitions xmi:id="_DgZWgGfFEfCkaJsO--7iyA" specification="EV_BTN_ENV/ jEnv = (jEnv%2) + 1" target="_mxiQQGfCEfCkaJsO--7iyA"/>
         <outgoingTransitions xmi:id="_5-YGUGfHEfCkaJsO--7iyA" specification="" target="_FN5dYGcFEfCsrKmT1QZ03w"/>
         <regions xmi:id="_CvelAGfHEfCkaJsO--7iyA">
           <vertices xsi:type="sgraph:Entry" xmi:id="_DQV2YGfHEfCkaJsO--7iyA">
             <outgoingTransitions xmi:id="_KgqCUGfHEfCkaJsO--7iyA" specification="" target="_GZVAkGfHEfCkaJsO--7iyA"/>
           </vertices>
-          <vertices xsi:type="sgraph:State" xmi:id="_GZVAkGfHEfCkaJsO--7iyA" name="ST_RTA_PENDIENTE" incomingTransitions="_KgqCUGfHEfCkaJsO--7iyA">
+          <vertices xsi:type="sgraph:State" xmi:id="_GZVAkGfHEfCkaJsO--7iyA" name="ST_ENVIDO_PENDIENTE" incomingTransitions="_KgqCUGfHEfCkaJsO--7iyA">
             <outgoingTransitions xmi:id="_O9_wUGfHEfCkaJsO--7iyA" specification="EV_BTN_Q" target="_NIoKIGfHEfCkaJsO--7iyA"/>
             <outgoingTransitions xmi:id="_lhiOsGfHEfCkaJsO--7iyA" specification="EV_BTN_NQ" target="_xMf1cGfREfCkaJsO--7iyA"/>
           </vertices>

@@ -56,3 +56,9 @@ Prioridades de las cartas:
 7 de espada-------------->11
 1 de basto--------------->12
 1 de espada-------------->13
+
+>>>27/7
+
+Pude hacer una versión comleta del sistema
+Queda por hacer: 1)actuadores
+2) simplificar la máquina de estados. Particularmente la parte del envido. Se repite muchas veces el mismo código. No tiene que pasar

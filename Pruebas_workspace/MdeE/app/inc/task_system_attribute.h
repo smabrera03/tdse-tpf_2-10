@@ -63,11 +63,8 @@ typedef enum task_system_ev {EV_SYS_CARTA_NUEVA,
 
 /* State of Task System */
 typedef enum task_system_st {ST_SYS_RONDA,
-
 	ST_SYS_TRUCO_PENDIENTE,
-	//dentro de truco_pendiente existen los siguientes subestados:
-	ST_SYS_J1_RESPONDE,
-	ST_SYS_J2_RESPONDE,
+
 
 	ST_SYS_SELECCIONAR_ENVIDO,
 	//dentro de SELECCIONAR_ENVIDO existen los siguientes subestados:
@@ -89,8 +86,8 @@ typedef enum turno {ST_SYS_TJ1, ST_SYS_TJ2} turno_t;
 typedef enum mano {ST_SYS_M1, ST_SYS_M2, ST_SYS_M3} mano_t;
 //idem turno_t. definir la mano a parte me va a permitir acceder a las cartas más facilmente. cartas_J1[ST_STS_M1] es la primer carta de J1. cartas_J2[ST_SYS_M3] es la tercer carta de J2 y así
 
-typedef enum jugador_enum {NINGUNO, J1, J2} jugador_enum_t; //enum que identifica a los jugadores
-//así si quiero alternar entre jugadores puedo hacer jugador = (jugador)%2 + 1;
+typedef enum jugador_enum {J1, J2, NINGUNO} jugador_enum_t; //enum que identifica a los jugadores
+//así si quiero alternar entre jugadores puedo hacer jugador = !(jugador)
 //si bien parece que representa lo mismo que turno_t, son conceptos distintos. Tener ambos tipos hace al código redundante, pero más legible
 
 /*
@@ -129,8 +126,8 @@ typedef struct
 	carta_t				cartasJ1[3];
 	carta_t				cartasJ2[3];
 
-	uint8_t				manos_ganadasJ1;
-	uint8_t				manos_ganadasJ2;
+	int8_t				manos_ganadasJ1;
+	int8_t				manos_ganadasJ2;
 
 	jugador_enum_t		jugador_truco; //jugaodr que cantó el truco. No sé si vamos a usar esta variable al final, pero en el itemis la pusimos. Por las dudas la dejo y de última se borra
 	uint8_t 			puntos_TRU; //puntos del truco en juego
