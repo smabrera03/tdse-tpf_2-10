@@ -41,7 +41,7 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
-
+//extern TIM_HandleTypeDef htim2;
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -71,6 +71,10 @@ void Error_Handler(void);
 #define R2_Pin GPIO_PIN_10
 #define R2_GPIO_Port GPIOB
 #define R2_EXTI_IRQn EXTI15_10_IRQn
+#define LED_ROJA_Pin GPIO_PIN_11
+#define LED_ROJA_GPIO_Port GPIOB
+#define LED_AMARILLA_Pin GPIO_PIN_12
+#define LED_AMARILLA_GPIO_Port GPIOB
 #define Q_Pin GPIO_PIN_13
 #define Q_GPIO_Port GPIOB
 #define Q_EXTI_IRQn EXTI15_10_IRQn
@@ -87,6 +91,8 @@ void Error_Handler(void);
 #define R3_EXTI_IRQn EXTI9_5_IRQn
 #define C0_Pin GPIO_PIN_9
 #define C0_GPIO_Port GPIOA
+#define LED_VERDE_Pin GPIO_PIN_11
+#define LED_VERDE_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14

@@ -71,10 +71,8 @@ typedef struct {
 /********************** internal data declaration ****************************/
 const task_cfg_t task_cfg_list[]	= {
 		{task_sensor_init, 		task_sensor_update, 	NULL},
-		{task_system_init, 		task_system_update, 	NULL}
-		/*,
+		{task_system_init, 		task_system_update, 	NULL},
 		{task_actuator_init,	task_actuator_update, 	NULL}
-		*/
 };
 
 #define TASK_QTY	(sizeof(task_cfg_list)/sizeof(task_cfg_t))
@@ -101,7 +99,7 @@ task_dta_t task_dta_list[TASK_QTY];
 
 //##################<<<<<<<<<<<<<<ESTAS LINEAS NO DEBEN ESTAR ACÁ:
 //volatile uint32_t g_task_system_tick_cnt;
-volatile uint32_t g_task_actuator_tick_cnt;
+//volatile uint32_t g_task_actuator_tick_cnt;
 //BORRAR. ES UNA CHANCHADA QUE HICE PARA PODER PROBAR ALGO
 /*
  * Explicación: para poder correr solo el task del sensor tuve que excluir los archrivos task_system.c

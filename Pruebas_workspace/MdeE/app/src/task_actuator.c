@@ -60,28 +60,19 @@
 
 /********************** internal data declaration ****************************/
 const task_actuator_cfg_t task_actuator_cfg_list[] = {
-	{ID_LED_A,  LED_A_PORT,  LED_A_PIN, LED_A_ON,  LED_A_OFF,
-	 DEL_LED_XX_BLI, DEL_LED_XX_PUL},
-	 {ID_LED8, LED8_PORT, LED8_PIN, LED8_ON, LED8_OFF,
-	 DEL_LED_XX_BLI, DEL_LED_XX_PUL},
-	 {ID_LED4, LED4_PORT, LED4_PIN, LED4_ON, LED4_OFF,
-	 	 DEL_LED_XX_BLI, DEL_LED_XX_PUL},
-	 {ID_LED2, LED2_PORT, LED2_PIN, LED2_ON, LED2_OFF,
-		 DEL_LED_XX_BLI, DEL_LED_XX_PUL},
-	 {ID_LED1, LED1_PORT, LED1_PIN, LED1_ON, LED1_OFF,
-		 DEL_LED_XX_BLI, DEL_LED_XX_PUL}
-
-
+	{ID_DISPLAY, NULL, 0, 0,0},
+	{ID_LED_ROJA,  LED_ROJA_GPIO_Port,  LED_ROJA_Pin, GPIO_PIN_SET,  GPIO_PIN_RESET},
+	{ID_LED_VERDE, LED_VERDE_GPIO_Port, LED_VERDE_Pin, GPIO_PIN_SET, GPIO_PIN_RESET},
+	{ID_LED_AMARILLA, LED_VERDE_GPIO_Port, LED_VERDE_Pin, GPIO_PIN_SET, GPIO_PIN_RESET}
 };
 
 #define ACTUATOR_CFG_QTY	(sizeof(task_actuator_cfg_list)/sizeof(task_actuator_cfg_t))
 
 task_actuator_dta_t task_actuator_dta_list[] = {
-	{DEL_LED_XX_MIN, ST_LED_XX_OFF, EV_LED_XX_NOT_BLINK, false},
-	{DEL_LED_XX_MIN, ST_LED_XX_OFF, EV_LED_XX_OFF, false},
-	{DEL_LED_XX_MIN, ST_LED_XX_OFF, EV_LED_XX_OFF, false},
-	{DEL_LED_XX_MIN, ST_LED_XX_OFF, EV_LED_XX_OFF, false},
-	{DEL_LED_XX_MIN, ST_LED_XX_OFF, EV_LED_XX_OFF, false}
+	{DEL_LED_XX_MIN, ST_DIS_PUNTOS, EV_DIS_BTN_ENV},
+	{DEL_LED_XX_MIN, ST_LED_OFF, EV_LED_ROJA_ON, false},
+	{DEL_LED_XX_MIN, ST_LED_OFF, EV_LED_VERDE_ON, false},
+	{DEL_LED_XX_MIN, ST_LED_OFF, EV_LED_AMARILLA_OFF, false}
 };
 
 #define ACTUATOR_DTA_QTY	(sizeof(task_actuator_dta_list)/sizeof(task_actuator_dta_t))
@@ -95,6 +86,7 @@ const char *p_task_actuator_ 		= "Non-Blocking & Update By Time Code";
 /********************** external data declaration ****************************/
 uint32_t g_task_actuator_cnt;
 volatile uint32_t g_task_actuator_tick_cnt;
+extern TIM_HandleTypeDef htim2; //extern le indica al compilador que esta variable ya existe en algún lado (main.c), no debe alocar nueva memoria para ella
 
 /********************** external functions definition ************************/
 void task_actuator_init(void *parameters)
@@ -133,12 +125,20 @@ void task_actuator_init(void *parameters)
 		b_event = p_task_actuator_dta->flag;
 		LOGGER_LOG("   %s = %s\r\n", GET_NAME(b_event), (b_event ? "true" : "false"));
 
-		HAL_GPIO_WritePin(p_task_actuator_cfg->gpio_port, p_task_actuator_cfg->pin, p_task_actuator_cfg->led_off);
+		if(index != 0){
+			HAL_GPIO_WritePin(p_task_actuator_cfg->gpio_port, p_task_actuator_cfg->pin, p_task_actuator_cfg->led_off);
+			//si index es 0, estamos hablando del display, por lo que esta linea no tiene sentido
+		}
 	}
 
 	g_task_actuator_tick_cnt = G_TASK_ACT_TICK_CNT_INI;
+
+	//Habilito interrupciones del timmer
+	HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(TIM2_IRQn);
 }
 
+uint32_t DB_time = 0;
 void task_actuator_update(void *parameters)
 {
 	uint32_t index;
@@ -179,48 +179,75 @@ void task_actuator_update(void *parameters)
 			p_task_actuator_cfg = &task_actuator_cfg_list[index];
 			p_task_actuator_dta = &task_actuator_dta_list[index];
 
-			switch (p_task_actuator_dta->state)
-			{
-				case ST_LED_XX_OFF:
+			//armo estas variables locales para hacer el código un poco más legible
+			task_actuator_st_t state = p_task_actuator_dta->state;
+			task_actuator_ev_t event = p_task_actuator_dta->event;
+			bool flag = p_task_actuator_dta->flag;
 
-					if ((true == p_task_actuator_dta->flag) && (EV_LED_XX_ON == p_task_actuator_dta->event))
+			DB_time = __HAL_TIM_GET_COUNTER(&htim2);
+			switch (state)
+			{
+				case ST_LED_OFF:
+
+					if ((flag == true) && (event == EV_LED_VERDE_ON))
 					{
 						p_task_actuator_dta->flag = false;
 						HAL_GPIO_WritePin(p_task_actuator_cfg->gpio_port, p_task_actuator_cfg->pin, p_task_actuator_cfg->led_on);
-						p_task_actuator_dta->state = ST_LED_XX_ON;
+						p_task_actuator_dta->state = ST_LED_ON;
+						HAL_TIM_Base_Start_IT(&htim2); //enciendo el timmer
+
+					}else if((flag == true) && (event == EV_LED_ROJA_ON)){
+						p_task_actuator_dta->flag = false;
+						HAL_GPIO_WritePin(p_task_actuator_cfg->gpio_port, p_task_actuator_cfg->pin, p_task_actuator_cfg->led_on);
+						p_task_actuator_dta->state = ST_LED_ON;
+						HAL_TIM_Base_Start_IT(&htim2); //enciendo el timmer
+
+					}else if((flag == true) && (event == EV_LED_AMARILLA_ON)){
+						p_task_actuator_dta->flag = false;
+
+						HAL_GPIO_WritePin(p_task_actuator_cfg->gpio_port, p_task_actuator_cfg->pin, p_task_actuator_cfg->led_on);
 					}
 
 					break;
 
-				case ST_LED_XX_ON:
+				case ST_LED_ON:
 
-					if ((true == p_task_actuator_dta->flag) && (EV_LED_XX_OFF == p_task_actuator_dta->event))
+					if ((flag == true) && (event == EV_LED_AMARILLA_OFF))
 					{
 						p_task_actuator_dta->flag = false;
 						HAL_GPIO_WritePin(p_task_actuator_cfg->gpio_port, p_task_actuator_cfg->pin, p_task_actuator_cfg->led_off);
-						p_task_actuator_dta->state = ST_LED_XX_OFF;
+						p_task_actuator_dta->state = ST_LED_OFF;
 					}
-
-					break;
-
-				case ST_LED_XX_BLINK_ON:
-
-					break;
-
-				case ST_LED_XX_BLINK_OFF:
-
-					break;
-
-				case ST_LED_XX_PULSE:
 
 					break;
 
 				default:
-
 					break;
 			}
 		}
     }
 }
 
+
+uint32_t DB_Callback_cnt = 0;
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+	DB_Callback_cnt++;
+	//puntero a la configuración y datos de la LED ROJA
+	const task_actuator_cfg_t *p_LED_ROJA_cfg = &task_actuator_cfg_list[ID_LED_ROJA];
+	task_actuator_dta_t *p_LED_ROJA_dta = &task_actuator_dta_list[ID_LED_ROJA];
+
+	//puntero a la configuración y datos de la LED VERDE
+	const task_actuator_cfg_t *p_LED_VERDE_cfg = &task_actuator_cfg_list[ID_LED_VERDE];
+	task_actuator_dta_t *p_LED_VERDE_dta = &task_actuator_dta_list[ID_LED_VERDE];
+
+		if(htim->Instance == TIM2){
+			HAL_GPIO_WritePin(p_LED_ROJA_cfg->gpio_port, p_LED_ROJA_cfg->pin, p_LED_ROJA_cfg->led_off);
+			p_LED_ROJA_dta->state = ST_LED_OFF;
+
+			HAL_GPIO_WritePin(p_LED_VERDE_cfg->gpio_port, p_LED_VERDE_cfg->pin, p_LED_VERDE_cfg->led_off);
+			p_LED_VERDE_dta->state = ST_LED_OFF;
+
+			HAL_TIM_Base_Stop_IT(&htim2);
+		}
+}
 /********************** end of file ******************************************/

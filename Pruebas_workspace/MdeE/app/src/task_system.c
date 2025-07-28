@@ -157,19 +157,27 @@ void task_system_update(void *parameters)
 			p_task_system_dta->event = get_event_task_system();
 		}
 		task_system_ev_t evento = p_task_system_dta->event;
+		bool flag = p_task_system_dta->flag;
+
 		switch (p_task_system_dta->state){
 			case ST_SYS_RONDA:
-				if(p_task_system_dta->flag == false)break; //Si no hay eventos no hay que hacer nada en el caso de la ronda
-				//conviene ponerlo acá o directamente afuera del bloque switch? Existe una transición que no sea disparada x
-				//un evento nuevo? No es fácil evaluarlo a priori. Pensar.
-				p_task_system_dta->flag = false;
 
-				if(evento == EV_SYS_CARTA_NUEVA){
+				if((evento == EV_SYS_CARTA_ERR) && (flag == true)){
+					p_task_system_dta->flag = false;
+					put_event_task_actuator(EV_LED_ROJA_ON, ID_LED_ROJA);
+				}
+
+				if((evento == EV_SYS_CARTA_NUEVA) && (flag == true)){
+					p_task_system_dta->flag = false;
+					put_event_task_actuator(EV_LED_VERDE_ON, ID_LED_VERDE);
+
 					Maquina_de_estados_ronda(p_task_system_dta);
 					return;
 				}
 
-				if(evento == EV_SYS_BTN_NQ){
+				if((evento == EV_SYS_BTN_NQ) && (flag == true)){
+					p_task_system_dta->flag = false;
+
 					if(p_task_system_dta->turno == ST_SYS_TJ1){
 						p_task_system_dta->manos_ganadasJ1 = -1; //BUG: si defino manos_ganadasJ1 como uint8_t, esta asignación hace que valga 255. Lo cambié a int8_t para que pueda ser negativo
 					}else{
@@ -179,7 +187,8 @@ void task_system_update(void *parameters)
 					return;
 				}
 
-				if(evento == EV_SYS_BTN_TRU){
+				if((evento == EV_SYS_BTN_TRU) && (flag == true)){
+					p_task_system_dta->flag = false;
 
 					if(p_task_system_dta->turno == ST_SYS_TJ1){
 						p_task_system_dta->jugador_truco = J1;
@@ -193,7 +202,9 @@ void task_system_update(void *parameters)
 					return;
 				}
 
-				if(evento == EV_SYS_BTN_ENV){
+				if((evento == EV_SYS_BTN_ENV) && (flag == true)){
+					p_task_system_dta->flag = false;
+
 					if(p_task_system_dta->nCartas < 2 && p_task_system_dta->puntos_ENV == 0){
 						p_task_system_dta->state = ST_SYS_E;
 

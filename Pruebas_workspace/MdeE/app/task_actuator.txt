@@ -1,7 +1,69 @@
-  task_actuator.c (task_actuator.h, task_actuator_attribute.h) 
-   Non-Blocking & Update By Time Code -> Actuator Modeling
+¿Qué queremos de los actuadores?
 
-  task_actuator_interface.c (task_actuator_interface.h)
-   Non-Blocking Code
+LEDS:
+>>>LED Verde: cuando se carga correctamente una carta nueva se prende una led verde por 2 segundos
+Cuando llega la señal de la carta nueva, se prende la led y se dispara un timmer, que cuando caduca apaga la led
 
-...
+>>>LED roja: cuando se carga mal una carta se prende una LED roja por 2 segundos
+
+Máquina de estados:
+     EV_ENCENDER_LED (set_timmer)
+	   __>>>___
+	  /        \
+ST_OFF          ST_ON
+      \__<<<___/
+	   after 1s (timmer_off)
+
+>>>LED amarilla: cuando el sistema espera una respuesta (de envido/de truco) se prende una LED amarilla hasta que 
+se reciba la respuesta
+
+Máquina de estados:
+     EV_ENCENDER_LED
+	   __>>>___
+	  /        \
+ST_OFF          ST_ON
+      \__<<<___/
+	  EV_APAGAR_LED
+
+	  
+DISPLAY: 1)Modo básico: mostrar los puntos. Tengo que recibir los puntos del sistema
+2)Modo seleccionar envido. Mostrar al jugador el envido que va a seleccionar. Algo del estilo:
+"->E	RE    FE"
+"  E  ->RE    FE"
+"  E	RE  ->FE"
+
+cada vez que se apreta el botón el envido se avanza por este menú.
+
+Pasos: 1)repasar los códigos del display y del timmer. 
+2) En base a eso modificar la estrucutra del actuador. Como en el caso de los sensores, hacer una estructura que 
+englobe las caracterísitcas del display y de las LEDS. 
+¿Conviene más hacer estructuras separadas, eventos separados, y switches separados?
+Por un lado prefiero no hacerlo para ser consistente con lo que hicimos con los sensores.
+Por otro, tal vez sea más legible hacer todo por separado
+
+Observación: si tuviera una cantidad muy grande de actuadores, tendría sentido hacer todo por separado.
+Es más: tendría funciones distintas para inicializar/actualizar los actuadores. Habría una función
+display_update() y led_update(). La estructura task_actuator_cfg tendría punteros a estas funciones.
+Habría 4 estructuras: display_cfg, display_dta, led_cfg, led_dta. 
+Todo separado
+
+Hacer eso sería un montón de laburo, no se justifica xq solo tenemos 3 LED´s y un display. Conviene más
+usar las estructuras ya dadas y hacer un punto medio que englobe a las LED´s y al display, como hicimos con los sensores 
+Las estructuras resultantes van a ser un frankenstein, pero bueno, es lo que hay
+
+3)empezar por las LED´s, que son un poco más fáciles. La idea es que cuando llegue una señal se prenda la LED y
+se ponga a correr un timmer. Cuando el timmer expire eso dispara una interrupción que apaga la LED.
+Esto es solo para la LED roja y verde. ¿Qué pasa con la amarilla? Tengo que poder distinguir ese caso. 
+
+Tenemos 2 grupos de LED que se comportan de forma distinta. Es como tener 2 actuadores distintos
+Hay que distinguir los eventos EV_LED_AMARILLA_ON y EV_LED_ROJA_ON, pero no hace falta distinguir los eventos
+EV_LED_VERDE_ON (aunque tal vez convenga por claridad).
+
+NOTA 28/7: Me arrepentí completamente de lo que escribí ahí arriba. Conviene separar LED´s y display porque si no
+la máquina de estados que queda es una chanchada. Idem en los sensores.
+No creo que haga falta hacer archivos separados (task_led.c/.h, task_display.c/.h), que los archivos task_actuator.c/.h
+engloben todo, pero sí hay que definir estructuras separadas, inicializaciones separadas y actualizaciones separadas.
+Puede estar todo el código en la misma función (actuator_init, actuator_update), pero en partes distintas. También hay
+que crear estructuras distintas.
+
+Tal vez estaría bueno preguntarle a J.

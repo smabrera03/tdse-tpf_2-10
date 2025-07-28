@@ -1,0 +1,42 @@
+¿Qué queremos de los actuadores?
+
+LEDS:
+>>>LED Verde: cuando se carga correctamente una carta nueva se prende una led verde por 2 segundos
+Cuando llega la señal de la carta nueva, se prende la led y se dispara un timmer, que cuando caduca apaga la led
+
+>>>LED roja: cuando se carga mal una carta se prende una LED roja por 2 segundos
+
+Máquina de estados:
+     EV_ENCENDER_LED
+	   __>>>___
+	  /        \
+ST_OFF          ST_ON
+      \__<<<___/
+	   after 1s
+
+>>>LED amarilla: cuando el sistema espera una respuesta (de envido/de truco) se prende una LED amarilla hasta que 
+se reciba la respuesta
+
+Máquina de estados:
+     EV_ENCENDER_LED
+	   __>>>___
+	  /        \
+ST_OFF          ST_ON
+      \__<<<___/
+	  EV_APAGAR_LED
+
+	  
+DISPLAY: 1)Modo básico: mostrar los puntos. Tengo que recibir los puntos del sistema
+2)Modo seleccionar envido. Mostrar al jugador el envido que va a seleccionar. Algo del estilo:
+"->E	RE    FE"
+"  E  ->RE    FE"
+"  E	RE  ->FE"
+
+cada vez que se apreta el botón el envido se avanza por este menú.
+
+Pasos: 1)repasar los códigos del display y del timmer. 
+2) En base a eso modificar la estrucutra del actuador. Como en el caso de los sensores, hacer una estructura que 
+englobe las caracterísitcas del display y de las LEDS. 
+¿Conviene más hacer estructuras separadas, eventos separados, y switches separados?
+Por un lado prefiero no hacerlo para ser consistente con lo que hicimos con los sensores.
+Por otro, tal vez sea más legible hacer todo por separado

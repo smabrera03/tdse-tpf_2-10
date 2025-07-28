@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:sgraph="http://www.yakindu.org/sct/sgraph/2.0.0">
-  <sgraph:Statechart xmi:id="_QPoM0GcCEfCsrKmT1QZ03w" specification="// Use the event driven execution model.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'.&#xA;@EventDriven&#xA;&#xA;// Use @SuperSteps(yes) to enable&#xA;// super step semantics.&#xA;@SuperSteps(no)&#xD;&#xA;&#xA;@ChildFirstExecution&#xA;&#xA;interface:&#xA;//>>>>BEGIN EVENTOS&lt;&lt;&lt;&#xA;&#x9;in event EV_CARTA_ERR //carta mal cargada&#xA;&#x9;&#x9;in event EV_CARTA_NUEVA&#xA;&#x9;&#x9;&#xA;&#x9;in event EV_BTN_Q //Quiero&#xA;&#x9;in event EV_BTN_NQ //No quiero. El mismo botón se usa para irse al mazo&#xA;&#x9;&#xA;&#x9;in event EV_BTN_ENV&#xA;&#x9;in event EV_BTN_TRU&#xA;&#x9;&#xA;&#x9;//Eventos para los actuadores&#xA;&#x9;in event EV_MOSTRAR_EVNIDO&#xA;&#x9;in event EV_ENCENDER&#xA;//>>>END EVENTOS&lt;&lt;&lt;&#xA;&#xA;//>>BEGIN VARIABLES GLOBALES&lt;&lt;&lt; (variables sobre el juego)&#xA;&#x9;var nCartas: integer = 0&#xA;&#x9;&#xA;&#x9;var pTru: integer = 1 //puntos para quien gane el truco&#xA;&#x9;var pEnv: integer = 0 //Idem&#xA;&#x9;var pEnv_NQ: integer = 0 //puntos que se ganan si no se quiere el envido&#xA;//>>>END VARIABLES GLOBALES&lt;&lt;&lt;&#xA;&#xA;//>>>BEGIN VARIABLES DE LOS JUGADORES&lt;&lt;&lt; (variables sobre los jugadores)&#xA;&#x9;var mano: integer = 1 //qué jugador es mano. En el código sería un typedef&#xA;&#x9;var jTru: integer = 0 //qué jugador cantó el truco (0 para ninguno)&#xA;&#x9;var jEnv: integer = 0// qué jugador cantó el envido&#xA;&#x9;&#xA;&#x9;var pJ1: integer = 0&#xA;&#x9;var pJ2: integer = 0 //puntos de los jugadores&#xA;&#x9;&#xA;&#x9;var mg1: integer //manos ganadas por 1&#xA;&#x9;var mg2: integer //manos ganadas por 2&#xA;&#x9;//puedo asignar el valor que quiera a estas variables mientras simulo&#xA;&#x9;&#xA;&#x9;var gJ1: boolean //flags que indican quién ganó la mano&#xA;&#x9;var gJ2: boolean&#xA;//>>>END VARIABLES DE LOS JUGADORES&lt;&lt;&lt;&#xA;" name="V4">
+  <sgraph:Statechart xmi:id="_QPoM0GcCEfCsrKmT1QZ03w" specification="// Use the event driven execution model.&#xA;// Switch to cycle based behavior&#xA;// by specifying '@CycleBased(200)'.&#xA;@EventDriven&#xA;&#xA;// Use @SuperSteps(yes) to enable&#xA;// super step semantics.&#xA;@SuperSteps(no)&#xD;&#xA;&#xA;@ChildFirstExecution&#xA;&#xA;interface:&#xA;//>>>>BEGIN EVENTOS&lt;&lt;&lt;&#xA;&#x9;in event EV_CARTA_ERR //carta mal cargada&#xA;&#x9;&#x9;in event EV_CARTA_NUEVA&#xA;&#x9;&#x9;&#xA;&#x9;in event EV_BTN_Q //Quiero&#xA;&#x9;in event EV_BTN_NQ //No quiero. El mismo botón se usa para irse al mazo&#xA;&#x9;&#xA;&#x9;in event EV_BTN_ENV&#xA;&#x9;in event EV_BTN_TRU&#xA;&#x9;&#xA;&#x9;//Eventos para los actuadores&#xA;&#x9;in event EV_MOSTRAR_EVNIDO&#xA;&#x9;in event EV_ENCENDER&#xA;//>>>END EVENTOS&lt;&lt;&lt;&#xA;&#xA;//>>BEGIN VARIABLES GLOBALES&lt;&lt;&lt; (variables sobre el juego)&#xA;&#x9;var nCartas: integer = 0&#xA;&#x9;&#xA;&#x9;var pTru: integer = 1 //puntos para quien gane el truco&#xA;&#x9;var pEnv: integer = 0 //Idem&#xA;&#x9;var pEnv_NQ: integer = 0 //puntos que se ganan si no se quiere el envido&#xA;//>>>END VARIABLES GLOBALES&lt;&lt;&lt;&#xA;&#xA;//>>>BEGIN VARIABLES DE LOS JUGADORES&lt;&lt;&lt; (variables sobre los jugadores)&#xA;&#x9;var mano: integer = 1 //qué jugador es mano. En el código sería un typedef&#xA;&#x9;var jTru: integer = 0 //qué jugador cantó el truco (0 para ninguno)&#xA;&#x9;var jEnv: integer = 0// qué jugador cantó el envido&#xA;&#x9;&#xA;&#x9;var pJ1: integer = 0&#xA;&#x9;var pJ2: integer = 0 //puntos de los jugadores&#xA;&#x9;&#xA;&#x9;var mg1: integer //manos ganadas por 1&#xA;&#x9;var mg2: integer //manos ganadas por 2&#xA;&#x9;//puedo asignar el valor que quiera a estas variables mientras simulo&#xA;&#x9;&#xA;&#x9;var gJ1: boolean //flags que indican quién ganó la mano&#xA;&#x9;var gJ2: boolean&#xA;//>>>END VARIABLES DE LOS JUGADORES&lt;&lt;&lt;&#xA;&#xA;//>>>BEGIN EVENTOS DE LOS ACTUADORES&#xA;in event EV_LED_V_ON //cada vez que haya una carta nueva se prende la LED verde&#xA;in event EV_LED_R_ON //cada vez que haya una carta_err se prende la roja&#xA;in event EV_LED_A_ON&#xA;in event EV_LED_A_OFF&#xA;" name="V4">
     <regions xmi:id="_QPoz42cCEfCsrKmT1QZ03w" name="main region">
       <vertices xsi:type="sgraph:State" xmi:id="_FN5dYGcFEfCsrKmT1QZ03w" specification="" name="ST_RONDA" incomingTransitions="_IrKOcGcFEfCsrKmT1QZ03w _AjrXsGcKEfCsrKmT1QZ03w _Ly478GcnEfCsrKmT1QZ03w _5-YGUGfHEfCkaJsO--7iyA">
-        <outgoingTransitions xmi:id="_pybp8GcIEfCsrKmT1QZ03w" specification="EV_BTN_TRU/ pTru++" target="_nwx7QGcIEfCsrKmT1QZ03w"/>
+        <outgoingTransitions xmi:id="_pybp8GcIEfCsrKmT1QZ03w" specification="EV_BTN_TRU/ pTru++;&#xD;&#xA;raise EV_LED_A_ON" target="_nwx7QGcIEfCsrKmT1QZ03w"/>
         <outgoingTransitions xmi:id="_8L4x4GcmEfCsrKmT1QZ03w" specification="# mazo > " target="_1F7b0GcmEfCsrKmT1QZ03w"/>
         <outgoingTransitions xmi:id="_9VisIGcnEfCsrKmT1QZ03w" specification="# final_ronda >" target="_1F7b0GcmEfCsrKmT1QZ03w"/>
         <outgoingTransitions xmi:id="_pAeNAGfCEfCkaJsO--7iyA" specification="EV_BTN_ENV [nCartas&lt;2 &amp;&amp; pEnv == 0]&#xD;&#xA;//la segunda guarda es para que no se cante&#xD;&#xA;//envido 2 veces seguidas" target="_mxiQQGfCEfCkaJsO--7iyA"/>
@@ -194,7 +194,7 @@
         <outgoingTransitions xmi:id="_IrKOcGcFEfCsrKmT1QZ03w" specification="" target="_FN5dYGcFEfCsrKmT1QZ03w"/>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_nwx7QGcIEfCsrKmT1QZ03w" name="ST_TRUCO_PENDIENTE" incomingTransitions="_pybp8GcIEfCsrKmT1QZ03w">
-        <outgoingTransitions xmi:id="_AjrXsGcKEfCsrKmT1QZ03w" specification="EV_BTN_Q" target="_FN5dYGcFEfCsrKmT1QZ03w"/>
+        <outgoingTransitions xmi:id="_AjrXsGcKEfCsrKmT1QZ03w" specification="EV_BTN_Q/ raise EV_LED_A_OFF" target="_FN5dYGcFEfCsrKmT1QZ03w"/>
         <outgoingTransitions xmi:id="_pqzVsGe9EfCkaJsO--7iyA" specification="# salida_NQ >" target="_1F7b0GcmEfCsrKmT1QZ03w"/>
         <regions xmi:id="_YKWTgGe5EfCkaJsO--7iyA">
           <vertices xsi:type="sgraph:Entry" xmi:id="_ZB60sGe5EfCkaJsO--7iyA">
@@ -237,7 +237,7 @@
         </regions>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_mxiQQGfCEfCkaJsO--7iyA" specification="" name="ST_SELECCIONAR_ENVIDO" incomingTransitions="_pAeNAGfCEfCkaJsO--7iyA _DgZWgGfFEfCkaJsO--7iyA">
-        <outgoingTransitions xmi:id="_1YNT0GfEEfCkaJsO--7iyA" specification="" target="_wzVacGfEEfCkaJsO--7iyA"/>
+        <outgoingTransitions xmi:id="_1YNT0GfEEfCkaJsO--7iyA" specification="/raise EV_LED_A_ON" target="_wzVacGfEEfCkaJsO--7iyA"/>
         <regions xmi:id="_th80IGfCEfCkaJsO--7iyA">
           <vertices xsi:type="sgraph:State" xmi:id="_xQT8XmfCEfCkaJsO--7iyA" specification="" name="ST_E" incomingTransitions="_xQVKdWfCEfCkaJsO--7iyA _zt7OMGfCEfCkaJsO--7iyA">
             <outgoingTransitions xmi:id="_xQT8c2fCEfCkaJsO--7iyA" specification="EV_BTN_ENV" target="_xQUjUGfCEfCkaJsO--7iyA"/>
@@ -263,7 +263,7 @@
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_wzVacGfEEfCkaJsO--7iyA" name="ST_RTA_PENDIENTE" incomingTransitions="_1YNT0GfEEfCkaJsO--7iyA">
         <outgoingTransitions xmi:id="_DgZWgGfFEfCkaJsO--7iyA" specification="EV_BTN_ENV/ jEnv = (jEnv%2) + 1" target="_mxiQQGfCEfCkaJsO--7iyA"/>
-        <outgoingTransitions xmi:id="_5-YGUGfHEfCkaJsO--7iyA" specification="" target="_FN5dYGcFEfCsrKmT1QZ03w"/>
+        <outgoingTransitions xmi:id="_5-YGUGfHEfCkaJsO--7iyA" specification="/raise EV_LED_A_OFF" target="_FN5dYGcFEfCsrKmT1QZ03w"/>
         <regions xmi:id="_CvelAGfHEfCkaJsO--7iyA">
           <vertices xsi:type="sgraph:Entry" xmi:id="_DQV2YGfHEfCkaJsO--7iyA">
             <outgoingTransitions xmi:id="_KgqCUGfHEfCkaJsO--7iyA" specification="" target="_GZVAkGfHEfCkaJsO--7iyA"/>
@@ -425,7 +425,7 @@
     <edges xmi:id="_pyfUUGcIEfCsrKmT1QZ03w" type="Transition" element="_pybp8GcIEfCsrKmT1QZ03w" source="_FN-V4GcFEfCsrKmT1QZ03w" target="_nw1loGcIEfCsrKmT1QZ03w">
       <children xsi:type="notation:DecorationNode" xmi:id="_pyfUVGcIEfCsrKmT1QZ03w" type="TransitionExpression">
         <styles xsi:type="notation:ShapeStyle" xmi:id="_pyfUVWcIEfCsrKmT1QZ03w"/>
-        <layoutConstraint xsi:type="notation:Location" xmi:id="_pyfUVmcIEfCsrKmT1QZ03w" x="-4" y="10"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_pyfUVmcIEfCsrKmT1QZ03w" x="-9" y="-31"/>
       </children>
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_pyfUUWcIEfCsrKmT1QZ03w" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_pyfUU2cIEfCsrKmT1QZ03w" fontName="Verdana"/>
@@ -502,7 +502,7 @@
     <edges xmi:id="_1YOh8GfEEfCkaJsO--7iyA" type="Transition" element="_1YNT0GfEEfCkaJsO--7iyA" source="_mxl6oGfCEfCkaJsO--7iyA" target="_wzX2sGfEEfCkaJsO--7iyA">
       <children xsi:type="notation:DecorationNode" xmi:id="_1YOh9GfEEfCkaJsO--7iyA" type="TransitionExpression">
         <styles xsi:type="notation:ShapeStyle" xmi:id="_1YOh9WfEEfCkaJsO--7iyA"/>
-        <layoutConstraint xsi:type="notation:Location" xmi:id="_1YOh9mfEEfCkaJsO--7iyA" x="27" y="-197"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_1YOh9mfEEfCkaJsO--7iyA" x="16" y="26"/>
       </children>
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_1YOh8WfEEfCkaJsO--7iyA" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_1YOh82fEEfCkaJsO--7iyA" fontName="Verdana"/>

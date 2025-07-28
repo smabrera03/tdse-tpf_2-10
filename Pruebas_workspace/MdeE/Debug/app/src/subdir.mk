@@ -9,6 +9,7 @@ C_SRCS += \
 ../app/src/KEYPAD_cfg.c \
 ../app/src/app.c \
 ../app/src/logger.c \
+../app/src/task_actuator.c \
 ../app/src/task_actuator_interface.c \
 ../app/src/task_sensor.c \
 ../app/src/task_system.c \
@@ -19,6 +20,7 @@ OBJS += \
 ./app/src/KEYPAD_cfg.o \
 ./app/src/app.o \
 ./app/src/logger.o \
+./app/src/task_actuator.o \
 ./app/src/task_actuator_interface.o \
 ./app/src/task_sensor.o \
 ./app/src/task_system.o \
@@ -29,6 +31,7 @@ C_DEPS += \
 ./app/src/KEYPAD_cfg.d \
 ./app/src/app.d \
 ./app/src/logger.d \
+./app/src/task_actuator.d \
 ./app/src/task_actuator_interface.d \
 ./app/src/task_sensor.d \
 ./app/src/task_system.d \
@@ -42,7 +45,7 @@ app/src/%.o app/src/%.su app/src/%.cyclo: ../app/src/%.c app/src/subdir.mk
 clean: clean-app-2f-src
 
 clean-app-2f-src:
-	-$(RM) ./app/src/KEYPAD.cyclo ./app/src/KEYPAD.d ./app/src/KEYPAD.o ./app/src/KEYPAD.su ./app/src/KEYPAD_cfg.cyclo ./app/src/KEYPAD_cfg.d ./app/src/KEYPAD_cfg.o ./app/src/KEYPAD_cfg.su ./app/src/app.cyclo ./app/src/app.d ./app/src/app.o ./app/src/app.su ./app/src/logger.cyclo ./app/src/logger.d ./app/src/logger.o ./app/src/logger.su ./app/src/task_actuator_interface.cyclo ./app/src/task_actuator_interface.d ./app/src/task_actuator_interface.o ./app/src/task_actuator_interface.su ./app/src/task_sensor.cyclo ./app/src/task_sensor.d ./app/src/task_sensor.o ./app/src/task_sensor.su ./app/src/task_system.cyclo ./app/src/task_system.d ./app/src/task_system.o ./app/src/task_system.su ./app/src/task_system_interface.cyclo ./app/src/task_system_interface.d ./app/src/task_system_interface.o ./app/src/task_system_interface.su
+	-$(RM) ./app/src/KEYPAD.cyclo ./app/src/KEYPAD.d ./app/src/KEYPAD.o ./app/src/KEYPAD.su ./app/src/KEYPAD_cfg.cyclo ./app/src/KEYPAD_cfg.d ./app/src/KEYPAD_cfg.o ./app/src/KEYPAD_cfg.su ./app/src/app.cyclo ./app/src/app.d ./app/src/app.o ./app/src/app.su ./app/src/logger.cyclo ./app/src/logger.d ./app/src/logger.o ./app/src/logger.su ./app/src/task_actuator.cyclo ./app/src/task_actuator.d ./app/src/task_actuator.o ./app/src/task_actuator.su ./app/src/task_actuator_interface.cyclo ./app/src/task_actuator_interface.d ./app/src/task_actuator_interface.o ./app/src/task_actuator_interface.su ./app/src/task_sensor.cyclo ./app/src/task_sensor.d ./app/src/task_sensor.o ./app/src/task_sensor.su ./app/src/task_system.cyclo ./app/src/task_system.d ./app/src/task_system.o ./app/src/task_system.su ./app/src/task_system_interface.cyclo ./app/src/task_system_interface.d ./app/src/task_system_interface.o ./app/src/task_system_interface.su
 
 .PHONY: clean-app-2f-src
 

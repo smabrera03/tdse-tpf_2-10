@@ -1,4 +1,4 @@
 ../app/src/task_system.c:84:6:task_system_init	32	static,ignoring_inline_asm
 ../app/src/task_system.c:119:6:task_system_update	32	static,ignoring_inline_asm
-../app/src/task_system.c:341:6:Maquina_de_estados_ronda	24	static
-../app/src/task_system.c:413:13:finalizar_ronda	24	static
+../app/src/task_system.c:352:6:Maquina_de_estados_ronda	24	static
+../app/src/task_system.c:424:13:finalizar_ronda	24	static
