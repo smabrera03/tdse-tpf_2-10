@@ -65,13 +65,14 @@ task_system_dta_t task_system_dta =
 	{DEL_SYS_XX_MIN, false, EV_SYS_CARTA_NUEVA, ST_SYS_RONDA, ST_SYS_M1, ST_SYS_TJ1, 0, J1, 0, 0,
 			{{0, ESPADA, 0}, {0, ESPADA, 0}, {0, ESPADA, 0}}, //3 cartas iniciales de J1
 			{{0, ESPADA, 0},{0, ESPADA, 0}, {0, ESPADA, 0}}, //3 cartas iniciales de J2
-			0, 0, NINGUNO, 1, NINGUNO, 0, 0};
+			0, 0, NINGUNO, 1, NINGUNO, 0, 0,false};
 
 #define SYSTEM_DTA_QTY	(sizeof(task_system_dta)/sizeof(task_system_dta_t))
 
 /********************** internal functions declaration ***********************/
 static void Maquina_de_estados_ronda(task_system_dta_t *p_task_system_dta);
 static void finalizar_ronda(task_system_dta_t *p_task_system_dta);
+static uint8_t calcularFE(uint8_t puntosJ1,uint8_t puntosJ2,jugador_enum_t ganador);
 /********************** internal data definition *****************************/
 const char *p_task_system 		= "Task System (System Statechart)";
 const char *p_task_system_ 		= "Non-Blocking & Update By Time Code";
@@ -287,7 +288,7 @@ void task_system_update(void *parameters)
 
 				if(evento == EV_SYS_BTN_Q){
 					p_task_system_dta->puntos_ENV_NQ = p_task_system_dta->puntos_ENV;
-					p_task_system_dta->puntos_ENV = 30;
+					p_task_system_dta->fe_cantado=true;
 					p_task_system_dta->state = ST_SYS_ENVIDO_PENDIENTE;
 
 				}
@@ -323,21 +324,23 @@ void task_system_update(void *parameters)
 				p_task_system_dta->flag = false;
 
 				if(evento == EV_SYS_BTN_Q){//ganó J1
-					if(p_task_system_dta->puntos_ENV == 30){
-						p_task_system_dta->puntos_ENV = 30 - p_task_system_dta->puntosJ2;
+					if(p_task_system_dta->fe_cantado){
+						p_task_system_dta->puntos_ENV = calcularFE(p_task_system_dta->puntosJ1,p_task_system_dta->puntosJ2,J1);
 					}
 
 					p_task_system_dta->puntosJ1 += p_task_system_dta->puntos_ENV;
 					p_task_system_dta->state = ST_SYS_RONDA;
+					p_task_system_dta->fe_cantado=false;
 				}
 
 				if(evento == EV_SYS_BTN_NQ){//ganó J2
-					if(p_task_system_dta->puntos_ENV == 30){
-						p_task_system_dta->puntos_ENV = 30 - p_task_system_dta->puntosJ1;
+					if(p_task_system_dta->fe_cantado){
+						p_task_system_dta->puntos_ENV = calcularFE(p_task_system_dta->puntosJ1,p_task_system_dta->puntosJ2,J2);
 					}
 
 					p_task_system_dta->puntosJ2 += p_task_system_dta->puntos_ENV;
 					p_task_system_dta->state = ST_SYS_RONDA;
+					p_task_system_dta->fe_cantado=false;
 				}
 				break;
 
@@ -463,5 +466,24 @@ static void finalizar_ronda(task_system_dta_t *p_task_system_dta){
 	p_task_system_dta->jugador_envido = NINGUNO;
 	p_task_system_dta->puntos_ENV = 0;
 	p_task_system_dta->puntos_ENV_NQ = 0;
+}
+static uint8_t calcularFE(uint8_t puntosJ1,uint8_t puntosJ2,jugador_enum_t ganador){
+
+	if(ganador == J1){
+		if(puntosJ2<15){
+			return 15-puntosJ2;
+		}
+		else{
+			return 30-puntosJ2;
+		}
+	}
+	else{
+		if(puntosJ1<15){
+			return 15-puntosJ1;
+		}
+		else{
+			return 30-puntosJ1;
+		}
+	}
 }
 /********************** end of file ******************************************/

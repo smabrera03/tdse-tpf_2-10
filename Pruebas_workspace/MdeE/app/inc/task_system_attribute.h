@@ -137,7 +137,7 @@ typedef struct
 	jugador_enum_t		jugador_envido; //idem jugador_truco
 	uint8_t				puntos_ENV; //puntos del envido en juego
 	uint8_t				puntos_ENV_NQ; //puntos que se ganan en caso de que el otro jugador diga no quiero
-
+	bool 				fe_cantado; //Flag del falta envido
 } task_system_dta_t;
 
 /********************** external data declaration ****************************/

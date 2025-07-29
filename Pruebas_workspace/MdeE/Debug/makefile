@@ -62,8 +62,8 @@ all: main-build
 main-build: MdeE.elf secondary-outputs
 
 # Tool invocations
-MdeE.elf MdeE.map: $(OBJS) $(USER_OBJS) C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "MdeE.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+MdeE.elf MdeE.map: $(OBJS) $(USER_OBJS) C:\tdse-tpf_2-10\tdse-tpf_2-10\Pruebas_workspace\MdeE\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "MdeE.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\tdse-tpf_2-10\tdse-tpf_2-10\Pruebas_workspace\MdeE\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
