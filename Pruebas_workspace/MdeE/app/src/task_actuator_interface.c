@@ -60,14 +60,23 @@
 /********************** external data declaration ****************************/
 
 /********************** external functions definition ************************/
-void put_event_task_actuator(task_actuator_ev_t event, task_actuator_id_t identifier)
+void put_event_led(led_ev_t event, led_id_t identifier)
 {
-	task_actuator_dta_t *p_task_actuator_dta;
+	led_dta_t *p_led_dta;
 
-	p_task_actuator_dta = &task_actuator_dta_list[identifier];
+	p_led_dta = &led_dta_list[identifier];
 
-	p_task_actuator_dta->event = event;
-	p_task_actuator_dta->flag = true;
+	p_led_dta->event = event;
+	p_led_dta->flag = true;
+}
+
+void put_event_display(display_ev_t event, display_id_t identifier){
+	display_dta_t *p_display_dta;
+
+	p_display_dta = &display_dta_list[identifier];
+
+	p_display_dta->event = event;
+	p_display_dta->flag = true;
 }
 
 /********************** end of file ******************************************/

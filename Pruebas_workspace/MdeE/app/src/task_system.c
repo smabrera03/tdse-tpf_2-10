@@ -164,12 +164,12 @@ void task_system_update(void *parameters)
 
 				if((evento == EV_SYS_CARTA_ERR) && (flag == true)){
 					p_task_system_dta->flag = false;
-					put_event_task_actuator(EV_LED_ROJA_ON, ID_LED_ROJA);
+					put_event_led(EV_LED_SET, ID_LED_ROJA);
 				}
 
 				if((evento == EV_SYS_CARTA_NUEVA) && (flag == true)){
 					p_task_system_dta->flag = false;
-					put_event_task_actuator(EV_LED_VERDE_ON, ID_LED_VERDE);
+					put_event_led(EV_LED_SET, ID_LED_VERDE);
 
 					Maquina_de_estados_ronda(p_task_system_dta);
 					return;

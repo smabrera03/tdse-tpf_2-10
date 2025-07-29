@@ -1,17 +1,10 @@
-16:34:15 **** Incremental Build of configuration Debug for project MdeE ****
+11:27:57 **** Incremental Build of configuration Debug for project MdeE ****
 make -j4 all 
-arm-none-eabi-gcc "../app/src/task_actuator.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_actuator.d" -MT"app/src/task_actuator.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_actuator.o"
-arm-none-eabi-gcc -o "MdeE.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: MdeE.elf
- 
 arm-none-eabi-size  MdeE.elf 
-arm-none-eabi-objdump -h -S MdeE.elf  > "MdeE.list"
    text	   data	    bss	    dec	    hex	filename
-  28432	    276	   2492	  31200	   79e0	MdeE.elf
+  28360	    268	   2492	  31120	   7990	MdeE.elf
 Finished building: default.size.stdout
  
-Finished building: MdeE.list
- 
 
-16:34:17 Build Finished. 0 errors, 0 warnings. (took 1s.973ms)
+11:27:58 Build Finished. 0 errors, 0 warnings. (took 667ms)
 

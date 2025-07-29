@@ -67,3 +67,5 @@ Puede estar todo el código en la misma función (actuator_init, actuator_update
 que crear estructuras distintas.
 
 Tal vez estaría bueno preguntarle a J.
+
+29/7: Borré todo lo del timer. A mi me gusta complicarme al pedo. 

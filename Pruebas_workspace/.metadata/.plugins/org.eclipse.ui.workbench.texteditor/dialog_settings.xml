@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="%"/>
+		<item key="selection" value="Period"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="period"/>
+			<item value="htim2"/>
+			<item value="ti"/>
+			<item value="tim"/>
 			<item value="%"/>
 			<item value="p_task_system_dta-&gt;jugador_truco = (p_task_system_dta-&gt;jugador_truco%2) + 1;"/>
 			<item value="if(turno =="/>

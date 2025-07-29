@@ -52,7 +52,8 @@ extern "C" {
 /********************** external data declaration ****************************/
 
 /********************** external functions declaration ***********************/
-extern void put_event_task_actuator(task_actuator_ev_t event, task_actuator_id_t identifier);
+extern void put_event_led(led_ev_t event, led_id_t identifier);
+extern void put_event_display(display_ev_t event, display_id_t identifier);
 
 /********************** End of CPP guard *************************************/
 #ifdef __cplusplus

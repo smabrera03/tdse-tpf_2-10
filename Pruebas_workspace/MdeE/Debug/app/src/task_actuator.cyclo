@@ -1,3 +1,2 @@
-../app/src/task_actuator.c:92:6:task_actuator_init	4
-../app/src/task_actuator.c:142:6:task_actuator_update	13
-../app/src/task_actuator.c:229:6:HAL_TIM_PeriodElapsedCallback	2
+../app/src/task_actuator.c:106:6:task_actuator_init	5
+../app/src/task_actuator.c:179:6:task_actuator_update	14

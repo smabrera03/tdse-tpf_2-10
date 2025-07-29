@@ -57,26 +57,40 @@
 #define DEL_LED_XX_PUL				250ul
 #define DEL_LED_XX_BLI				500ul
 #define DEL_LED_XX_MIN				0ul
-
+#define LED_DELAY					2000ul
 /********************** internal data declaration ****************************/
-const task_actuator_cfg_t task_actuator_cfg_list[] = {
-	{ID_DISPLAY, NULL, 0, 0,0},
-	{ID_LED_ROJA,  LED_ROJA_GPIO_Port,  LED_ROJA_Pin, GPIO_PIN_SET,  GPIO_PIN_RESET},
-	{ID_LED_VERDE, LED_VERDE_GPIO_Port, LED_VERDE_Pin, GPIO_PIN_SET, GPIO_PIN_RESET},
-	{ID_LED_AMARILLA, LED_VERDE_GPIO_Port, LED_VERDE_Pin, GPIO_PIN_SET, GPIO_PIN_RESET}
+//						>>>CONFIGURACIÓN Y DATOS DE LAS LEDS<<<
+const led_cfg_t led_cfg_list[] = {
+	{ID_LED_ROJA,  LED_ROJA_GPIO_Port,  LED_ROJA_Pin, GPIO_PIN_SET,  GPIO_PIN_RESET, LED_DELAY},
+	{ID_LED_VERDE, LED_VERDE_GPIO_Port, LED_VERDE_Pin, GPIO_PIN_SET, GPIO_PIN_RESET, LED_DELAY},
+	{ID_LED_AMARILLA, LED_VERDE_GPIO_Port, LED_VERDE_Pin, GPIO_PIN_SET, GPIO_PIN_RESET, 0}
 };
 
-#define ACTUATOR_CFG_QTY	(sizeof(task_actuator_cfg_list)/sizeof(task_actuator_cfg_t))
+#define LED_CFG_QTY	(sizeof(led_cfg_list)/sizeof(led_cfg_t))
 
-task_actuator_dta_t task_actuator_dta_list[] = {
-	{DEL_LED_XX_MIN, ST_DIS_PUNTOS, EV_DIS_BTN_ENV},
-	{DEL_LED_XX_MIN, ST_LED_OFF, EV_LED_ROJA_ON, false},
-	{DEL_LED_XX_MIN, ST_LED_OFF, EV_LED_VERDE_ON, false},
-	{DEL_LED_XX_MIN, ST_LED_OFF, EV_LED_AMARILLA_OFF, false}
+led_dta_t led_dta_list[] = {
+	{0, ST_LED_OFF, EV_LED_RESET, false},
+	{0, ST_LED_OFF, EV_LED_RESET, false},
+	{0, ST_LED_OFF, EV_LED_RESET, false}
 };
 
-#define ACTUATOR_DTA_QTY	(sizeof(task_actuator_dta_list)/sizeof(task_actuator_dta_t))
+#define LED_DTA_QTY	(sizeof(led_dta_list)/sizeof(led_dta_t))
 
+
+//					>>>CONFIGURACIÓN Y DATOS DEL DISPLAY<<<
+
+const display_cfg_t display_cfg_list[] = {
+		{ID_DISPLAY, NULL, 0x27}
+};
+//completar el NULL en la inicialización???
+
+#define DISPLAY_CFG_QTY (sizeof(display_cfg_list)/sizeof(display_cfg_t))
+
+display_dta_t display_dta_list [] = {
+		{ST_DIS_PUNTOS, EV_DIS_ENV, false}
+};
+
+#define DISPLAY_DTA_QTY (sizeof(display_dta_list)/sizeof(display_dta_t))
 /********************** internal functions declaration ***********************/
 
 /********************** internal data definition *****************************/
@@ -86,16 +100,16 @@ const char *p_task_actuator_ 		= "Non-Blocking & Update By Time Code";
 /********************** external data declaration ****************************/
 uint32_t g_task_actuator_cnt;
 volatile uint32_t g_task_actuator_tick_cnt;
-extern TIM_HandleTypeDef htim2; //extern le indica al compilador que esta variable ya existe en algún lado (main.c), no debe alocar nueva memoria para ella
-
+extern I2C_HandleTypeDef hi2c1;
 /********************** external functions definition ************************/
 void task_actuator_init(void *parameters)
 {
+	//inicialización de las leds
 	uint32_t index;
-	const task_actuator_cfg_t *p_task_actuator_cfg;
-	task_actuator_dta_t *p_task_actuator_dta;
-	task_actuator_st_t state;
-	task_actuator_ev_t event;
+	const led_cfg_t *p_led_cfg;
+	led_dta_t *p_led_dta;
+	led_st_t state;
+	led_ev_t event;
 	bool b_event;
 
 	/* Print out: Task Initialized */
@@ -107,45 +121,67 @@ void task_actuator_init(void *parameters)
 	/* Print out: Task execution counter */
 	LOGGER_LOG("   %s = %lu\r\n", GET_NAME(g_task_actuator_cnt), g_task_actuator_cnt);
 
-	for (index = 0; ACTUATOR_DTA_QTY > index; index++)
+	for (index = 0; LED_DTA_QTY > index; index++)
 	{
 		/* Update Task Actuator Configuration & Data Pointer */
-		p_task_actuator_cfg = &task_actuator_cfg_list[index];
-		p_task_actuator_dta = &task_actuator_dta_list[index];
+		p_led_cfg = &led_cfg_list[index];
+		p_led_dta = &led_dta_list[index];
 
 		/* Print out: Index & Task execution FSM */
 		LOGGER_LOG("   %s = %lu", GET_NAME(index), index);
 
-		state = p_task_actuator_dta->state;
+		state = p_led_dta->state;
 		LOGGER_LOG("   %s = %lu", GET_NAME(state), (uint32_t)state);
 
-		event = p_task_actuator_dta->event;
+		event = p_led_dta->event;
 		LOGGER_LOG("   %s = %lu", GET_NAME(event), (uint32_t)event);
 
-		b_event = p_task_actuator_dta->flag;
+		b_event = p_led_dta->flag;
 		LOGGER_LOG("   %s = %s\r\n", GET_NAME(b_event), (b_event ? "true" : "false"));
 
-		if(index != 0){
-			HAL_GPIO_WritePin(p_task_actuator_cfg->gpio_port, p_task_actuator_cfg->pin, p_task_actuator_cfg->led_off);
-			//si index es 0, estamos hablando del display, por lo que esta linea no tiene sentido
-		}
+		HAL_GPIO_WritePin(p_led_cfg->gpio_port, p_led_cfg->pin, p_led_cfg->led_off);
 	}
 
 	g_task_actuator_tick_cnt = G_TASK_ACT_TICK_CNT_INI;
 
-	//Habilito interrupciones del timmer
-	HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0);
-	HAL_NVIC_EnableIRQ(TIM2_IRQn);
+	//Inicialización del display
+
+	const display_cfg_t *p_display_cfg; //set but not used. Probablemente se vaya cuando inicialice el display
+	display_dta_t *p_display_dta;
+	display_st_t dis_state;
+	display_ev_t dis_event;
+	bool dis_b_event;
+
+	for(index = 0; index < DISPLAY_DTA_QTY; index++)
+	{
+		p_display_cfg = &display_cfg_list[index];
+		p_display_dta = &display_dta_list[index];
+
+		dis_state = p_display_dta->state;
+		LOGGER_LOG("   %s = %lu", GET_NAME(dis_state), (uint32_t)dis_state);
+
+		dis_event = p_display_dta->event;
+		LOGGER_LOG("   %s = %lu", GET_NAME(dis_event), (uint32_t)dis_event);
+
+		dis_b_event = p_display_dta->flag;
+		LOGGER_LOG("   %s = %s\r\n", GET_NAME(dis_b_event), (dis_b_event ? "true" : "false"));
+
+		//TODO: ¿Qué más hay que inicializar acá? Pensar dsp
+	}
+
 }
 
-uint32_t DB_time = 0;
 void task_actuator_update(void *parameters)
 {
 	uint32_t index;
-	const task_actuator_cfg_t *p_task_actuator_cfg;
-	task_actuator_dta_t *p_task_actuator_dta;
+	//>>>punteros a las estructuras de los LED
+	const led_cfg_t *p_led_cfg;
+	led_dta_t *p_led_dta;
 	bool b_time_update_required = false;
 
+	//>>>Punteros a las estructuras del display
+	const display_cfg_t *p_display_cfg;
+	display_dta_t *p_display_dta;
 	/* Update Task Actuator Counter */
 	g_task_actuator_cnt++;
 
@@ -173,81 +209,60 @@ void task_actuator_update(void *parameters)
 		}
 		__asm("CPSIE i");	/* enable interrupts*/
 
-    	for (index = 0; ACTUATOR_DTA_QTY > index; index++)
+    	for (index = 0; LED_DTA_QTY > index; index++)
 		{
     		/* Update Task Actuator Configuration & Data Pointer */
-			p_task_actuator_cfg = &task_actuator_cfg_list[index];
-			p_task_actuator_dta = &task_actuator_dta_list[index];
+			p_led_cfg = &led_cfg_list[index];
+			p_led_dta = &led_dta_list[index];
 
 			//armo estas variables locales para hacer el código un poco más legible
-			task_actuator_st_t state = p_task_actuator_dta->state;
-			task_actuator_ev_t event = p_task_actuator_dta->event;
-			bool flag = p_task_actuator_dta->flag;
+			led_id_t id = p_led_cfg->identifier;
 
-			DB_time = __HAL_TIM_GET_COUNTER(&htim2);
-			switch (state)
+			led_st_t state_led = p_led_dta->state;
+			led_ev_t event_led = p_led_dta->event;
+			bool flag_led = p_led_dta->flag;
+
+			switch (state_led)
 			{
 				case ST_LED_OFF:
 
-					if ((flag == true) && (event == EV_LED_VERDE_ON))
+					if ((flag_led == true) && (event_led == EV_LED_SET))
 					{
-						p_task_actuator_dta->flag = false;
-						HAL_GPIO_WritePin(p_task_actuator_cfg->gpio_port, p_task_actuator_cfg->pin, p_task_actuator_cfg->led_on);
-						p_task_actuator_dta->state = ST_LED_ON;
-						HAL_TIM_Base_Start_IT(&htim2); //enciendo el timmer
+						p_led_dta->flag = false;
 
-					}else if((flag == true) && (event == EV_LED_ROJA_ON)){
-						p_task_actuator_dta->flag = false;
-						HAL_GPIO_WritePin(p_task_actuator_cfg->gpio_port, p_task_actuator_cfg->pin, p_task_actuator_cfg->led_on);
-						p_task_actuator_dta->state = ST_LED_ON;
-						HAL_TIM_Base_Start_IT(&htim2); //enciendo el timmer
-
-					}else if((flag == true) && (event == EV_LED_AMARILLA_ON)){
-						p_task_actuator_dta->flag = false;
-
-						HAL_GPIO_WritePin(p_task_actuator_cfg->gpio_port, p_task_actuator_cfg->pin, p_task_actuator_cfg->led_on);
+						HAL_GPIO_WritePin(p_led_cfg->gpio_port, p_led_cfg->pin, p_led_cfg->led_on);
+						p_led_dta->state = ST_LED_ON;
+						p_led_dta->tick_init = HAL_GetTick();
 					}
 
 					break;
 
 				case ST_LED_ON:
 
-					if ((flag == true) && (event == EV_LED_AMARILLA_OFF))
+					if ((flag_led == true) && (event_led == EV_LED_RESET))
 					{
-						p_task_actuator_dta->flag = false;
-						HAL_GPIO_WritePin(p_task_actuator_cfg->gpio_port, p_task_actuator_cfg->pin, p_task_actuator_cfg->led_off);
-						p_task_actuator_dta->state = ST_LED_OFF;
+						p_led_dta->flag = false;
+						HAL_GPIO_WritePin(p_led_cfg->gpio_port, p_led_cfg->pin, p_led_cfg->led_off);
+						p_led_dta->state = ST_LED_OFF;
 					}
 
+					if((HAL_GetTick() - p_led_dta->tick_init > p_led_cfg->delay)  && (id != ID_LED_AMARILLA)){
+						//No quiero que se ejecute este código para la led amarilla
+						HAL_GPIO_WritePin(p_led_cfg->gpio_port, p_led_cfg->pin, p_led_cfg->led_off);
+						p_led_dta->state = ST_LED_OFF;
+					}
 					break;
 
 				default:
 					break;
 			}
 		}
+    	for(index = 0; index < DISPLAY_DTA_QTY; index++){
+    		p_display_cfg = &display_cfg_list[index];
+    		p_display_dta = &display_dta_list[index];
+    		//todo: máquina de estados del display
+    	}
     }
 }
 
-
-uint32_t DB_Callback_cnt = 0;
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
-	DB_Callback_cnt++;
-	//puntero a la configuración y datos de la LED ROJA
-	const task_actuator_cfg_t *p_LED_ROJA_cfg = &task_actuator_cfg_list[ID_LED_ROJA];
-	task_actuator_dta_t *p_LED_ROJA_dta = &task_actuator_dta_list[ID_LED_ROJA];
-
-	//puntero a la configuración y datos de la LED VERDE
-	const task_actuator_cfg_t *p_LED_VERDE_cfg = &task_actuator_cfg_list[ID_LED_VERDE];
-	task_actuator_dta_t *p_LED_VERDE_dta = &task_actuator_dta_list[ID_LED_VERDE];
-
-		if(htim->Instance == TIM2){
-			HAL_GPIO_WritePin(p_LED_ROJA_cfg->gpio_port, p_LED_ROJA_cfg->pin, p_LED_ROJA_cfg->led_off);
-			p_LED_ROJA_dta->state = ST_LED_OFF;
-
-			HAL_GPIO_WritePin(p_LED_VERDE_cfg->gpio_port, p_LED_VERDE_cfg->pin, p_LED_VERDE_cfg->led_off);
-			p_LED_VERDE_dta->state = ST_LED_OFF;
-
-			HAL_TIM_Base_Stop_IT(&htim2);
-		}
-}
 /********************** end of file ******************************************/

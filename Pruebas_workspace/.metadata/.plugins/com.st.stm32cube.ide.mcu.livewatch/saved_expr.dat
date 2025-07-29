@@ -1,6 +1,10 @@
 task_sensor_dta_list[0]
 DB_interr_cnt
-KeyStatesList
 DB_signal
-ultima_carta
 task_system_dta
+DB_Callback_cnt
+task_actuator_dta_list[1]
+task_actuator_dta_list[2]
+task_system_dta.event
+task_system_dta.state
+DB_time
