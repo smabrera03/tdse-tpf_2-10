@@ -441,7 +441,6 @@ static void finalizar_ronda(task_system_dta_t *p_task_system_dta){
 			p_task_system_dta->puntosJ2 += p_task_system_dta->puntos_TRU; //sumo puntos
 		}
 	}
-
 	//reseteo los parámetros
 	p_task_system_dta->state = ST_SYS_RONDA;
 	p_task_system_dta->mano = ST_SYS_M1;

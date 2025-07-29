@@ -22,8 +22,6 @@ app/src/KEYPAD.o: ../app/src/KEYPAD.c ../app/inc/KEYPAD.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h \
- ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h \
  ../app/inc/KEYPAD_cfg.h ../app/inc/KEYPAD.h
 ../app/inc/KEYPAD.h:
@@ -50,8 +48,6 @@ app/src/KEYPAD.o: ../app/src/KEYPAD.c ../app/inc/KEYPAD.h \
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h:
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h:
-../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h:
 ../app/inc/KEYPAD_cfg.h:
 ../app/inc/KEYPAD.h:

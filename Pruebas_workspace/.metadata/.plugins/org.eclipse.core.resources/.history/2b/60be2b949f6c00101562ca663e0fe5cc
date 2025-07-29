@@ -115,7 +115,3 @@ Podría mandarle la señal al sistema directamente desde task_sensor_it_handler(
 Ya no necesitaría poner los botones en _dta_list y _cfg_list, quedaría solo el teclado
 
 Dejo la idea, pero como así como está anduvo no lo voy a cambiar por ahora
-
-
->>>29/7: Me di cuenta de que no hace falta laburar los botones con interrupciones, se puede hacer código no 
-bloqueante solo con la máquina de estados y llevando la cuenta del tick. Ver el workspace tdse-tp3_06 (interactive menu)

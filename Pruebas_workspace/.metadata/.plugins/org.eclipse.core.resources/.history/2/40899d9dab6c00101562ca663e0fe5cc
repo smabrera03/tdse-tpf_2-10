@@ -93,14 +93,12 @@ typedef enum jugador_enum {J1, J2, NINGUNO} jugador_enum_t; //enum que identific
 /*
 //qué se cantó
 typedef enum truco {NO_SE_CANTO, TRU, RETRU, QV4} truco_t;
-*/
 
-typedef enum envido {NO_SE_CANTO, E, RE, FE} envido_t;
-/*NOTA: estos typedef no me convencen. Es más fácil llevar la cuenta de cuántos puntos hay que sumar
+typedef enum envido {NO_SE_CANTO, E, EE, RE, FE} envido_t;
+NOTA: estos typedef no me convencen. Es más fácil llevar la cuenta de cuántos puntos hay que sumar
 en cada caso, como hicimos en el itmis, especialmente en el caso del envido, donde los puntos se van acumulando
-
-canto = (canto%3) + 1;
 */
+
 typedef enum palo {ESPADA, BASTO, COPA, ORO, PALO_ERR} palo_t;
 
 typedef struct{

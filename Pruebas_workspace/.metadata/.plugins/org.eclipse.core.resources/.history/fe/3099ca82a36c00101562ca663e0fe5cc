@@ -189,7 +189,8 @@ void task_sensor_update(void *parameters)
 				case ST_KEY_ESCRIBIR_VALOR:
 					if(p_task_sensor_dta->event == EV_KEY_LECTURA){
 						//siendo que no hay otros eventos este if podría evitarse, pero lo dejo xq conceptualmente me parece importante y tal vez las haya dsp.
-						uint8_t valor = Carta_Valor(p_task_sensor_dta->lectura);
+						char lectura = p_task_sensor_dta->lectura;
+						uint8_t valor = Carta_Valor(lectura);
 						if(valor == 0){
 							//error
 							put_event_task_system(p_task_sensor_cfg->signal_ERR);//signal_ERR es EV_SYS_CARTA_ERR
