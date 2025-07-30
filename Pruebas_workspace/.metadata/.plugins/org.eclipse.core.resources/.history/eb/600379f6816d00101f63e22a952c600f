@@ -1,0 +1,375 @@
+/*
+ * Copyright (c) 2023 Juan Manuel Cruz <jcruz@fi.uba.ar> <jcruz@frba.utn.edu.ar>.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ *
+ * @file   : task_sensor.c
+ * @date   : Set 26, 2023
+ * @author : Juan Manuel Cruz <jcruz@fi.uba.ar> <jcruz@frba.utn.edu.ar>
+ * @version	v1.0.0
+ */
+
+/********************** inclusions *******************************************/
+/* Project includes. */
+#include <task_keypad_attribute.h>
+#include "main.h"
+
+/* Demo includes. */
+#include "logger.h"
+#include "dwt.h"
+
+/* Application & Tasks includes. */
+#include "board.h"
+#include "app.h"
+#include "task_system_attribute.h"
+#include "task_system_interface.h"
+#include "KEYPAD.h"
+
+/********************** macros and definitions *******************************/
+#define G_TASK_KEY_CNT_INIT			0ul
+#define G_TASK_KEY_TICK_CNT_INI		0ul
+
+#define DEL_BTN_XX_MIN				0ul
+#define DEL_BTN_XX_MED				25ul
+#define DEL_BTN_XX_MAX				50ul
+
+/********************** internal data declaration ****************************/
+const task_keypad_cfg_t task_keypad_cfg_list[] = {
+	{ID_KEYPAD, DEL_BTN_XX_MAX, EV_SYS_CARTA_NUEVA,  EV_SYS_CARTA_ERR,
+			{R0_GPIO_Port, R1_GPIO_Port, R2_GPIO_Port, R3_GPIO_Port},
+			{R0_Pin, R1_Pin, R2_Pin, R3_Pin}, Keys}
+}; //el útlimo campo sobra en el caso de los botones, ver task_keypad.txt
+
+#define SENSOR_CFG_QTY	(sizeof(task_keypad_cfg_list)/sizeof(task_keypad_cfg_t))
+
+task_keypad_dta_t task_keypad_dta_list[] = {
+	{DEL_BTN_XX_MAX, ST_KEY_ESCRIBIR_VALOR, EV_KEY_LECTURA, false, '0', 0, 0, ST_ROW_UP, EV_ROW_UP}
+};
+
+#define KEYPAD_DTA_QTY	(sizeof(task_keypad_dta_list)/sizeof(task_keypad_dta_t))
+
+
+task_system_ev_t DB_signal; //esta variable la uso para debuggear
+
+/********************** internal functions declaration ***********************/
+static uint8_t Carta_Valor(char lectura);
+static palo_t Carta_Palo(char lectura);
+static void boton_statechart(void);
+/********************** internal data definition *****************************/
+const char *p_task_keypad 		= "Task Keypad (Keypad Statechart)";
+const char *p_task_keypad_ 		= "Non-Blocking & Update By Time Code";
+
+/********************** external data declaration ****************************/
+uint32_t g_task_keypad_cnt;
+volatile uint32_t g_task_keypad_tick_cnt;
+
+/********************** external functions definition ************************/
+void task_keypad_init(void *parameters)
+{
+	uint32_t index;
+	task_keypad_dta_t *p_task_keypad_dta;
+	const task_keypad_cfg_t *p_task_keypad_cfg;
+	task_keypad_st_t state;
+	task_keypad_ev_t event;
+
+	/* Print out: Task Initialized */
+	LOGGER_LOG("  %s is running - %s\r\n", GET_NAME(task_keypad_init), p_task_keypad);
+	LOGGER_LOG("  %s is a %s\r\n", GET_NAME(task_keypad), p_task_keypad_);
+
+	g_task_keypad_cnt = G_TASK_KEY_CNT_INIT;
+
+	/* Print out: Task execution counter */
+	LOGGER_LOG("   %s = %lu\r\n", GET_NAME(g_task_keypad_cnt), g_task_keypad_cnt);
+
+	for (index = 0; KEYPAD_DTA_QTY > index; index++)
+	{
+		/* Update Task Keypad Data Pointer */
+		p_task_keypad_dta = &task_keypad_dta_list[index];
+		p_task_keypad_cfg = &task_keypad_cfg_list[index];
+
+		/* Print out: Index & Task execution FSM */
+		LOGGER_LOG("   %s = %lu", GET_NAME(index), index);
+
+		state = p_task_keypad_dta->state;
+		LOGGER_LOG("   %s = %lu", GET_NAME(state), (uint32_t)state);
+
+		event = p_task_keypad_dta->event;
+		LOGGER_LOG("   %s = %lu\r\n", GET_NAME(event), (uint32_t)event);
+
+		KEYPAD_Init(0, p_task_keypad_cfg->KeyStatesList);
+	}
+	g_task_keypad_tick_cnt = G_TASK_KEY_TICK_CNT_INI;
+}
+
+void task_keypad_update(void *parameters)
+{
+	uint32_t index;
+	const task_keypad_cfg_t *p_task_keypad_cfg;
+	task_keypad_dta_t *p_task_keypad_dta;
+	bool b_time_update_required = false;
+
+	/* Update Task Sensor Counter */
+	g_task_keypad_cnt++;
+
+	/* Protect shared resource (g_task_keypad_tick_cnt) */
+	__asm("CPSID i");	/* disable interrupts*/
+    if (G_TASK_KEY_TICK_CNT_INI < g_task_keypad_tick_cnt)
+    {
+    	g_task_keypad_tick_cnt--;
+    	b_time_update_required = true;
+    }
+    __asm("CPSIE i");	/* enable interrupts*/
+
+    while (b_time_update_required)
+    {
+		/* Protect shared resource (g_task_keypad_tick_cnt) */
+		__asm("CPSID i");	/* disable interrupts*/
+		if (G_TASK_KEY_TICK_CNT_INI < g_task_keypad_tick_cnt)
+		{
+			g_task_keypad_tick_cnt--;
+			b_time_update_required = true;
+		}
+		else
+		{
+			b_time_update_required = false;
+		}
+		__asm("CPSIE i");	/* enable interrupts*/
+
+		/*
+		 * Acá, cada vez que pase por acá leer los inputs
+		 * si alguno es 1 -> tick--
+		 * si tick == 0, flag = true
+		 */
+    	for (index = 0; KEYPAD_DTA_QTY > index; index++)
+		{
+    		/* Update Task Sensor Configuration & Data Pointer */
+			p_task_keypad_cfg = &task_keypad_cfg_list[index];
+			p_task_keypad_dta = &task_keypad_dta_list[index];
+
+
+			switch(p_task_keypad_dta->state)
+			{
+
+				case ST_KEY_ESCRIBIR_VALOR:
+					if((p_task_keypad_dta->flag_evento_nuevo == true) && (p_task_keypad_dta->event == EV_KEY_LECTURA)){
+						//siendo que no hay otros eventos este if podría evitarse, pero lo dejo xq conceptualmente me parece importante y tal vez las haya dsp.
+						p_task_keypad_dta->lectura = KEY
+						uint8_t valor = Carta_Valor(p_task_keypad_dta->lectura);
+						if(valor == 0){
+							//error
+							put_event_task_system(p_task_keypad_cfg->signal_ERR);//signal_ERR es EV_SYS_CARTA_ERR
+							DB_signal = p_task_keypad_cfg->signal_ERR;
+							return;
+						}
+					//si llego acá el valor es correcto
+					p_task_keypad_dta->valorCarta = valor;
+					p_task_keypad_dta->state = ST_KEY_ESCRIBIR_PALO;
+					}
+					break;
+				case ST_KEY_ESCRIBIR_PALO:
+					if(p_task_keypad_dta->event == EV_KEY_LECTURA){
+						char lectura = p_task_keypad_dta->lectura;
+						palo_t palo = Carta_Palo(lectura);
+						if(palo == PALO_ERR){
+							//error
+							put_event_task_system(p_task_keypad_cfg->signal_ERR);
+							p_task_keypad_dta->state = ST_KEY_ESCRIBIR_VALOR;
+							DB_signal = p_task_keypad_cfg->signal_ERR;
+							return;
+						}
+						//si llego acá es porque el plao es correcto
+						p_task_keypad_dta->paloCarta = palo;
+						p_task_keypad_dta->state = ST_KEY_CONFIRMAR;
+					}
+					break;
+				case ST_KEY_CONFIRMAR:
+					if(p_task_keypad_dta->event == EV_KEY_LECTURA){
+						char lectura = p_task_keypad_dta->lectura;
+						if(lectura == '#'){
+							//carta confirmada
+							put_event_task_system(p_task_keypad_cfg->signal_OK); //en este caso, EV_CARTA_NUEVA
+							put_Carta(p_task_keypad_dta->paloCarta, p_task_keypad_dta->valorCarta);
+							DB_signal = p_task_keypad_cfg->signal_OK;
+							p_task_keypad_dta->state = ST_KEY_ESCRIBIR_VALOR;
+						}else{
+							//borrar carta
+							put_event_task_system(p_task_keypad_cfg->signal_ERR);
+							DB_signal = p_task_keypad_cfg->signal_ERR;
+							p_task_keypad_dta->state = ST_KEY_ESCRIBIR_VALOR;
+						}
+					}
+					break;
+				default:
+					break;
+			}
+		}
+    }
+}
+
+
+//esta función en básicamente una copia de la que hay en boton.c, pero en donde el "boton" es la combinación de las filas
+static void boton_statechart(void){
+	const task_keypad_cfg_t *p_task_keypad_cfg = &task_keypad_cfg_list[0];
+	task_keypad_dta_t *p_task_keypad_dta = &task_keypad_dta_list[0];
+
+	GPIO_PinState C0 = HAL_GPIO_ReadPin(p_task_keypad_cfg->COL_gpio_ports[0], p_task_keypad_cfg->COL_Pins[0]);
+	GPIO_PinState C1 = HAL_GPIO_ReadPin(p_task_keypad_cfg->COL_gpio_ports[1], p_task_keypad_cfg->COL_Pins[1]);
+	GPIO_PinState C2 = HAL_GPIO_ReadPin(p_task_keypad_cfg->COL_gpio_ports[2], p_task_keypad_cfg->COL_Pins[2]);
+	GPIO_PinState C3 = HAL_GPIO_ReadPin(p_task_keypad_cfg->COL_gpio_ports[3], p_task_keypad_cfg->COL_Pins[3]);
+
+	if(C0 == GPIO_PIN_SET || C1 == GPIO_PIN_SET || C2 == GPIO_PIN_SET || C3 == GPIO_PIN_SET){
+		p_task_keypad_dta->row_ev = EV_ROW_DOWN;
+	}else{
+		p_task_keypad_dta->row_ev = EV_ROW_UP;
+	}
+
+	switch(p_task_keypad_dta->row_state){
+
+		case ST_ROW_DOWN:
+			if (EV_ROW_UP == p_task_keypad_dta->row_event)
+				{
+					p_task_keypad_dta->row_state = ST_ROW_RISING;
+					p_task_keypad_dta->tick = DEL_BTN_XX_MAX;
+				}
+
+			break;
+
+		case ST_ROW_FALLING:
+			if((p_task_keypad_dta->tick == DEL_BTN_XX_MIN) && (p_task_keypad_dta->row_event == EV_ROW_UP)){
+					p_task_keypad_dta->row_state = ST_ROW_UP;
+				}else if((p_task_keypad_dta->tick == DEL_BTN_XX_MIN) && (p_task_keypad_dta->row_event == EV_ROW_DOWN)){
+					p_task_keypad_dta->row_state = ST_ROW_DOWN;
+					//put_event_task_system(p_task_keypad_cfg->signal_down);
+					p_task_keypad_dta->flag_evento_nuevo = true;
+				}else{
+					p_task_keypad_dta->tick--;
+				}
+			break;
+
+		case ST_ROW_UP:
+			if (EV_ROW_DOWN == p_task_keypad_dta->row_ev)
+				{
+					p_task_keypad_dta->row_state = ST_ROW_FALLING;
+					p_task_keypad_dta->tick = DEL_BTN_XX_MAX;
+				}
+			break;
+
+		case ST_ROW_RISING:
+			if((p_task_keypad_dta->tick == DEL_BTN_XX_MIN) && (p_task_keypad_dta->row_event == EV_ROW_UP)){
+				p_task_keypad_dta->row_state = ST_BTN_XX_UP;
+			}else if((p_task_keypad_dta->tick == DEL_BTN_XX_MIN) && (p_task_keypad_dta->row_event == EV_ROW_DOWN)){
+				p_task_keypad_dta->row_state = ST_ROW_DOWN;
+			}else{
+				p_task_keypad_dta->tick--;
+			}
+			break;
+
+		default:
+			break;
+
+	}
+
+}
+
+void task_sensor_it_handler(uint16_t GPIO_Pin){
+	if(GPIO_Pin == R0_Pin || GPIO_Pin == R1_Pin || GPIO_Pin == R2_Pin || GPIO_Pin == R3_Pin){ //este bloque if aparece 2 veces ¿Está mal?
+		//ISR del KEYPAD
+		task_sensor_dta_list[ID_KEYPAD].flag_evento_nuevo = true; //levanto el flag
+		task_sensor_dta_list[ID_KEYPAD].event = EV_KEY_LECTURA;
+		//--------Una vez registrada la interrupción, deshabilito las interrupciones para que el teclado funcione normalmente
+		HAL_NVIC_DisableIRQ(EXTI4_IRQn);
+		HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
+		HAL_NVIC_DisableIRQ(EXTI15_10_IRQn);
+		//--------------------------------------
+
+		char *charaddrs = &task_sensor_dta_list[ID_KEYPAD].lectura;
+		KEYPAD_GetChar(0, charaddrs);
+		//Vuelvo a activar las interrupciones
+
+		HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+		HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+		HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+		HAL_NVIC_ClearPendingIRQ(EXTI4_IRQn);
+		HAL_NVIC_ClearPendingIRQ(EXTI9_5_IRQn);
+		HAL_NVIC_ClearPendingIRQ(EXTI15_10_IRQn);
+
+		return;
+	}
+
+	switch(GPIO_Pin){
+	//ISR´s de los botones
+		case Q_Pin:
+			task_sensor_dta_list[ID_BTN_Q].flag_evento_nuevo = true;
+			break;
+		case NQ_Pin:
+			task_sensor_dta_list[ID_BTN_NQ].flag_evento_nuevo = true;
+			break;
+		case TRU_Pin:
+			task_sensor_dta_list[ID_BTN_TRU].flag_evento_nuevo = true;
+			break;
+		case ENV_Pin:
+			task_sensor_dta_list[ID_BTN_ENV].flag_evento_nuevo = true;
+			break;
+		default:
+			break;
+
+	}
+}
+
+//Esta función asigna el valor numérico de la carta en base al char leído
+//Si el char no es algún valor correcto devuelve 0 a modo de error, lo que se verifica en el bloque switch de
+//sensor_update
+static uint8_t Carta_Valor(char lectura){
+	switch(lectura){
+		case '1':return 1;
+		case '2':return 2;
+		case '3':return 3;
+		case '4':return 4;
+		case '5':return 5;
+		case '6':return 6;
+		case '7':return 7;
+		case 'S':return 10;
+		case 'Q':return 11;
+		case 'R':return 12;
+		default: return 0;
+	}
+}
+
+//acá no puedo devolver 0 como error xq ESPADA es 0. Quedó distinto de Carta_Valor. ¿Corregir?
+static palo_t Carta_Palo(char lectura){
+	switch(lectura){
+		case 'E': return ESPADA;
+		case 'B': return BASTO;
+		case 'C': return COPA;
+		case 'O': return ORO;
+		default: return PALO_ERR;
+	}
+}
+/********************** end of file ******************************************/

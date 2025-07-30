@@ -45,6 +45,7 @@ extern "C" {
 
 /********************** inclusions *******************************************/
 #include <stdbool.h>
+#include <stdint.h>
 /********************** macros ***********************************************/
 
 /********************** typedef **********************************************/
@@ -85,7 +86,7 @@ extern "C" {
  */
 
 /* Events to excite Task System */
-typedef enum task_system_ev {EV_SYS_BTN_Q, EV_SYS_BTN_NQ, EV_SYS_BTN_TRU, EV_SYS_BTN_ENV,
+typedef enum task_system_ev {EV_SYS_BTN_Q, EV_SYS_BTN_NQ, EV_SYS_BTN_TRU, EV_SYS_BTN_ENV, EV_SYS_CARTA_ERR, EV_SYS_CARTA_NUEVA,
 							 EV_SYS_IDLE,
 							 EV_SYS_LOOP_DET,
 							 EV_SYS_NOT_LOOP_DET,
@@ -102,6 +103,15 @@ typedef enum task_system_st {ST_SYS_IDLE,
 							 ST_SYS_ACTIVE_04,
 							 ST_SYS_ACTIVE_05,
 							 ST_SYS_ACTIVE_06} task_system_st_t;
+
+typedef enum palo {ESPADA, BASTO, COPA, ORO, PALO_ERR} palo_t;
+
+
+typedef struct{
+	uint8_t valor;
+	palo_t 	palo;
+	uint8_t prioridad; //las cartas con mayor prioridad ganan
+}carta_t;
 
 typedef struct
 {

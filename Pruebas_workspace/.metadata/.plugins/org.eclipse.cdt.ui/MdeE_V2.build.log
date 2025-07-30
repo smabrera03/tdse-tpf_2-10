@@ -1,10 +1,21 @@
-10:45:27 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+17:54:59 **** Incremental Build of configuration Debug for project MdeE_V2 ****
 make -j4 all 
+arm-none-eabi-gcc "../app/src/task_keypad.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_keypad.d" -MT"app/src/task_keypad.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_keypad.o"
+../app/src/task_keypad.c: In function 'task_keypad_init':
+../app/src/task_keypad.c:98:34: warning: variable 'p_task_keypad_cfg' set but not used [-Wunused-but-set-variable]
+   98 |         const task_keypad_cfg_t *p_task_keypad_cfg;
+      |                                  ^~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "MdeE_V2.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE_V2\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE_V2.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MdeE_V2.elf
+ 
 arm-none-eabi-size  MdeE_V2.elf 
+arm-none-eabi-objdump -h -S MdeE_V2.elf  > "MdeE_V2.list"
    text	   data	    bss	    dec	    hex	filename
-  14752	    128	   2312	  17192	   4328	MdeE_V2.elf
+  22876	    156	   2348	  25380	   6324	MdeE_V2.elf
 Finished building: default.size.stdout
  
+Finished building: MdeE_V2.list
+ 
 
-10:45:28 Build Finished. 0 errors, 0 warnings. (took 455ms)
+17:55:00 Build Finished. 0 errors, 1 warnings. (took 1s.488ms)
 

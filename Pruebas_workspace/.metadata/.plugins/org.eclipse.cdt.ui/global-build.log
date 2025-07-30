@@ -1,85 +1,61 @@
-10:34:43 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+17:44:39 **** Incremental Build of configuration Debug for project MdeE_V2 ****
 make -j4 all 
-arm-none-eabi-gcc "../app/src/task_boton.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_boton.d" -MT"app/src/task_boton.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_boton.o"
-arm-none-eabi-gcc "../app/src/task_system.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_system.d" -MT"app/src/task_system.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_system.o"
-arm-none-eabi-gcc "../app/src/task_system_interface.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_system_interface.d" -MT"app/src/task_system_interface.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_system_interface.o"
+arm-none-eabi-gcc "../app/src/task_keypad.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_keypad.d" -MT"app/src/task_keypad.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_keypad.o"
+../app/src/task_keypad.c: In function 'task_keypad_init':
+../app/src/task_keypad.c:98:34: warning: variable 'p_task_keypad_cfg' set but not used [-Wunused-but-set-variable]
+   98 |         const task_keypad_cfg_t *p_task_keypad_cfg;
+      |                                  ^~~~~~~~~~~~~~~~~
 arm-none-eabi-gcc -o "MdeE_V2.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE_V2\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE_V2.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: MdeE_V2.elf
  
 arm-none-eabi-size  MdeE_V2.elf 
 arm-none-eabi-objdump -h -S MdeE_V2.elf  > "MdeE_V2.list"
    text	   data	    bss	    dec	    hex	filename
-  14704	    128	   2288	  17120	   42e0	MdeE_V2.elf
+  22876	    156	   2348	  25380	   6324	MdeE_V2.elf
 Finished building: default.size.stdout
  
 Finished building: MdeE_V2.list
  
-10:34:49 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+17:44:52 **** Incremental Build of configuration Debug for project MdeE_V2 ****
 make -j4 all 
 arm-none-eabi-size  MdeE_V2.elf 
    text	   data	    bss	    dec	    hex	filename
-  14704	    128	   2288	  17120	   42e0	MdeE_V2.elf
+  22876	    156	   2348	  25380	   6324	MdeE_V2.elf
 Finished building: default.size.stdout
  
-10:35:47 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+17:50:20 **** Incremental Build of configuration Debug for project MdeE_V2 ****
 make -j4 all 
-arm-none-eabi-size  MdeE_V2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  14704	    128	   2288	  17120	   42e0	MdeE_V2.elf
-Finished building: default.size.stdout
- 
-10:39:40 **** Incremental Build of configuration Debug for project MdeE_V2 ****
-make -j4 all 
-arm-none-eabi-gcc "../app/src/task_boton.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_boton.d" -MT"app/src/task_boton.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_boton.o"
-arm-none-eabi-gcc "../app/src/task_system.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_system.d" -MT"app/src/task_system.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_system.o"
-arm-none-eabi-gcc "../app/src/task_system_interface.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_system_interface.d" -MT"app/src/task_system_interface.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_system_interface.o"
-../app/src/task_boton.c: In function 'task_boton_statechart':
-../app/src/task_boton.c:223:81: error: 'task_boton_cfg_t' has no member named 'signal_up'; did you mean 'signal_down'?
-  223 |                                         put_event_task_system(p_task_boton_cfg->signal_up);
-      |                                                                                 ^~~~~~~~~
-      |                                                                                 signal_down
-make: *** [app/src/subdir.mk:37: app/src/task_boton.o] Error 1
-make: *** Waiting for unfinished jobs....
-"make -j4 all" terminated with exit code 2. Build might be incomplete.
-10:40:24 **** Incremental Build of configuration Debug for project MdeE_V2 ****
-make -j4 all 
-arm-none-eabi-gcc "../app/src/task_boton.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_boton.d" -MT"app/src/task_boton.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_boton.o"
+arm-none-eabi-gcc "../app/src/task_keypad.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_keypad.d" -MT"app/src/task_keypad.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_keypad.o"
+../app/src/task_keypad.c: In function 'task_keypad_init':
+../app/src/task_keypad.c:98:34: warning: variable 'p_task_keypad_cfg' set but not used [-Wunused-but-set-variable]
+   98 |         const task_keypad_cfg_t *p_task_keypad_cfg;
+      |                                  ^~~~~~~~~~~~~~~~~
 arm-none-eabi-gcc -o "MdeE_V2.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE_V2\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE_V2.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: MdeE_V2.elf
  
 arm-none-eabi-size  MdeE_V2.elf 
 arm-none-eabi-objdump -h -S MdeE_V2.elf  > "MdeE_V2.list"
    text	   data	    bss	    dec	    hex	filename
-  14752	    128	   2288	  17168	   4310	MdeE_V2.elf
+  22876	    156	   2348	  25380	   6324	MdeE_V2.elf
 Finished building: default.size.stdout
  
 Finished building: MdeE_V2.list
  
-10:43:24 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+17:54:59 **** Incremental Build of configuration Debug for project MdeE_V2 ****
 make -j4 all 
-arm-none-eabi-gcc "../app/src/task_boton.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_boton.d" -MT"app/src/task_boton.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_boton.o"
+arm-none-eabi-gcc "../app/src/task_keypad.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_keypad.d" -MT"app/src/task_keypad.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_keypad.o"
+../app/src/task_keypad.c: In function 'task_keypad_init':
+../app/src/task_keypad.c:98:34: warning: variable 'p_task_keypad_cfg' set but not used [-Wunused-but-set-variable]
+   98 |         const task_keypad_cfg_t *p_task_keypad_cfg;
+      |                                  ^~~~~~~~~~~~~~~~~
 arm-none-eabi-gcc -o "MdeE_V2.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE_V2\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE_V2.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: MdeE_V2.elf
  
 arm-none-eabi-size  MdeE_V2.elf 
 arm-none-eabi-objdump -h -S MdeE_V2.elf  > "MdeE_V2.list"
    text	   data	    bss	    dec	    hex	filename
-  14752	    128	   2312	  17192	   4328	MdeE_V2.elf
+  22876	    156	   2348	  25380	   6324	MdeE_V2.elf
 Finished building: default.size.stdout
  
 Finished building: MdeE_V2.list
- 
-10:43:39 **** Incremental Build of configuration Debug for project MdeE_V2 ****
-make -j4 all 
-arm-none-eabi-size  MdeE_V2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  14752	    128	   2312	  17192	   4328	MdeE_V2.elf
-Finished building: default.size.stdout
- 
-10:45:27 **** Incremental Build of configuration Debug for project MdeE_V2 ****
-make -j4 all 
-arm-none-eabi-size  MdeE_V2.elf 
-   text	   data	    bss	    dec	    hex	filename
-  14752	    128	   2312	  17192	   4328	MdeE_V2.elf
-Finished building: default.size.stdout
  

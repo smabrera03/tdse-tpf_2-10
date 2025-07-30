@@ -57,6 +57,11 @@ extern void put_event_task_system(task_system_ev_t event);
 extern task_system_ev_t get_event_task_system(void);
 extern bool any_event_task_system(void);
 
+//estas funciones las agregamos
+extern void put_Carta(palo_t palo, uint8_t valor); //recibe los datos del teclado y los vuelca en una variable global en task_system_interface.c.
+//también calcula la prioridad de la carta
+extern void get_Carta(carta_t *carta_addrs);//en la dirección de memoria dada escribe los datos de la última carta leida
+
 /********************** End of CPP guard *************************************/
 #ifdef __cplusplus
 }
