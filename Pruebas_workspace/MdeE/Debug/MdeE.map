@@ -4803,7 +4803,7 @@ LOAD C:/ST/STM32CubeIDE_1.17.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
  .debug_line    0x0001002f      0xd02 ./app/src/task_system.o
  .debug_line    0x00010d31      0xa18 ./app/src/task_system_interface.o
 
-.debug_str      0x00000000    0x8646c
+.debug_str      0x00000000    0x864b8
  .debug_str     0x00000000    0x82884 ./Core/Src/main.o
                               0x82d6a (size before relaxing)
  .debug_str     0x00082884       0xbb ./Core/Src/stm32f1xx_hal_msp.o
@@ -4828,24 +4828,24 @@ LOAD C:/ST/STM32CubeIDE_1.17.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.ext
                               0x7e6e9 (size before relaxing)
  .debug_str     0x0008475b      0x626 ./Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.o
                               0x7ed5a (size before relaxing)
- .debug_str     0x00084d81      0x142 ./app/src/KEYPAD.o
-                              0x7e447 (size before relaxing)
- .debug_str     0x00084ec3       0x18 ./app/src/KEYPAD_cfg.o
-                              0x7e6f7 (size before relaxing)
- .debug_str     0x00084edb      0x54e ./app/src/app.o
-                              0x8269a (size before relaxing)
- .debug_str     0x00085429      0x315 ./app/src/logger.o
-                              0x8225e (size before relaxing)
- .debug_str     0x0008573e      0x43b ./app/src/task_actuator.o
-                              0x82d11 (size before relaxing)
- .debug_str     0x00085b79       0x45 ./app/src/task_actuator_interface.o
-                              0x8252d (size before relaxing)
- .debug_str     0x00085bbe      0x475 ./app/src/task_sensor.o
-                              0x82c43 (size before relaxing)
- .debug_str     0x00086033      0x3c6 ./app/src/task_system.o
-                              0x82995 (size before relaxing)
- .debug_str     0x000863f9       0x73 ./app/src/task_system_interface.o
-                              0x82530 (size before relaxing)
+ .debug_str     0x00084d81      0x18e ./app/src/KEYPAD.o
+                              0x7e457 (size before relaxing)
+ .debug_str     0x00084f0f       0x18 ./app/src/KEYPAD_cfg.o
+                              0x7e707 (size before relaxing)
+ .debug_str     0x00084f27      0x54e ./app/src/app.o
+                              0x826aa (size before relaxing)
+ .debug_str     0x00085475      0x315 ./app/src/logger.o
+                              0x8226e (size before relaxing)
+ .debug_str     0x0008578a      0x43b ./app/src/task_actuator.o
+                              0x82d21 (size before relaxing)
+ .debug_str     0x00085bc5       0x45 ./app/src/task_actuator_interface.o
+                              0x8253d (size before relaxing)
+ .debug_str     0x00085c0a      0x475 ./app/src/task_sensor.o
+                              0x82c53 (size before relaxing)
+ .debug_str     0x0008607f      0x3c6 ./app/src/task_system.o
+                              0x829a5 (size before relaxing)
+ .debug_str     0x00086445       0x73 ./app/src/task_system_interface.o
+                              0x82540 (size before relaxing)
 
 .comment        0x00000000       0x43
  .comment       0x00000000       0x43 ./Core/Src/main.o
