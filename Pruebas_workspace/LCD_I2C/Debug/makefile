@@ -61,8 +61,8 @@ all: main-build
 main-build: LCD_I2C.elf secondary-outputs
 
 # Tool invocations
-LCD_I2C.elf LCD_I2C.map: $(OBJS) $(USER_OBJS) C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\LCD_I2C\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "LCD_I2C.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\LCD_I2C\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LCD_I2C.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+LCD_I2C.elf LCD_I2C.map: $(OBJS) $(USER_OBJS) C:\Users\corre\OneDrive\Escritorio\tps\ lucas\TPF_TDSE\tdse-tpf_2-10\Pruebas_workspace\LCD_I2C\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "LCD_I2C.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\corre\OneDrive\Escritorio\tps lucas\TPF_TDSE\tdse-tpf_2-10\Pruebas_workspace\LCD_I2C\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="LCD_I2C.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

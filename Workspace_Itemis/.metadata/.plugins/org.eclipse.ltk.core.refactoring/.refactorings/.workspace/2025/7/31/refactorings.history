@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;statechart_display/Statechart.ysc&apos;" deleteContents="false" description="Delete resource &apos;statechart_display/Statechart.ysc&apos;" element1="/statechart_display/Statechart.ysc" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1753901410009"/>&#x0A;<refactoring comment="Delete resource &apos;statechart_display&apos;" deleteContents="false" description="Delete resource &apos;statechart_display&apos;" element1="/statechart_display" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1753901558359"/>
+</session>

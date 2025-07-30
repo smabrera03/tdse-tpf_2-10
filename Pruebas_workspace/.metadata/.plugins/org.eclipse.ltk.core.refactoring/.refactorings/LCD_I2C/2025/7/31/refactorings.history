@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;LCD_I2C/Core/Src/task_display&apos; to &apos;task_display.c&apos;" description="Rename resource &apos;task_display&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Src/task_display" name="task_display.c" stamp="1753902122372" updateReferences="true"/>
+</session>

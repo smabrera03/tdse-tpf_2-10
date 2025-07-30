@@ -60,8 +60,8 @@ all: main-build
 main-build: pruebaeeprom.elf secondary-outputs
 
 # Tool invocations
-pruebaeeprom.elf pruebaeeprom.map: $(OBJS) $(USER_OBJS) C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\pruebaeeprom\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "pruebaeeprom.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\pruebaeeprom\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="pruebaeeprom.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+pruebaeeprom.elf pruebaeeprom.map: $(OBJS) $(USER_OBJS) C:\Users\corre\OneDrive\Escritorio\tps\ lucas\TPF_TDSE\tdse-tpf_2-10\Pruebas_workspace\pruebaeeprom\STM32F103RBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "pruebaeeprom.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"C:\Users\corre\OneDrive\Escritorio\tps lucas\TPF_TDSE\tdse-tpf_2-10\Pruebas_workspace\pruebaeeprom\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="pruebaeeprom.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
