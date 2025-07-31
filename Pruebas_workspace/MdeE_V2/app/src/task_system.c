@@ -39,6 +39,8 @@
 /* Project includes */
 #include <task_led_attribute.h>
 #include <task_led_interface.h>
+#include <task_display_attribute.h>
+#include <task_display_interface.h>
 #include "main.h"
 
 /* Demo includes */
@@ -232,7 +234,7 @@ void task_system_statechart(void)
 					}else{
 						p_task_system_dta->jugador_envido = J2;
 					}
-					//mostrar la selección en el display. Algo del tipo "->E	RE	FE"
+					put_event_task_display(EV_DIS_BTN_ENV, ID_DISPLAY, 0, 0);
 				}
 			}
 			break;
@@ -278,6 +280,7 @@ void task_system_statechart(void)
 				uint8_t indice = p_task_system_dta->indice; //leo el campo en una variable locar para más comodidad
 				p_task_system_dta->envido_pila[indice] = p_task_system_dta->envido_pila[indice]%3 + 1; //barro los posbles envidos
 				//TODO: enviar señal al display para que muestre el envido seleccionado
+				put_event_task_display(EV_DIS_BTN_ENV, ID_DISPLAY, 0, 0);
 			}
 
 			if(evento == EV_SYS_BTN_Q){
@@ -285,6 +288,7 @@ void task_system_statechart(void)
 				p_task_system_dta->state = ST_SYS_ENVIDO_PENDIENTE;
 				put_event_task_led(EV_LED_BLINK, ID_LED_AMARILLA);
 				//TODO: enviar señal al display para que muestre los puntos
+				put_event_task_display(EV_DIS_MOSTRAR_PUNTOS, ID_DISPLAY, p_task_system_dta->puntosJ1, p_task_system_dta->puntosJ2);
 			}
 			break;
 
@@ -312,7 +316,9 @@ void task_system_statechart(void)
 				p_task_system_dta->jugador_envido = !p_task_system_dta->jugador_envido;
 				p_task_system_dta->envido_pila[p_task_system_dta->indice] = E;
 				p_task_system_dta->state = ST_SYS_SELECCIONAR_ENVIDO;
+
 				put_event_task_led(EV_LED_OFF, ID_LED_AMARILLA);
+				put_event_task_display(EV_DIS_BTN_ENV, ID_DISPLAY, p_task_system_dta->puntosJ1, p_task_system_dta->puntosJ2);
 			}
 			break;
 
@@ -464,6 +470,8 @@ static void finalizar_ronda(task_system_dta_t *p_task_system_dta){
 	for(int i = 0; i < MAX_ENV; i++){
 		p_task_system_dta->envido_pila[i] = NO_SE_CANTO;
 	}
+
+	put_event_task_display(EV_DIS_MOSTRAR_PUNTOS, ID_DISPLAY, p_task_system_dta->puntosJ1, p_task_system_dta->puntosJ2);
 }
 
 //leer envido.txt para entender esta función

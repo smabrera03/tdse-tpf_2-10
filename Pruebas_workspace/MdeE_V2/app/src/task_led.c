@@ -53,7 +53,7 @@
 #define G_TASK_LED_CNT_INIT			0ul
 #define G_TASK_LED_TICK_CNT_INI		0ul
 
-#define DEL_LED_XX_PUL				500ul
+#define DEL_LED_XX_PUL				1000ul
 #define DEL_LED_XX_BLI				500ul
 #define DEL_LED_XX_MIN				0ul
 

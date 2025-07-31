@@ -1,0 +1,4 @@
+1) importar los archivos del actuator y renombrar todo
+2)hcaer la interfaz
+3)configurar los pines del i2c
+4)hacer la máquina de estados

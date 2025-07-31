@@ -18,8 +18,8 @@ TRU)PB15 (26, enfrente a D6)
 ENV)PB1 (24, enfrente a D7)
 
 Display:
-PB8>>SCL (D6)
-PB9>>SDA (El que está en frente a D10 en el CN10)
+PB8>>SCL (D15)
+PB9>>SDA (D14)
 
 LEDS:
 PB11: LED_ROJA
