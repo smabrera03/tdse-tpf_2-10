@@ -6,7 +6,7 @@
         <outgoingTransitions xmi:id="_pybp8GcIEfCsrKmT1QZ03w" specification="EV_BTN_TRU/ pTru++;&#xD;&#xA;raise EV_LED_A_ON" target="_nwx7QGcIEfCsrKmT1QZ03w"/>
         <outgoingTransitions xmi:id="_8L4x4GcmEfCsrKmT1QZ03w" specification="# mazo > " target="_1F7b0GcmEfCsrKmT1QZ03w"/>
         <outgoingTransitions xmi:id="_9VisIGcnEfCsrKmT1QZ03w" specification="# final_ronda >" target="_1F7b0GcmEfCsrKmT1QZ03w"/>
-        <outgoingTransitions xmi:id="_pAeNAGfCEfCkaJsO--7iyA" specification="EV_BTN_ENV [nCartas&lt;2 &amp;&amp; pEnv == 0]&#xD;&#xA;//la segunda guarda es para que no se cante&#xD;&#xA;//envido 2 veces seguidas" target="_mxiQQGfCEfCkaJsO--7iyA"/>
+        <outgoingTransitions xmi:id="_pAeNAGfCEfCkaJsO--7iyA" specification="EV_BTN_ENV [nCartas&lt;2 &amp;&amp; pEnv == 0]/canto_env = 1&#xD;&#xA;//la segunda guarda es para que no se cante&#xD;&#xA;//envido 2 veces seguidas" target="_mxiQQGfCEfCkaJsO--7iyA"/>
         <regions xmi:id="_GitpUGcHEfCsrKmT1QZ03w">
           <vertices xsi:type="sgraph:Entry" xmi:id="_LOp0AGcHEfCsrKmT1QZ03w" name="" kind="DEEP_HISTORY">
             <outgoingTransitions xmi:id="_0fi70GcnEfCsrKmT1QZ03w" specification="" target="_LOxv0GcHEfCsrKmT1QZ03w"/>
@@ -237,7 +237,7 @@
         </regions>
       </vertices>
       <vertices xsi:type="sgraph:State" xmi:id="_mxiQQGfCEfCkaJsO--7iyA" specification="" name="ST_SELECCIONAR_ENVIDO" incomingTransitions="_pAeNAGfCEfCkaJsO--7iyA _DgZWgGfFEfCkaJsO--7iyA _D-7wgG4DEfCBzMFUHuiAfg">
-        <outgoingTransitions xmi:id="_1YNT0GfEEfCkaJsO--7iyA" specification="/raise EV_LED_A_ON" target="_wzVacGfEEfCkaJsO--7iyA"/>
+        <outgoingTransitions xmi:id="_1YNT0GfEEfCkaJsO--7iyA" specification="EV_BTN_Q/raise EV_LED_A_ON" target="_wzVacGfEEfCkaJsO--7iyA"/>
         <outgoingTransitions xmi:id="_D-7wgG4DEfCBzMFUHuiAfg" specification="EV_BTN_ENV/ canto_env%3 + 1" target="_mxiQQGfCEfCkaJsO--7iyA"/>
         <regions xmi:id="_U6nOgG4DEfCBzMFUHuiAfg">
           <vertices xsi:type="sgraph:Entry" xmi:id="_VNg8YG4DEfCBzMFUHuiAfg">
@@ -487,7 +487,7 @@
     <edges xmi:id="_1YOh8GfEEfCkaJsO--7iyA" type="Transition" element="_1YNT0GfEEfCkaJsO--7iyA" source="_mxl6oGfCEfCkaJsO--7iyA" target="_wzX2sGfEEfCkaJsO--7iyA">
       <children xsi:type="notation:DecorationNode" xmi:id="_1YOh9GfEEfCkaJsO--7iyA" type="TransitionExpression">
         <styles xsi:type="notation:ShapeStyle" xmi:id="_1YOh9WfEEfCkaJsO--7iyA"/>
-        <layoutConstraint xsi:type="notation:Location" xmi:id="_1YOh9mfEEfCkaJsO--7iyA" x="54" y="26"/>
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_1YOh9mfEEfCkaJsO--7iyA" x="-18" y="25"/>
       </children>
       <styles xsi:type="notation:ConnectorStyle" xmi:id="_1YOh8WfEEfCkaJsO--7iyA" routing="Rectilinear" lineColor="4210752"/>
       <styles xsi:type="notation:FontStyle" xmi:id="_1YOh82fEEfCkaJsO--7iyA" fontName="Verdana"/>

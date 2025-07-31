@@ -125,6 +125,7 @@ typedef enum jugador_enum {J1, J2, NINGUNO} jugador_enum_t; //enum que identific
 
 //¿No lo usamos???
 typedef enum envido {NO_SE_CANTO, E, RE, FE} envido_t;
+#define MAX_ENV 4 //no se puede cantar envido más de 4 veces. El caso extremo es E, E, RE, FE
 
 typedef enum palo {ESPADA, BASTO, COPA, ORO, PALO_ERR} palo_t;
 
@@ -161,11 +162,9 @@ typedef struct
 	uint8_t 			puntos_TRU; //puntos del truco en juego
 
 	jugador_enum_t		jugador_envido; //idem jugador_truco
-	uint8_t				puntos_ENV; //puntos del envido en juego
-	uint8_t				puntos_ENV_NQ; //puntos que se ganan en caso de que el otro jugador diga no quiero
-	bool 				fe_cantado; //Flag del falta envido
 
-	//otra versión del envido
+	envido_t 			envido_pila[MAX_ENV];
+	uint8_t				indice; //indica cuál es el último elemento de la pila
 
 } task_system_dta_t;
 
@@ -181,24 +180,3 @@ extern task_system_dta_t task_system_dta;
 #endif /* TASK_INC_TASK_SYSTEM_ATTRIBUTE_H_ */
 
 /********************** end of file ******************************************/
-
-/*PSEUDO CODIGO ENVIDO
- * typedef enum envido {NO_SE_CANTO, E, RE, FE}
- *
- * envido_pila	envido_t [4]
- * uint8_t index  0 -->último elemento de la pila
- * 3 estados: sleeccionar envido, rta pendiente y definir ganador
- * ST == SE:
- * 		ev == BTN_ENV:
- * 			envido_pila[index] = envido_pila[index]%3 + 1, esto es barro por los valores posibles excluyendo el NSC
- * 			no hay cambio de estado
- * 		ev == BTN_Q:
- * 			if(index < 4) index++
- * 			cambio a RTA_PEND
- * 	ST == RTA_PEND:
- * 		ev == BTN_Q --> cambio a definir ganador
- * 		ev == BTN_NQ --> sumo los puntos al que cantó
- * 		ev == BTN_ENV --> if(envido_pila[index] < FE) cambio de estado a SELEC_E
- *
- *
- */

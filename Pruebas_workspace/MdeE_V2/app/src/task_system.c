@@ -64,7 +64,7 @@ task_system_dta_t task_system_dta =
 {DEL_SYS_MIN, false, EV_SYS_CARTA_NUEVA, ST_SYS_RONDA, ST_SYS_M1, ST_SYS_TJ1, 0, J1, 0, 0,
 			{{0, ESPADA, 0}, {0, ESPADA, 0}, {0, ESPADA, 0}}, //3 cartas iniciales de J1
 			{{0, ESPADA, 0},{0, ESPADA, 0}, {0, ESPADA, 0}}, //3 cartas iniciales de J2
-			0, 0, NINGUNO, 1, NINGUNO, 0, 0,false};
+			0, 0, NINGUNO, 1, NINGUNO, {NO_SE_CANTO, NO_SE_CANTO, NO_SE_CANTO, NO_SE_CANTO} , 0};
 
 #define SYSTEM_DTA_QTY	(sizeof(task_system_dta)/sizeof(task_system_dta_t))
 
@@ -73,6 +73,8 @@ void task_system_statechart(void);
 static void Maquina_de_estados_ronda(task_system_dta_t *p_task_system_dta);
 static void finalizar_ronda(task_system_dta_t *p_task_system_dta);
 static uint8_t calcularFE(uint8_t puntosJ1,uint8_t puntosJ2,jugador_enum_t ganador);
+static uint8_t calcular_envido_NQ(void);
+static uint8_t calcular_envido_Q(jugador_enum_t ganador);
 /********************** internal data definition *****************************/
 const char *p_task_system 		= "Task System (System Statechart)";
 const char *p_task_system_ 		= "Non-Blocking & Update By Time Code";
@@ -221,8 +223,9 @@ void task_system_statechart(void)
 			if((evento == EV_SYS_BTN_ENV) && (flag == true)){
 				p_task_system_dta->flag = false;
 
-				if(p_task_system_dta->nCartas < 2 && p_task_system_dta->puntos_ENV == 0){
-					p_task_system_dta->state = ST_SYS_E;
+				if((p_task_system_dta->nCartas < 2) && (p_task_system_dta->envido_pila[0] == NO_SE_CANTO)){
+					p_task_system_dta->state = ST_SYS_SELECCIONAR_ENVIDO;
+					p_task_system_dta->envido_pila[p_task_system_dta->indice] = E;
 
 					if(p_task_system_dta->turno == ST_SYS_TJ1){
 						p_task_system_dta->jugador_envido = J1;
@@ -264,48 +267,20 @@ void task_system_statechart(void)
 			}
 			break;
 
-		case ST_SYS_E:
+		case ST_SYS_SELECCIONAR_ENVIDO:
 			if(p_task_system_dta->flag == false)break;
 			p_task_system_dta->flag = false;
 
 			if(evento == EV_SYS_BTN_ENV){
-				p_task_system_dta->state = ST_SYS_RE;
-				//en el display "E    ->RE    FE"
-			}
-			if(evento == EV_SYS_BTN_Q){
-				p_task_system_dta->puntos_ENV_NQ = p_task_system_dta->puntos_ENV;
-				p_task_system_dta->puntos_ENV += 2;
-				p_task_system_dta->state = ST_SYS_ENVIDO_PENDIENTE;
-			}
-			break;
-
-		case ST_SYS_RE:
-			if(p_task_system_dta->flag == false)break;
-			p_task_system_dta->flag = false;
-
-			if(evento == EV_SYS_BTN_ENV){
-				p_task_system_dta->state = ST_SYS_FE;
+				uint8_t indice = p_task_system_dta->indice; //leo el campo en una variable locar para más comodidad
+				p_task_system_dta->envido_pila[indice] = p_task_system_dta->envido_pila[indice]%3 + 1; //barro los posbles envidos
+				//TODO: enviar señal al display para que muestre el envido seleccionado
 			}
 
 			if(evento == EV_SYS_BTN_Q){
-				p_task_system_dta->puntos_ENV_NQ = p_task_system_dta->puntos_ENV;
-				p_task_system_dta->puntos_ENV += 3;
+				p_task_system_dta->indice++;
 				p_task_system_dta->state = ST_SYS_ENVIDO_PENDIENTE;
-			}
-			break;
-		case ST_SYS_FE: //Tengo que poder simplificar los estados ST_SYS_E, ST_SYS_RE y ST_SYS_FE
-			if(p_task_system_dta->flag == false)break;
-			p_task_system_dta->flag = false;
-
-			if(evento == EV_SYS_BTN_ENV){
-				p_task_system_dta->state = ST_SYS_E;
-			}
-
-			if(evento == EV_SYS_BTN_Q){
-				p_task_system_dta->puntos_ENV_NQ = p_task_system_dta->puntos_ENV;
-				p_task_system_dta->fe_cantado=true;
-				p_task_system_dta->state = ST_SYS_ENVIDO_PENDIENTE;
-
+				//TODO: enviar señal al display para que muestre los puntos
 			}
 			break;
 
@@ -318,45 +293,38 @@ void task_system_statechart(void)
 			}
 
 			if(evento == EV_SYS_BTN_NQ){
-				if(p_task_system_dta->puntos_ENV_NQ == 0){
-					p_task_system_dta->puntos_ENV_NQ = 1;
-				}
+				uint8_t puntos_a_sumar = calcular_envido_NQ();
 				if(p_task_system_dta->jugador_envido == J1){
-					p_task_system_dta->puntosJ1 += p_task_system_dta->puntos_ENV_NQ;
+					p_task_system_dta->puntosJ1 += puntos_a_sumar;
 				}else{
-					p_task_system_dta->puntosJ2 += p_task_system_dta->puntos_ENV_NQ;
+					p_task_system_dta->puntosJ2 += puntos_a_sumar;
 				}
 				p_task_system_dta->state = ST_SYS_RONDA;
 			}
 
-			if(evento == EV_SYS_BTN_ENV){
+			if((evento == EV_SYS_BTN_ENV) && (p_task_system_dta->envido_pila[p_task_system_dta->indice - 1] != FE)){ //la segunda guarda está para que no se siga cantando envido después de un falta envido
 				p_task_system_dta->jugador_envido = !p_task_system_dta->jugador_envido;
-				p_task_system_dta->state = ST_SYS_E;
+				p_task_system_dta->state = ST_SYS_SELECCIONAR_ENVIDO;
+				p_task_system_dta->envido_pila[p_task_system_dta->indice] = E;
 			}
 			break;
+
 		case ST_SYS_DEFINIR_GANADOR:
+
 			if(p_task_system_dta->flag == false)break;
 			p_task_system_dta->flag = false;
 
 			if(evento == EV_SYS_BTN_Q){//ganó J1
-				if(p_task_system_dta->fe_cantado){
-					p_task_system_dta->puntos_ENV = calcularFE(p_task_system_dta->puntosJ1,p_task_system_dta->puntosJ2,J1);
-				}
-
-				p_task_system_dta->puntosJ1 += p_task_system_dta->puntos_ENV;
-				p_task_system_dta->state = ST_SYS_RONDA;
-				p_task_system_dta->fe_cantado=false;
+				uint8_t puntos_a_sumar = calcular_envido_Q(J1);
+				p_task_system_dta->puntosJ1 += puntos_a_sumar;
 			}
 
-			if(evento == EV_SYS_BTN_NQ){//ganó J2
-				if(p_task_system_dta->fe_cantado){
-					p_task_system_dta->puntos_ENV = calcularFE(p_task_system_dta->puntosJ1,p_task_system_dta->puntosJ2,J2);
-				}
-
-				p_task_system_dta->puntosJ2 += p_task_system_dta->puntos_ENV;
-				p_task_system_dta->state = ST_SYS_RONDA;
-				p_task_system_dta->fe_cantado=false;
+			if(evento == EV_SYS_BTN_NQ){//gano J2
+				uint8_t puntos_a_sumar = calcular_envido_Q(J2);
+				p_task_system_dta->puntosJ2 += puntos_a_sumar;
 			}
+
+			p_task_system_dta->state = ST_SYS_RONDA;
 			break;
 
 
@@ -484,9 +452,79 @@ static void finalizar_ronda(task_system_dta_t *p_task_system_dta){
 	p_task_system_dta->puntos_TRU = 1;
 
 	p_task_system_dta->jugador_envido = NINGUNO;
-	p_task_system_dta->puntos_ENV = 0;
-	p_task_system_dta->puntos_ENV_NQ = 0;
+
+	p_task_system_dta->indice = 0;
+	for(int i = 0; i < MAX_ENV; i++){
+		p_task_system_dta->envido_pila[i] = NO_SE_CANTO;
+	}
 }
+
+//leer envido.txt para entender esta función
+static uint8_t calcular_envido_NQ(){
+	task_system_dta_t *p_task_system_dta = &task_system_dta;
+	envido_t *envido_pila = p_task_system_dta->envido_pila;
+	uint8_t largo = p_task_system_dta->indice; //el indice del último elemento también es el largo de la cadena
+	uint8_t puntos_a_sumar = 0;
+
+	switch(largo){
+		case 1:
+
+			puntos_a_sumar++;
+			return puntos_a_sumar;
+
+		case 2:
+
+			if(envido_pila[0] == E){
+				puntos_a_sumar = 2;
+				return puntos_a_sumar;
+			}else{
+				puntos_a_sumar = 3;
+				return puntos_a_sumar;
+			}
+
+		case 3:
+
+			if(envido_pila[1] == E){
+				puntos_a_sumar = 4;
+				return puntos_a_sumar;
+			}else{
+				puntos_a_sumar = 5;
+				return puntos_a_sumar;
+			}
+
+		case 4:
+
+			puntos_a_sumar = 7;
+			return puntos_a_sumar;
+
+		default:
+			return 0;
+	}
+}
+
+static uint8_t calcular_envido_Q(jugador_enum_t ganador){
+	task_system_dta_t *p_task_system_dta = &task_system_dta;
+	envido_t *envido_pila = p_task_system_dta->envido_pila;
+	uint8_t indice = p_task_system_dta->indice;
+
+	uint8_t puntos_a_sumar = 0;
+	if(envido_pila[indice - 1] == FE){ //se jugó un falta envido
+		puntos_a_sumar = calcularFE(p_task_system_dta->puntosJ1, p_task_system_dta->puntosJ2, ganador);
+		return puntos_a_sumar;
+	}
+
+	for(int i = 0; i < MAX_ENV; i++){
+		if(envido_pila[i] == E){
+			puntos_a_sumar += 2;
+		}else if(envido_pila[i] == RE){
+			puntos_a_sumar += 3;
+		}else{
+			continue;
+		}
+	}
+	return puntos_a_sumar;
+}
+
 static uint8_t calcularFE(uint8_t puntosJ1,uint8_t puntosJ2,jugador_enum_t ganador){
 
 	if(ganador == J1){
