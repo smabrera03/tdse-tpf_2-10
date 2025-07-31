@@ -72,6 +72,10 @@ void Error_Handler(void);
 #define BTN_ENV_GPIO_Port GPIOB
 #define R2_Pin GPIO_PIN_10
 #define R2_GPIO_Port GPIOB
+#define LED_ROJA_Pin GPIO_PIN_11
+#define LED_ROJA_GPIO_Port GPIOB
+#define LED_AMARILLA_Pin GPIO_PIN_12
+#define LED_AMARILLA_GPIO_Port GPIOB
 #define BTN_Q_Pin GPIO_PIN_13
 #define BTN_Q_GPIO_Port GPIOB
 #define BTN_NQ_Pin GPIO_PIN_14
@@ -84,6 +88,8 @@ void Error_Handler(void);
 #define R3_GPIO_Port GPIOA
 #define C0_Pin GPIO_PIN_9
 #define C0_GPIO_Port GPIOA
+#define LED_VERDE_Pin GPIO_PIN_11
+#define LED_VERDE_GPIO_Port GPIOA
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
