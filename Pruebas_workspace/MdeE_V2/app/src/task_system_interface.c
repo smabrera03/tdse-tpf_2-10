@@ -64,6 +64,7 @@ struct
 	uint32_t	tail;
 	uint32_t	count;
 	task_system_ev_t	queue[MAX_EVENTS];
+	carta_t 	carta_buffer;
 } queue_task_a;
 
 /********************** external data declaration ****************************/
@@ -79,6 +80,11 @@ void init_queue_event_task_system(void)
 
 	for (i = 0; i < MAX_EVENTS; i++)
 		queue_task_a.queue[i] = EVENT_UNDEFINED;
+
+	queue_task_a.carta_buffer.valor = 0;
+	queue_task_a.carta_buffer.palo = PALO_ERR;
+	queue_task_a.carta_buffer.prioridad = 0;
+
 }
 
 void put_event_task_system(task_system_ev_t event)
@@ -110,62 +116,62 @@ bool any_event_task_system(void)
 }
 
 
-carta_t ultima_carta = {0};
 
 void put_Carta(palo_t palo, uint8_t valor){
-	ultima_carta.palo = palo;
-	ultima_carta.valor = valor;
+	carta_t *p_carta = &queue_task_a.carta_buffer;
+	p_carta->palo = palo;
+	p_carta->valor = valor;
 	switch(valor){
 		case 1:
 			if(palo == COPA || palo == ORO){
-				ultima_carta.prioridad = 7;
+				p_carta->prioridad = 7;
 			}else if(palo == BASTO){
-				ultima_carta.prioridad = 12;
+				p_carta->prioridad = 12;
 			}else{
-				ultima_carta.prioridad = 13;
+				p_carta->prioridad = 13;
 			}
 			break;
 		case 2:
-			ultima_carta.prioridad = 8;
+			p_carta->prioridad = 8;
 			break;
 		case 3:
-			ultima_carta.prioridad = 9;
+			p_carta->prioridad = 9;
 			break;
 		case 4:
-			ultima_carta.prioridad = 0;
+			p_carta->prioridad = 0;
 			break;
 		case 5:
-			ultima_carta.prioridad = 1;
+			p_carta->prioridad = 1;
 			break;
 		case 6:
-			ultima_carta.prioridad = 2;
+			p_carta->prioridad = 2;
 			break;
 		case 7:
 			if(palo == BASTO || palo == COPA){
-				ultima_carta.prioridad = 3;
+				p_carta->prioridad = 3;
 			}else if(palo == ORO){
-				ultima_carta.prioridad = 10;
+				p_carta->prioridad = 10;
 			}else{
-				ultima_carta.prioridad = 11;
+				p_carta->prioridad = 11;
 			}
 			break;
 		case 10:
-			ultima_carta.prioridad = 4;
+			p_carta->prioridad = 4;
 			break;
 		case 11:
-			ultima_carta.prioridad = 5;
+			p_carta->prioridad = 5;
 			break;
 		case 12:
-			ultima_carta.prioridad = 6;
+			p_carta->prioridad = 6;
 			break;
 	}
 	//NOTA: ver task_system.txt para entender las prioridades
 }
 
 void get_Carta(carta_t *carta_addrs){
-	carta_addrs->palo = ultima_carta.palo;
-	carta_addrs->valor = ultima_carta.valor;
-	carta_addrs->prioridad = ultima_carta.prioridad;
+	carta_addrs->palo = queue_task_a.carta_buffer.palo;
+	carta_addrs->valor = queue_task_a.carta_buffer.valor;
+	carta_addrs->prioridad = queue_task_a.carta_buffer.prioridad;
 }
 
 /********************** end of file ******************************************/

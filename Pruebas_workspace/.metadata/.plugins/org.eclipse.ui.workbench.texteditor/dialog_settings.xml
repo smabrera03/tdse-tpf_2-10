@@ -1,37 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="FE"/>
+		<item key="selection" value="g_task_boton_tick_cnt"/>
 		<item key="wrap" value="true"/>
-		<item key="casesensitive" value="false"/>
+		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="FE"/>
-			<item value="period"/>
-			<item value="htim2"/>
-			<item value="ti"/>
-			<item value="tim"/>
-			<item value="%"/>
-			<item value="p_task_system_dta-&gt;jugador_truco = (p_task_system_dta-&gt;jugador_truco%2) + 1;"/>
-			<item value="if(turno =="/>
-			<item value="if(turn"/>
-			<item value="put_event"/>
-			<item value="-&gt;tick"/>
-			<item value="tick"/>
-			<item value="write"/>
-			<item value="g_task_system_tick_cnt"/>
-			<item value="task_system_tick_cnt"/>
+			<item value="g_task_boton_tick_cnt"/>
+			<item value="g_task_keypad_cnt"/>
+			<item value="g_boton_cnt"/>
+			<item value="g_task_boton_cnt"/>
+			<item value=" "/>
+			<item value="g_task_boton_tick_gnt"/>
+			<item value="g_task_boton_ tick_cnt"/>
+			<item value="g_task_boton_ ttick_cnt"/>
+			<item value="g_task_keypad_tick_cnt"/>
+			<item value="row_ev"/>
+			<item value="row_event"/>
+			<item value="state"/>
+			<item value="event"/>
+			<item value="boton"/>
+			<item value="EV_BTN_XX_UP"/>
 		</list>
 		<list key="replacehistory">
+			<item value="row_state"/>
+			<item value="row_event"/>
+			<item value="keypad"/>
+			<item value="EV_ROW_UP"/>
+			<item value="G_TASK_KEY_TICK_CNT_INI"/>
+			<item value="G_TASK_KEY_CNT_INIT"/>
+			<item value="Keypad"/>
+			<item value="KEYPAD"/>
+			<item value="g_task_boton_tick_cnt"/>
+			<item value="boton"/>
+			<item value="G_TASK_BTN_TICK_CNT_INI"/>
+			<item value="G_TASK_BTN_CNT_INIT"/>
+			<item value="Boton"/>
+			<item value="BOTON"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="906"/>
-		<item key="DIALOG_Y_ORIGIN" value="323"/>
-		<item key="DIALOG_WIDTH" value="414"/>
-		<item key="DIALOG_HEIGHT" value="454"/>
-		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-15|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+		<item key="DIALOG_X_ORIGIN" value="968"/>
+		<item key="DIALOG_Y_ORIGIN" value="127"/>
+		<item key="DIALOG_WIDTH" value="322"/>
+		<item key="DIALOG_HEIGHT" value="253"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
 	</section>
 </section>

@@ -86,23 +86,45 @@ extern "C" {
  */
 
 /* Events to excite Task System */
-typedef enum task_system_ev {EV_SYS_BTN_Q, EV_SYS_BTN_NQ, EV_SYS_BTN_TRU, EV_SYS_BTN_ENV, EV_SYS_CARTA_ERR, EV_SYS_CARTA_NUEVA,
-							 EV_SYS_IDLE,
-							 EV_SYS_LOOP_DET,
-							 EV_SYS_NOT_LOOP_DET,
-							 EV_SYS_MANUAL_BTN,
-							 EV_SYS_NOT_MANUAL_BTN,
-							 EV_SYS_IR_PHO_CELL,
-							 EV_SYS_NOT_IR_PHO_CELL} task_system_ev_t;
+typedef enum task_system_ev {EV_SYS_CARTA_NUEVA,
+	EV_SYS_CARTA_ERR,
+	EV_SYS_BTN_TRU,
+	EV_SYS_BTN_ENV,
+	EV_SYS_BTN_Q, //botón quiero
+	EV_SYS_BTN_NQ //botón no quiero
+} task_system_ev_t;
 
 /* State of Task System */
-typedef enum task_system_st {ST_SYS_IDLE,
-							 ST_SYS_ACTIVE_01,
-							 ST_SYS_ACTIVE_02,
-							 ST_SYS_ACTIVE_03,
-							 ST_SYS_ACTIVE_04,
-							 ST_SYS_ACTIVE_05,
-							 ST_SYS_ACTIVE_06} task_system_st_t;
+
+typedef enum task_system_st {ST_SYS_RONDA,
+	ST_SYS_TRUCO_PENDIENTE,
+
+
+	ST_SYS_SELECCIONAR_ENVIDO,
+	//dentro de SELECCIONAR_ENVIDO existen los siguientes subestados:
+	ST_SYS_E,//envido
+	ST_SYS_RE,//real envido
+	ST_SYS_FE,//falta envido
+
+	ST_SYS_ENVIDO_PENDIENTE,
+	//dentro de ENVIDO_PENDIENTE existen los siguientes subestados:
+	ST_SYS_RTA_PENDIENTE,
+	ST_SYS_DEFINIR_GANADOR
+} task_system_st_t;
+
+typedef enum turno {ST_SYS_TJ1, ST_SYS_TJ2} turno_t;
+//si bien estos 2 valores son un estado, los defino a parte porque me va a permitir actualizarlos más fácil
+//p_task_system_dta->turno != p_task_system_dta->turno -->esto significa pasar al siguiente turno
+
+typedef enum mano {ST_SYS_M1, ST_SYS_M2, ST_SYS_M3} mano_t;
+//idem turno_t. definir la mano a parte me va a permitir acceder a las cartas más facilmente. cartas_J1[ST_STS_M1] es la primer carta de J1. cartas_J2[ST_SYS_M3] es la tercer carta de J2 y así
+
+typedef enum jugador_enum {J1, J2, NINGUNO} jugador_enum_t; //enum que identifica a los jugadores
+//así si quiero alternar entre jugadores puedo hacer jugador = !(jugador)
+//si bien parece que representa lo mismo que turno_t, son conceptos distintos. Tener ambos tipos hace al código redundante, pero más legible
+
+//¿No lo usamos???
+typedef enum envido {NO_SE_CANTO, E, RE, FE} envido_t;
 
 typedef enum palo {ESPADA, BASTO, COPA, ORO, PALO_ERR} palo_t;
 
@@ -116,13 +138,39 @@ typedef struct{
 typedef struct
 {
 	uint32_t			tick;
-	task_system_st_t	state;
+	bool				flag; //flag para saber si hay un evento nuevo
+
 	task_system_ev_t	event;
-	bool				flag;
+	task_system_st_t	state;
+	mano_t				mano; //mano actual
+	turno_t				turno; //a parte del estado actualmente activo, debo guardar la mano y el turno dentro de RONDA para saber a qué estado regresar
+	//tal vez el turno tenga más sentido como una variable del tipo jugador_enum_t? Más fácil de actualizar?
+	uint8_t 			nCartas;
+	jugador_enum_t		jugador_mano; //jugador que es mano
+
+	uint8_t				puntosJ1;
+	uint8_t				puntosJ2;
+
+	carta_t				cartasJ1[3];
+	carta_t				cartasJ2[3];
+
+	int8_t				manos_ganadasJ1;
+	int8_t				manos_ganadasJ2;
+
+	jugador_enum_t		jugador_truco; //jugaodr que cantó el truco. No sé si vamos a usar esta variable al final, pero en el itemis la pusimos. Por las dudas la dejo y de última se borra
+	uint8_t 			puntos_TRU; //puntos del truco en juego
+
+	jugador_enum_t		jugador_envido; //idem jugador_truco
+	uint8_t				puntos_ENV; //puntos del envido en juego
+	uint8_t				puntos_ENV_NQ; //puntos que se ganan en caso de que el otro jugador diga no quiero
+	bool 				fe_cantado; //Flag del falta envido
+
+	//otra versión del envido
+
 } task_system_dta_t;
 
 /********************** external data declaration ****************************/
-
+extern task_system_dta_t task_system_dta;
 /********************** external functions declaration ***********************/
 
 /********************** End of CPP guard *************************************/
@@ -133,3 +181,24 @@ typedef struct
 #endif /* TASK_INC_TASK_SYSTEM_ATTRIBUTE_H_ */
 
 /********************** end of file ******************************************/
+
+/*PSEUDO CODIGO ENVIDO
+ * typedef enum envido {NO_SE_CANTO, E, RE, FE}
+ *
+ * envido_pila	envido_t [4]
+ * uint8_t index  0 -->último elemento de la pila
+ * 3 estados: sleeccionar envido, rta pendiente y definir ganador
+ * ST == SE:
+ * 		ev == BTN_ENV:
+ * 			envido_pila[index] = envido_pila[index]%3 + 1, esto es barro por los valores posibles excluyendo el NSC
+ * 			no hay cambio de estado
+ * 		ev == BTN_Q:
+ * 			if(index < 4) index++
+ * 			cambio a RTA_PEND
+ * 	ST == RTA_PEND:
+ * 		ev == BTN_Q --> cambio a definir ganador
+ * 		ev == BTN_NQ --> sumo los puntos al que cantó
+ * 		ev == BTN_ENV --> if(envido_pila[index] < FE) cambio de estado a SELEC_E
+ *
+ *
+ */
