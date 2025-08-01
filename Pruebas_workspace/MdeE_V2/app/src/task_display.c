@@ -157,9 +157,9 @@ void task_display_update(void *parameters)
 		g_task_display_cnt++;
 
 		/* Run Task Statechart */
-		task_display_print_char();
-    	task_display_statechart();
 
+    	task_display_statechart();
+    	task_display_print_char();
     	/* Protect shared resource */
 		//__asm("CPSID i");	/* disable interrupts */
 		//if (G_TASK_DIS_TICK_CNT_INI < g_task_display_tick_cnt)

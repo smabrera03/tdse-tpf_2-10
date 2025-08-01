@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="I2C_LCD_Cfg"/>
+		<item key="selection" value="EEPROM_I2C"/>
 		<item key="wrap" value="true"/>
-		<item key="casesensitive" value="true"/>
+		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="EEPROM_I2C"/>
+			<item value="hi2c1"/>
+			<item value="caractér"/>
+			<item value="//"/>
+			<item value="I2C_LCD"/>
+			<item value="HAL_I2C_Master_Transmit"/>
+			<item value="non-blocking"/>
+			<item value="blocking"/>
+			<item value="string"/>
+			<item value="write"/>
+			<item value="str"/>
 			<item value="I2C_LCD_Cfg"/>
 			<item value="g_task_led_tick_cnt"/>
 			<item value="actuator"/>
 			<item value="G_TASK_ACT_TICK_CNT_INI"/>
-			<item value="G_TASK_ACT_CNT_INIT"/>
-			<item value="ACTUATOR"/>
-			<item value="TODO"/>
-			<item value="XX"/>
-			<item value="&#x09;const task_led_cfg_t *p_task_led_cfg;"/>
-			<item value="&#x09;LOGGER_INFO(&quot; &quot;);"/>
-			<item value="g_task_actuator_tick_cnt"/>
-			<item value="Actuator"/>
-			<item value="fe_cantado"/>
-			<item value="puntos_ENV_NQ"/>
-			<item value="puntos_ENV"/>
 		</list>
 		<list key="replacehistory">
+			<item value=""/>
 			<item value="display"/>
 			<item value="G_TASK_DIS_TICK_CNT_INI"/>
 			<item value="G_TASK_DIS_CNT_INIT"/>
@@ -39,12 +40,11 @@
 			<item value="row_event"/>
 			<item value="keypad"/>
 			<item value="EV_ROW_UP"/>
-			<item value="G_TASK_KEY_TICK_CNT_INI"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="990"/>
-		<item key="DIALOG_Y_ORIGIN" value="381"/>
+		<item key="DIALOG_X_ORIGIN" value="981"/>
+		<item key="DIALOG_Y_ORIGIN" value="376"/>
 		<item key="DIALOG_WIDTH" value="322"/>
 		<item key="DIALOG_HEIGHT" value="345"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>

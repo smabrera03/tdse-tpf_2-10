@@ -41,7 +41,11 @@
 #include <task_led_interface.h>
 #include <task_display_attribute.h>
 #include <task_display_interface.h>
+#include "EEPROM.h"
 #include "main.h"
+
+//comentar y descomentar según haga falta
+#define EEPROM
 
 /* Demo includes */
 #include "logger.h"
@@ -122,6 +126,11 @@ void task_system_init(void *parameters)
 				 GET_NAME(state), (uint32_t)state,
 				 GET_NAME(event), (uint32_t)event,
 				 GET_NAME(b_event), (b_event ? "true" : "false"));
+#ifdef EEPROM
+	EEPROM_Read(0, 0, &p_task_system_dta->puntosJ1, 1);
+	EEPROM_Read(0, 1, &p_task_system_dta->puntosJ2, 1);
+	put_event_task_display(EV_DIS_MOSTRAR_PUNTOS, ID_DISPLAY, p_task_system_dta->puntosJ1, p_task_system_dta->puntosJ2);
+#endif
 }
 
 void task_system_update(void *parameters)
@@ -187,6 +196,17 @@ void task_system_statechart(void)
 				put_event_task_led(EV_LED_PULSE, ID_LED_ROJA);
 			}
 
+#ifdef EEPROM
+			if((evento == EV_SYS_BTN_RST) && (flag == true)){
+				p_task_system_dta->flag = false;
+
+				p_task_system_dta->puntosJ1 = 0;
+				p_task_system_dta->puntosJ2 = 0;
+				EEPROM_Write(0, 0, &p_task_system_dta->puntosJ1, 1);
+				EEPROM_Write(0, 1, &p_task_system_dta->puntosJ2, 1);
+				put_event_task_display(EV_DIS_MOSTRAR_PUNTOS, ID_DISPLAY, p_task_system_dta->puntosJ1, p_task_system_dta->puntosJ2);
+			}
+#endif
 			if((evento == EV_SYS_CARTA_NUEVA) && (flag == true)){
 				p_task_system_dta->flag = false;
 				put_event_task_led(EV_LED_PULSE, ID_LED_VERDE);
@@ -472,6 +492,11 @@ static void finalizar_ronda(task_system_dta_t *p_task_system_dta){
 	}
 
 	put_event_task_display(EV_DIS_MOSTRAR_PUNTOS, ID_DISPLAY, p_task_system_dta->puntosJ1, p_task_system_dta->puntosJ2);
+
+#ifdef EEPROM
+	EEPROM_Write(0, 0, &p_task_system_dta->puntosJ1, 1);
+	EEPROM_Write(0, 1, &p_task_system_dta->puntosJ2, 1);
+#endif
 }
 
 //leer envido.txt para entender esta función

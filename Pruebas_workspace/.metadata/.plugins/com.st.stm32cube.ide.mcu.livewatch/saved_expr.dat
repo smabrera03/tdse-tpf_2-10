@@ -5,3 +5,7 @@ task_dta_list[1].WCET
 task_dta_list[2].WCET
 task_dta_list[3].WCET
 task_dta_list[4].WCET
+g_task_display_tick_cnt
+g_task_led_tick_cnt
+task_system_dta.puntosJ1
+task_system_dta.puntosJ2

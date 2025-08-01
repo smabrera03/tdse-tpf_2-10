@@ -1,10 +1,10 @@
-10:07:42 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+12:24:26 **** Incremental Build of configuration Debug for project MdeE_V2 ****
 make -j4 all 
 arm-none-eabi-size  MdeE_V2.elf 
    text	   data	    bss	    dec	    hex	filename
-  35040	    248	   2520	  37808	   93b0	MdeE_V2.elf
+  38260	    248	   2528	  41036	   a04c	MdeE_V2.elf
 Finished building: default.size.stdout
  
 
-10:07:42 Build Finished. 0 errors, 0 warnings. (took 569ms)
+12:24:27 Build Finished. 0 errors, 0 warnings. (took 645ms)
 

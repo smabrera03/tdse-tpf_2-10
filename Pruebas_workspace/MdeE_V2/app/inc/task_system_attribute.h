@@ -91,7 +91,8 @@ typedef enum task_system_ev {EV_SYS_CARTA_NUEVA,
 	EV_SYS_BTN_TRU,
 	EV_SYS_BTN_ENV,
 	EV_SYS_BTN_Q, //botón quiero
-	EV_SYS_BTN_NQ //botón no quiero
+	EV_SYS_BTN_NQ, //botón no quiero
+	EV_SYS_BTN_RST
 } task_system_ev_t;
 
 /* State of Task System */

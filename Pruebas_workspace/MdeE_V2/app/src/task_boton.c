@@ -63,12 +63,14 @@ const task_boton_cfg_t task_boton_cfg_list[] = {
 	{ID_BTN_Q,  BTN_Q_GPIO_Port,  BTN_Q_Pin,  GPIO_PIN_RESET, DEL_BTN_XX_MAX, EV_SYS_BTN_Q},
 	{ID_BTN_NQ,  BTN_NQ_GPIO_Port,  BTN_NQ_Pin,  GPIO_PIN_RESET, DEL_BTN_XX_MAX, EV_SYS_BTN_NQ},
 	{ID_BTN_TRU,  BTN_TRU_GPIO_Port,  BTN_TRU_Pin,  GPIO_PIN_RESET, DEL_BTN_XX_MAX, EV_SYS_BTN_TRU},
-	{ID_BTN_ENV,  BTN_ENV_GPIO_Port,  BTN_ENV_Pin,  GPIO_PIN_RESET, DEL_BTN_XX_MAX, EV_SYS_BTN_ENV}
+	{ID_BTN_ENV,  BTN_ENV_GPIO_Port,  BTN_ENV_Pin,  GPIO_PIN_RESET, DEL_BTN_XX_MAX, EV_SYS_BTN_ENV},
+	{ID_BTN_RST, BTN_RST_GPIO_Port, BTN_RST_Pin, 	GPIO_PIN_RESET, DEL_BTN_XX_MAX, EV_SYS_BTN_RST}
 };
 
 #define BOTON_CFG_QTY	(sizeof(task_boton_cfg_list)/sizeof(task_boton_cfg_t))
 
 task_boton_dta_t task_boton_dta_list[] = {
+	{DEL_BTN_XX_MIN, ST_BTN_XX_UP, EV_BTN_XX_UP},
 	{DEL_BTN_XX_MIN, ST_BTN_XX_UP, EV_BTN_XX_UP},
 	{DEL_BTN_XX_MIN, ST_BTN_XX_UP, EV_BTN_XX_UP},
 	{DEL_BTN_XX_MIN, ST_BTN_XX_UP, EV_BTN_XX_UP},

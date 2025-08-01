@@ -98,7 +98,7 @@ typedef enum task_boton_st {ST_BTN_XX_UP,
 						     ST_BTN_XX_RISING} task_boton_st_t;
 
 /* Identifier of Task boton */
-typedef enum task_boton_id {ID_BTN_Q, ID_BTN_NQ, ID_BTN_TRU, ID_BTN_ENV} task_boton_id_t;
+typedef enum task_boton_id {ID_BTN_Q, ID_BTN_NQ, ID_BTN_TRU, ID_BTN_ENV, ID_BTN_RST} task_boton_id_t;
 
 typedef struct
 {
