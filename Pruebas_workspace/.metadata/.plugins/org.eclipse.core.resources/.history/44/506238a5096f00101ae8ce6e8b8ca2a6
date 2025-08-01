@@ -45,7 +45,7 @@
 #include "main.h"
 
 //comentar y descomentar según haga falta
-//#define EEPROM
+#define EEPROM
 
 /* Demo includes */
 #include "logger.h"

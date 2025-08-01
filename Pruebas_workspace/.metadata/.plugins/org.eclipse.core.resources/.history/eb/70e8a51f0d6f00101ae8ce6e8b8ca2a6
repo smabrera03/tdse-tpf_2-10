@@ -71,7 +71,6 @@ static void I2C_LCD_ExpanderWrite(uint8_t I2C_LCD_InstanceIndex, uint8_t DATA)
 {
     uint8_t TxData = (DATA) | I2C_LCD_InfoParam_g[I2C_LCD_InstanceIndex].BacklightVal;
     HAL_I2C_Master_Transmit(I2C_LCD_CfgParam[I2C_LCD_InstanceIndex].I2C_Handle, (I2C_LCD_CfgParam[I2C_LCD_InstanceIndex].I2C_LCD_Address<<1), &TxData, sizeof(TxData), 100);
-
 }
 
 static void I2C_LCD_EnPulse(uint8_t I2C_LCD_InstanceIndex, uint8_t DATA)
@@ -93,7 +92,7 @@ static void I2C_LCD_Send(uint8_t I2C_LCD_InstanceIndex, uint8_t Val, uint8_t Mod
 {
     uint8_t HighNib = Val & 0xF0;
     uint8_t LowNib = (Val << 4) & 0xF0;
-    I2C_LCD_Write4Bits(I2C_LCD_InstanceIndex, (HighNib) | Mode);
+    //I2C_LCD_Write4Bits(I2C_LCD_InstanceIndex, (HighNib) | Mode);
     I2C_LCD_Write4Bits(I2C_LCD_InstanceIndex, (LowNib) | Mode);
 }
 

@@ -1,63 +1,92 @@
-12:11:39 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+17:00:49 **** Incremental Build of configuration Debug for project MdeE_V2 ****
 make -j4 all 
-arm-none-eabi-gcc "../app/src/task_system.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_system.d" -MT"app/src/task_system.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_system.o"
+arm-none-eabi-gcc "../app/src/I2C_LCD.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/I2C_LCD.d" -MT"app/src/I2C_LCD.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/I2C_LCD.o"
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
 arm-none-eabi-gcc -o "MdeE_V2.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE_V2\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE_V2.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: MdeE_V2.elf
  
 arm-none-eabi-size  MdeE_V2.elf 
 arm-none-eabi-objdump -h -S MdeE_V2.elf  > "MdeE_V2.list"
    text	   data	    bss	    dec	    hex	filename
-  38220	    248	   2528	  40996	   a024	MdeE_V2.elf
+  34872	    248	   2528	  37648	   9310	MdeE_V2.elf
 Finished building: default.size.stdout
  
 Finished building: MdeE_V2.list
  
-12:11:46 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+17:00:59 **** Incremental Build of configuration Debug for project MdeE_V2 ****
 make -j4 all 
 arm-none-eabi-size  MdeE_V2.elf 
    text	   data	    bss	    dec	    hex	filename
-  38220	    248	   2528	  40996	   a024	MdeE_V2.elf
+  34872	    248	   2528	  37648	   9310	MdeE_V2.elf
 Finished building: default.size.stdout
  
-12:13:00 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+17:02:58 **** Incremental Build of configuration Debug for project MdeE_V2 ****
 make -j4 all 
-arm-none-eabi-gcc "../app/src/task_system.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_system.d" -MT"app/src/task_system.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_system.o"
+arm-none-eabi-size  MdeE_V2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  34872	    248	   2528	  37648	   9310	MdeE_V2.elf
+Finished building: default.size.stdout
+ 
+17:05:30 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+make -j4 all 
+arm-none-eabi-size  MdeE_V2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  34872	    248	   2528	  37648	   9310	MdeE_V2.elf
+Finished building: default.size.stdout
+ 
+17:06:56 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
 arm-none-eabi-gcc -o "MdeE_V2.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE_V2\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE_V2.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: MdeE_V2.elf
  
 arm-none-eabi-size  MdeE_V2.elf 
 arm-none-eabi-objdump -h -S MdeE_V2.elf  > "MdeE_V2.list"
    text	   data	    bss	    dec	    hex	filename
-  38228	    248	   2528	  41004	   a02c	MdeE_V2.elf
+  34872	    248	   2528	  37648	   9310	MdeE_V2.elf
 Finished building: default.size.stdout
  
 Finished building: MdeE_V2.list
  
-12:22:05 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+17:11:28 **** Incremental Build of configuration Debug for project MdeE_V2 ****
 make -j4 all 
-arm-none-eabi-gcc "../app/src/task_system.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_system.d" -MT"app/src/task_system.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_system.o"
+arm-none-eabi-size  MdeE_V2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  34872	    248	   2528	  37648	   9310	MdeE_V2.elf
+Finished building: default.size.stdout
+ 
+17:12:40 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
 arm-none-eabi-gcc -o "MdeE_V2.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE_V2\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE_V2.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: MdeE_V2.elf
  
 arm-none-eabi-size  MdeE_V2.elf 
 arm-none-eabi-objdump -h -S MdeE_V2.elf  > "MdeE_V2.list"
    text	   data	    bss	    dec	    hex	filename
-  38260	    248	   2528	  41036	   a04c	MdeE_V2.elf
+  34872	    248	   2528	  37648	   9310	MdeE_V2.elf
 Finished building: default.size.stdout
  
 Finished building: MdeE_V2.list
  
-12:23:41 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+17:14:36 **** Incremental Build of configuration Debug for project MdeE_V2 ****
 make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc -o "MdeE_V2.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE_V2\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE_V2.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MdeE_V2.elf
+ 
 arm-none-eabi-size  MdeE_V2.elf 
+arm-none-eabi-objdump -h -S MdeE_V2.elf  > "MdeE_V2.list"
    text	   data	    bss	    dec	    hex	filename
-  38260	    248	   2528	  41036	   a04c	MdeE_V2.elf
+  34872	    248	   2528	  37648	   9310	MdeE_V2.elf
 Finished building: default.size.stdout
  
-12:24:26 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+Finished building: MdeE_V2.list
+ 
+17:49:43 **** Incremental Build of configuration Debug for project MdeE_V2 ****
 make -j4 all 
 arm-none-eabi-size  MdeE_V2.elf 
    text	   data	    bss	    dec	    hex	filename
-  38260	    248	   2528	  41036	   a04c	MdeE_V2.elf
+  34872	    248	   2528	  37648	   9310	MdeE_V2.elf
 Finished building: default.size.stdout
  
