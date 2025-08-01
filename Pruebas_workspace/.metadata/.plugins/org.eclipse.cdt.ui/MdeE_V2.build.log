@@ -1,10 +1,21 @@
-17:49:43 **** Incremental Build of configuration Debug for project MdeE_V2 ****
+18:09:57 **** Incremental Build of configuration Debug for project MdeE_V2 ****
 make -j4 all 
+arm-none-eabi-gcc "../app/src/task_display.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -I../app/inc -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"app/src/task_display.d" -MT"app/src/task_display.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "app/src/task_display.o"
+../app/src/task_display.c: In function 'task_display_statechart':
+../app/src/task_display.c:194:35: warning: variable 'p_task_display_cfg' set but not used [-Wunused-but-set-variable]
+  194 |         const task_display_cfg_t *p_task_display_cfg;
+      |                                   ^~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "MdeE_V2.elf" @"objects.list"  -lrdimon -mcpu=cortex-m3 -T"C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE_V2\STM32F103RBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="MdeE_V2.map" -Wl,--gc-sections -static -specs=rdimon.specs --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: MdeE_V2.elf
+ 
 arm-none-eabi-size  MdeE_V2.elf 
+arm-none-eabi-objdump -h -S MdeE_V2.elf  > "MdeE_V2.list"
    text	   data	    bss	    dec	    hex	filename
   34872	    248	   2528	  37648	   9310	MdeE_V2.elf
 Finished building: default.size.stdout
  
+Finished building: MdeE_V2.list
+ 
 
-17:49:43 Build Finished. 0 errors, 0 warnings. (took 863ms)
+18:10:01 Build Finished. 0 errors, 1 warnings. (took 3s.235ms)
 
