@@ -115,6 +115,11 @@ typedef struct
 	bool				flag;
 	uint8_t 			puntosJ1;
 	uint8_t 			puntosJ2;
+	char				row_0[16]; //Buffer de los caracteres de la fila 0
+	char 				row_1[16];//Buffer de los caracteres de la fila 1
+	char *				p_Str; //Puntero al caracter de la fila 0 a escribir
+	bool 				flag_nueva_dta; //flag que indica si se cargó un nuevo string en los buffers
+	bool				flag_r0_completa; //flag que indica si ya se terminaron de imprimir los caracteres de la fila 0
 } task_display_dta_t;
 
 /********************** external data declaration ****************************/

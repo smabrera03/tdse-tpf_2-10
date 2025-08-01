@@ -68,14 +68,14 @@ const task_display_cfg_t task_display_cfg_list[1] = {I2C_LCD_1};
 #define	DISPLAY_CFG_QTY	(sizeof(task_display_cfg_list)/sizeof(task_display_cfg_t))
 
 task_display_dta_t task_display_dta_list[] = {
-	{DEL_LED_XX_MIN, ST_DIS_PUNTOS, EV_DIS_MOSTRAR_PUNTOS, false, 0, 0}
+	{DEL_LED_XX_MIN, ST_DIS_PUNTOS, EV_DIS_MOSTRAR_PUNTOS, false, 0, 0, "", "", NULL, false, false}
 };
 
 #define DISPLAY_DTA_QTY	(sizeof(task_display_dta_list)/sizeof(task_display_dta_t))
 
 /********************** internal functions declaration ***********************/
 void task_display_statechart(void);
-
+void task_display_print_char(void);
 /********************** internal data definition *****************************/
 const char *p_task_display 		= "Task Display (Display Statechart)";
 const char *p_task_display_ 		= "Non-Blocking & Update By Time Code";
@@ -128,9 +128,10 @@ void task_display_init(void *parameters)
 
 		I2C_LCD_Init(p_task_display_cfg->instance);
 		I2C_LCD_SetCursor(p_task_display_cfg->instance, 0, 0);
-		I2C_LCD_WriteString(p_task_display_cfg->instance, "PJ1: 0");
-		I2C_LCD_SetCursor(p_task_display_cfg->instance, 0, 1);
-		I2C_LCD_WriteString(p_task_display_cfg->instance, "PJ2: 0");
+		sprintf(p_task_display_dta->row_0, "PJ1: %d         ", 0);
+		sprintf(p_task_display_dta->row_1, "PJ2: %d         ", 0);
+		p_task_display_dta->p_Str = p_task_display_dta->row_0;
+		p_task_display_dta->flag_nueva_dta = true;
 
 	}
 }
@@ -151,25 +152,39 @@ void task_display_update(void *parameters)
 
     while (b_time_update_required)
     {
+    	b_time_update_required = false;
 		/* Update Task Counter */
 		g_task_display_cnt++;
 
 		/* Run Task Statechart */
+		task_display_print_char();
     	task_display_statechart();
 
     	/* Protect shared resource */
-		__asm("CPSID i");	/* disable interrupts */
-		if (G_TASK_DIS_TICK_CNT_INI < g_task_display_tick_cnt)
-		{
+		//__asm("CPSID i");	/* disable interrupts */
+		//if (G_TASK_DIS_TICK_CNT_INI < g_task_display_tick_cnt)
+		//{
 			/* Update Tick Counter */
-			g_task_display_tick_cnt--;
-			b_time_update_required = true;
-		}
-		else
-		{
-			b_time_update_required = false;
-		}
-		__asm("CPSIE i");	/* enable interrupts */
+		//	g_task_display_tick_cnt--;
+		//	b_time_update_required = true;
+		//}
+		//else
+		//{
+		//	b_time_update_required = false;
+		//}
+		//__asm("CPSIE i");	/* enable interrupts */
+    	/*
+    	 * NOTA: el display tarda más de un ms en escribir un caractér, asi´que en lo que se escribe el caractér
+    	 * de dispara la interrupción de HAL_SYSTICK_CallBack (en app.c) y g_task_display_update se incrementa en 1,
+    	 * que en este if vuelve a prender la flag b_time_update required. Entonces no sale del while hasta que
+    	 * se escriban todos los caracteres, lo que lleva varios milisegundos.
+    	 *
+    	 * Para que esto no ocurra hay que dejar que se sigan ejecutando el resto de tareas.
+    	 * Por eso comento estas lineas
+    	 *
+    	 * Alternativa: conseguir que el display imprima un caracter en menos de 1ms.
+    	 * ¿I2C con código no bloqueante? Investigar
+    	 */
     }
 }
 
@@ -195,25 +210,23 @@ void task_display_statechart(void)
 				if((flag == true) && (evento == EV_DIS_MOSTRAR_PUNTOS)){
 					p_task_display_dta->flag = false;
 
-					char linea_1[16];
-					char linea_2[16];
-					sprintf(linea_1,"PJ1: %d", p_task_display_dta->puntosJ1);
-					sprintf(linea_2,"PJ2: %d", p_task_display_dta->puntosJ2);
+					sprintf(p_task_display_dta->row_0,"PJ1: %d       ", p_task_display_dta->puntosJ1);
+					sprintf(p_task_display_dta->row_1,"PJ2: %d       ", p_task_display_dta->puntosJ2);
 
-					I2C_LCD_Clear(p_task_display_cfg->instance);
-
-					I2C_LCD_SetCursor(p_task_display_cfg->instance, 0, 0);
-					I2C_LCD_WriteString(p_task_display_cfg->instance, linea_1);
+					p_task_display_dta->flag_nueva_dta = true;
+					p_task_display_dta->p_Str = p_task_display_dta->row_0;
 
 
-					I2C_LCD_SetCursor(p_task_display_cfg->instance, 0, 1);
-					I2C_LCD_WriteString(p_task_display_cfg->instance, linea_2);
 
 				}else if((flag == true) && (evento == EV_DIS_BTN_ENV)){
 					p_task_display_dta->flag = false;
 
-					I2C_LCD_Clear(p_task_display_cfg->instance);
-					I2C_LCD_WriteString(p_task_display_cfg->instance, "->E   RE   FE");
+					sprintf(p_task_display_dta->row_0,"->E   RE   FE");
+					sprintf(p_task_display_dta->row_1,"             ");
+
+					p_task_display_dta->flag_nueva_dta = true;
+					p_task_display_dta->p_Str = p_task_display_dta->row_0;
+
 					p_task_display_dta->state = ST_DIS_E;
 				}
 
@@ -224,23 +237,20 @@ void task_display_statechart(void)
 				if((flag == true) && (evento == EV_DIS_BTN_ENV)){
 					p_task_display_dta->flag = false;
 
-					I2C_LCD_SetCursor(p_task_display_cfg->instance, 0, 0);
-					I2C_LCD_WriteString(p_task_display_cfg->instance, "  E ->RE   FE");
+					sprintf(p_task_display_dta->row_0,"  E ->RE   FE");
+					sprintf(p_task_display_dta->row_1,"             ");
+					p_task_display_dta->flag_nueva_dta = true;
+					p_task_display_dta->p_Str = p_task_display_dta->row_0;
+
 					p_task_display_dta->state = ST_DIS_RE;
 				}else if((flag == true) && (evento == EV_DIS_MOSTRAR_PUNTOS)){
 					p_task_display_dta->flag = false;
 
-					char linea_1[16];
-					char linea_2[16];
-					sprintf(linea_1,"PJ1: %d", p_task_display_dta->puntosJ1);
-					sprintf(linea_2,"PJ2: %d", p_task_display_dta->puntosJ2);
+					sprintf(p_task_display_dta->row_0,"PJ1: %d       ", p_task_display_dta->puntosJ1);
+					sprintf(p_task_display_dta->row_1,"PJ2: %d       ", p_task_display_dta->puntosJ2);
+					p_task_display_dta->flag_nueva_dta = true;
+					p_task_display_dta->p_Str = p_task_display_dta->row_0;
 
-					I2C_LCD_Clear(p_task_display_cfg->instance);
-					I2C_LCD_SetCursor(p_task_display_cfg->instance, 0, 0);
-					I2C_LCD_WriteString(p_task_display_cfg->instance, linea_1);
-
-					I2C_LCD_SetCursor(p_task_display_cfg->instance, 0, 1);
-					I2C_LCD_WriteString(p_task_display_cfg->instance, linea_2);
 					p_task_display_dta->state = ST_DIS_PUNTOS;
 				}
 
@@ -251,24 +261,20 @@ void task_display_statechart(void)
 				if((flag == true) && (evento == EV_DIS_BTN_ENV)){
 					p_task_display_dta->flag = false;
 
-					I2C_LCD_SetCursor(p_task_display_cfg->instance, 0, 0);
-					I2C_LCD_WriteString(p_task_display_cfg->instance, "  E   RE ->FE");
+					sprintf(p_task_display_dta->row_0,"  E   RE ->FE");
+					sprintf(p_task_display_dta->row_1,"             ");
+					p_task_display_dta->flag_nueva_dta = true;
+					p_task_display_dta->p_Str = p_task_display_dta->row_0;
 
 					p_task_display_dta->state = ST_DIS_FE;
 				}else if((flag == true) && (evento == EV_DIS_MOSTRAR_PUNTOS)){
 					p_task_display_dta->flag = false;
 
-					char linea_1[16];
-					char linea_2[16];
-					sprintf(linea_1,"PJ1: %d", p_task_display_dta->puntosJ1);
-					sprintf(linea_2,"PJ2: %d", p_task_display_dta->puntosJ2);
+					sprintf(p_task_display_dta->row_0,"PJ1: %d       ", p_task_display_dta->puntosJ1);
+					sprintf(p_task_display_dta->row_1,"PJ2: %d       ", p_task_display_dta->puntosJ2);
+					p_task_display_dta->flag_nueva_dta = true;
+					p_task_display_dta->p_Str = p_task_display_dta->row_0;
 
-					I2C_LCD_Clear(p_task_display_cfg->instance);
-					I2C_LCD_SetCursor(p_task_display_cfg->instance, 0, 0);
-					I2C_LCD_WriteString(p_task_display_cfg->instance, linea_1);
-
-					I2C_LCD_SetCursor(p_task_display_cfg->instance, 0, 1);
-					I2C_LCD_WriteString(p_task_display_cfg->instance, linea_2);
 					p_task_display_dta->state = ST_DIS_PUNTOS;
 				}
 
@@ -279,24 +285,20 @@ void task_display_statechart(void)
 				if((flag == true) && (evento == EV_DIS_BTN_ENV)){
 					p_task_display_dta->flag = false;
 
-					I2C_LCD_SetCursor(p_task_display_cfg->instance, 0, 0);
-					I2C_LCD_WriteString(p_task_display_cfg->instance, "->E   RE   FE");
+					sprintf(p_task_display_dta->row_0,"->E   RE   FE");
+					sprintf(p_task_display_dta->row_1,"             ");
+					p_task_display_dta->flag_nueva_dta = true;
+					p_task_display_dta->p_Str = p_task_display_dta->row_0;
 
 					p_task_display_dta->state = ST_DIS_E;
 				}else if((flag == true) && (evento == EV_DIS_MOSTRAR_PUNTOS)){
 					p_task_display_dta->flag = false;
 
-					char linea_1[16];
-					char linea_2[16];
-					sprintf(linea_1,"PJ1: %d", p_task_display_dta->puntosJ1);
-					sprintf(linea_2,"PJ2: %d", p_task_display_dta->puntosJ2);
+					sprintf(p_task_display_dta->row_0,"PJ1: %d       ", p_task_display_dta->puntosJ1);
+					sprintf(p_task_display_dta->row_1,"PJ2: %d       ", p_task_display_dta->puntosJ2);
+					p_task_display_dta->flag_nueva_dta = true;;
+					p_task_display_dta->p_Str = p_task_display_dta->row_0;
 
-					I2C_LCD_Clear(p_task_display_cfg->instance);
-					I2C_LCD_SetCursor(p_task_display_cfg->instance, 0, 0);
-					I2C_LCD_WriteString(p_task_display_cfg->instance, linea_1);
-
-					I2C_LCD_SetCursor(p_task_display_cfg->instance, 0, 1);
-					I2C_LCD_WriteString(p_task_display_cfg->instance, linea_2);
 					p_task_display_dta->state = ST_DIS_PUNTOS;
 				}
 
@@ -304,6 +306,40 @@ void task_display_statechart(void)
 
 			default:
 				break;
+		}
+	}
+}
+
+void task_display_print_char(void){
+	int index;
+	const task_display_cfg_t *p_task_display_cfg;
+	task_display_dta_t *p_task_display_dta;
+	uint8_t display_instance;
+	bool flag_r0_cmplt;
+
+
+	for(index = 0; index < DISPLAY_DTA_QTY; index++){
+		p_task_display_cfg = &task_display_cfg_list[index];
+		display_instance = p_task_display_cfg->instance;
+		p_task_display_dta = &task_display_dta_list[index];
+		flag_r0_cmplt = p_task_display_dta->flag_r0_completa;
+
+		if(p_task_display_dta->flag_nueva_dta == false)continue;
+
+		if((flag_r0_cmplt == false) && (*p_task_display_dta->p_Str != '\0')){//imprime de a 1 caracter hasta llegar al \0
+			I2C_LCD_WriteChar(display_instance, *p_task_display_dta->p_Str);
+			p_task_display_dta->p_Str++;
+		}else if((flag_r0_cmplt == false) && (*p_task_display_dta->p_Str == '\0')){
+			p_task_display_dta->flag_r0_completa = true;
+			p_task_display_dta->p_Str = p_task_display_dta->row_1;
+			I2C_LCD_SetCursor(display_instance, 0, 1);
+		}else if((flag_r0_cmplt == true) && (*p_task_display_dta->p_Str != '\0')){
+			I2C_LCD_WriteChar(display_instance, *p_task_display_dta->p_Str);
+			p_task_display_dta->p_Str++;
+		}else if((flag_r0_cmplt == true) && (*p_task_display_dta->p_Str == '\0')){
+			p_task_display_dta->flag_r0_completa = false;
+			p_task_display_dta->flag_nueva_dta = false;
+			I2C_LCD_SetCursor(p_task_display_cfg->instance, 0, 0);
 		}
 	}
 }
