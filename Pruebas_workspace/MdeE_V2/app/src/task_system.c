@@ -207,7 +207,6 @@ void task_system_statechart(void)
 				EEPROM_Write(0, 0, &p_task_system_dta->puntosJ1, 2);
 				//Explicación: puntosJ1 y puntosJ2 están en direcciones de memoria adyacentes. Si le paso la dirección de puntosJ1 y le digo
 				//que el tamaño de los datos es 2, esto va a escribir puntosJ1 y puntoisJ2 en al EEPROM.
-				//EEPROM_Write(0, 1, &p_task_system_dta->puntosJ2, 1);
 				put_event_task_display(EV_DIS_MOSTRAR_PUNTOS, ID_DISPLAY, p_task_system_dta->puntosJ1, p_task_system_dta->puntosJ2);
 			}
 #endif
@@ -499,7 +498,6 @@ static void finalizar_ronda(task_system_dta_t *p_task_system_dta){
 
 #ifdef EEPROM
 	EEPROM_Write(0, 0, &p_task_system_dta->puntosJ1, 2);
-	//EEPROM_Write(0, 1, &p_task_system_dta->puntosJ2, 1);
 #endif
 }
 

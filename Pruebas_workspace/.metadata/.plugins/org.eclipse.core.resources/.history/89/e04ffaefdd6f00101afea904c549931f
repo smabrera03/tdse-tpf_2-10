@@ -37,7 +37,15 @@
 
 /********************** inclusions *******************************************/
 /* Project includes */
+#include <task_led_attribute.h>
+#include <task_led_interface.h>
+#include <task_display_attribute.h>
+#include <task_display_interface.h>
+#include "EEPROM.h"
 #include "main.h"
+
+//comentar y descomentar según haga falta
+#define EEPROM
 
 /* Demo includes */
 #include "logger.h"
@@ -48,8 +56,6 @@
 #include "app.h"
 #include "task_system_attribute.h"
 #include "task_system_interface.h"
-#include "task_actuator_attribute.h"
-#include "task_actuator_interface.h"
 
 /********************** macros and definitions *******************************/
 #define G_TASK_SYS_CNT_INI			0ul
@@ -64,7 +70,7 @@ task_system_dta_t task_system_dta =
 {DEL_SYS_MIN, false, EV_SYS_CARTA_NUEVA, ST_SYS_RONDA, ST_SYS_M1, ST_SYS_TJ1, 0, J1, 0, 0,
 			{{0, ESPADA, 0}, {0, ESPADA, 0}, {0, ESPADA, 0}}, //3 cartas iniciales de J1
 			{{0, ESPADA, 0},{0, ESPADA, 0}, {0, ESPADA, 0}}, //3 cartas iniciales de J2
-			0, 0, NINGUNO, 1, NINGUNO, 0, 0,false, {NO_SE_CANTO, NO_SE_CANTO, NO_SE_CANTO, NO_SE_CANTO} , 0};
+			0, 0, NINGUNO, 1, NINGUNO, {NO_SE_CANTO, NO_SE_CANTO, NO_SE_CANTO, NO_SE_CANTO} , 0};
 
 #define SYSTEM_DTA_QTY	(sizeof(task_system_dta)/sizeof(task_system_dta_t))
 
@@ -120,6 +126,13 @@ void task_system_init(void *parameters)
 				 GET_NAME(state), (uint32_t)state,
 				 GET_NAME(event), (uint32_t)event,
 				 GET_NAME(b_event), (b_event ? "true" : "false"));
+#ifdef EEPROM
+	EEPROM_Read(0, 0, &p_task_system_dta->puntosJ1, 1);
+	EEPROM_Read(0, 1, &p_task_system_dta->puntosJ2, 1);
+	put_event_task_display(EV_DIS_MOSTRAR_PUNTOS, ID_DISPLAY, p_task_system_dta->puntosJ1, p_task_system_dta->puntosJ2);
+
+	LOGGER_INFO("Puntos leídos de la EEPROM:\nPJ1: %d\nPJ2: %d", p_task_system_dta->puntosJ1, p_task_system_dta->puntosJ2);
+#endif
 }
 
 void task_system_update(void *parameters)
@@ -182,13 +195,25 @@ void task_system_statechart(void)
 
 			if((evento == EV_SYS_CARTA_ERR) && (flag == true)){
 				p_task_system_dta->flag = false;
-				//put_event_led(EV_LED_SET, ID_LED_ROJA); TODO: agregar LEDS
+				put_event_task_led(EV_LED_PULSE, ID_LED_ROJA);
 			}
 
+#ifdef EEPROM
+			if((evento == EV_SYS_BTN_RST) && (flag == true)){
+				p_task_system_dta->flag = false;
+
+				p_task_system_dta->puntosJ1 = 0;
+				p_task_system_dta->puntosJ2 = 0;
+				EEPROM_Write(0, 0, &p_task_system_dta->puntosJ1, 2);
+				//Explicación: puntosJ1 y puntosJ2 están en direcciones de memoria adyacentes. Si le paso la dirección de puntosJ1 y le digo
+				//que el tamaño de los datos es 2, esto va a escribir puntosJ1 y puntoisJ2 en al EEPROM.
+				put_event_task_display(EV_DIS_MOSTRAR_PUNTOS, ID_DISPLAY, p_task_system_dta->puntosJ1, p_task_system_dta->puntosJ2);
+			}
+#endif
 			if((evento == EV_SYS_CARTA_NUEVA) && (flag == true)){
 				p_task_system_dta->flag = false;
-				//put_event_led(EV_LED_SET, ID_LED_VERDE); TODO: agregar LEDS
-
+				put_event_task_led(EV_LED_PULSE, ID_LED_VERDE);
+				p_task_system_dta->state = ST_SYS_RONDA;
 				Maquina_de_estados_ronda(p_task_system_dta);
 				return;
 			}
@@ -214,8 +239,8 @@ void task_system_statechart(void)
 					p_task_system_dta->jugador_truco = J2;
 				}
 
-				//acá tengo que prender una LED para avisar que el sistema está esperando una respuesta
 				p_task_system_dta->state = ST_SYS_TRUCO_PENDIENTE;
+				put_event_task_led(EV_LED_BLINK, ID_LED_AMARILLA);
 				p_task_system_dta->puntos_TRU++;
 				return;
 			}
@@ -223,7 +248,7 @@ void task_system_statechart(void)
 			if((evento == EV_SYS_BTN_ENV) && (flag == true)){
 				p_task_system_dta->flag = false;
 
-				if(p_task_system_dta->nCartas < 2 && p_task_system_dta->puntos_ENV == 0){
+				if((p_task_system_dta->nCartas < 2) && (p_task_system_dta->envido_pila[0] == NO_SE_CANTO)){
 					p_task_system_dta->state = ST_SYS_SELECCIONAR_ENVIDO;
 					p_task_system_dta->envido_pila[p_task_system_dta->indice] = E;
 
@@ -232,7 +257,7 @@ void task_system_statechart(void)
 					}else{
 						p_task_system_dta->jugador_envido = J2;
 					}
-					//mostrar la selección en el display. Algo del tipo "->E	RE	FE"
+					put_event_task_display(EV_DIS_BTN_ENV, ID_DISPLAY, 0, 0);
 				}
 			}
 			break;
@@ -251,6 +276,7 @@ void task_system_statechart(void)
 
 			if(evento == EV_SYS_BTN_Q){
 				p_task_system_dta->state = ST_SYS_RONDA;
+				put_event_task_led(EV_LED_OFF, ID_LED_AMARILLA);
 			}
 
 			if(evento == EV_SYS_BTN_NQ){
@@ -262,56 +288,12 @@ void task_system_statechart(void)
 				}else{
 					p_task_system_dta->manos_ganadasJ1 = -1;
 				}
+
+				put_event_task_led(EV_LED_OFF, ID_LED_AMARILLA);
 				finalizar_ronda(p_task_system_dta);
 				return;
 			}
 			break;
-
-		/*case ST_SYS_E:
-			if(p_task_system_dta->flag == false)break;
-			p_task_system_dta->flag = false;
-
-			if(evento == EV_SYS_BTN_ENV){
-				p_task_system_dta->state = ST_SYS_RE;
-				//en el display "E    ->RE    FE"
-			}
-			if(evento == EV_SYS_BTN_Q){
-				p_task_system_dta->puntos_ENV_NQ = p_task_system_dta->puntos_ENV;
-				p_task_system_dta->puntos_ENV += 2;
-				p_task_system_dta->state = ST_SYS_ENVIDO_PENDIENTE;
-			}
-			break;
-
-		case ST_SYS_RE:
-			if(p_task_system_dta->flag == false)break;
-			p_task_system_dta->flag = false;
-
-			if(evento == EV_SYS_BTN_ENV){
-				p_task_system_dta->state = ST_SYS_FE;
-			}
-
-			if(evento == EV_SYS_BTN_Q){
-				p_task_system_dta->puntos_ENV_NQ = p_task_system_dta->puntos_ENV;
-				p_task_system_dta->puntos_ENV += 3;
-				p_task_system_dta->state = ST_SYS_ENVIDO_PENDIENTE;
-			}
-			break;
-		case ST_SYS_FE: //Tengo que poder simplificar los estados ST_SYS_E, ST_SYS_RE y ST_SYS_FE
-			if(p_task_system_dta->flag == false)break;
-			p_task_system_dta->flag = false;
-
-			if(evento == EV_SYS_BTN_ENV){
-				p_task_system_dta->state = ST_SYS_E;
-			}
-
-			if(evento == EV_SYS_BTN_Q){
-				p_task_system_dta->puntos_ENV_NQ = p_task_system_dta->puntos_ENV;
-				p_task_system_dta->fe_cantado=true;
-				p_task_system_dta->state = ST_SYS_ENVIDO_PENDIENTE;
-
-			}
-			break;
-			*/
 
 		case ST_SYS_SELECCIONAR_ENVIDO:
 			if(p_task_system_dta->flag == false)break;
@@ -321,12 +303,15 @@ void task_system_statechart(void)
 				uint8_t indice = p_task_system_dta->indice; //leo el campo en una variable locar para más comodidad
 				p_task_system_dta->envido_pila[indice] = p_task_system_dta->envido_pila[indice]%3 + 1; //barro los posbles envidos
 				//TODO: enviar señal al display para que muestre el envido seleccionado
+				put_event_task_display(EV_DIS_BTN_ENV, ID_DISPLAY, 0, 0);
 			}
 
 			if(evento == EV_SYS_BTN_Q){
 				p_task_system_dta->indice++;
 				p_task_system_dta->state = ST_SYS_ENVIDO_PENDIENTE;
+				put_event_task_led(EV_LED_BLINK, ID_LED_AMARILLA);
 				//TODO: enviar señal al display para que muestre los puntos
+				put_event_task_display(EV_DIS_MOSTRAR_PUNTOS, ID_DISPLAY, p_task_system_dta->puntosJ1, p_task_system_dta->puntosJ2);
 			}
 			break;
 
@@ -336,6 +321,7 @@ void task_system_statechart(void)
 
 			if(evento == EV_SYS_BTN_Q){
 				p_task_system_dta->state = ST_SYS_DEFINIR_GANADOR;
+				put_event_task_led(EV_LED_OFF, ID_LED_AMARILLA);
 			}
 
 			if(evento == EV_SYS_BTN_NQ){
@@ -346,11 +332,16 @@ void task_system_statechart(void)
 					p_task_system_dta->puntosJ2 += puntos_a_sumar;
 				}
 				p_task_system_dta->state = ST_SYS_RONDA;
+				put_event_task_led(EV_LED_OFF, ID_LED_AMARILLA);
 			}
 
 			if((evento == EV_SYS_BTN_ENV) && (p_task_system_dta->envido_pila[p_task_system_dta->indice - 1] != FE)){ //la segunda guarda está para que no se siga cantando envido después de un falta envido
 				p_task_system_dta->jugador_envido = !p_task_system_dta->jugador_envido;
-				p_task_system_dta->state = ST_SYS_E;
+				p_task_system_dta->envido_pila[p_task_system_dta->indice] = E;
+				p_task_system_dta->state = ST_SYS_SELECCIONAR_ENVIDO;
+
+				put_event_task_led(EV_LED_OFF, ID_LED_AMARILLA);
+				put_event_task_display(EV_DIS_BTN_ENV, ID_DISPLAY, p_task_system_dta->puntosJ1, p_task_system_dta->puntosJ2);
 			}
 			break;
 
@@ -497,13 +488,18 @@ static void finalizar_ronda(task_system_dta_t *p_task_system_dta){
 	p_task_system_dta->puntos_TRU = 1;
 
 	p_task_system_dta->jugador_envido = NINGUNO;
-	p_task_system_dta->puntos_ENV = 0;
-	p_task_system_dta->puntos_ENV_NQ = 0;
 
 	p_task_system_dta->indice = 0;
 	for(int i = 0; i < MAX_ENV; i++){
 		p_task_system_dta->envido_pila[i] = NO_SE_CANTO;
 	}
+
+	put_event_task_display(EV_DIS_MOSTRAR_PUNTOS, ID_DISPLAY, p_task_system_dta->puntosJ1, p_task_system_dta->puntosJ2);
+
+#ifdef EEPROM
+	EEPROM_Write(0, 0, &p_task_system_dta->puntosJ1, 2);
+	//EEPROM_Write(0, 1, &p_task_system_dta->puntosJ2, 1);
+#endif
 }
 
 //leer envido.txt para entender esta función
