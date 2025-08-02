@@ -1,0 +1,26 @@
+¿Qué queremos de los actuadores?
+
+LEDS:
+>>>LED Verde: cuando se carga correctamente una carta nueva se prende una led verde por 2 segundos
+Cuando llega la señal de la carta nueva, se prende la led y se dispara un timmer, que cuando caduca apaga la led
+
+>>>LED roja: cuando se carga mal una carta se prende una LED roja por 2 segundos
+
+Máquina de estados:
+     EV_ENCENDER_LED
+	   __>>>___
+	  /        \
+ST_OFF          ST_ON
+      \__<<<___/
+	   after 1s
+
+>>>LED amarilla: cuando el sistema espera una respuesta (de envido/de truco) se prende una LED amarilla hasta que 
+se reciba la respuesta
+
+Máquina de estados:
+     EV_ENCENDER_LED
+	   __>>>___
+	  /        \
+ST_OFF          ST_ON
+      \__<<<___/
+	  EV_APAGAR_LED

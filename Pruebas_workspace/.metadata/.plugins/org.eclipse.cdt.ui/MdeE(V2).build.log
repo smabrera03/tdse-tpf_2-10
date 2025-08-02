@@ -1,0 +1,13 @@
+09:46:07 **** Incremental Build of configuration Debug for project MdeE(V2) ****
+make -j4 all 
+arm-none-eabi-size  MdeE(V2).elf 
+arm-none-eabi-objdump -h -S MdeE(V2).elf  > "MdeE(V2).list"
+c:/st/stm32cubeide_1.17.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.make.win32_2.2.0.202409170845/tools/bin/sh: syntax error: unexpected "("
+make: *** [makefile:70: default.size.stdout] Error 2
+make: *** Waiting for unfinished jobs....
+c:/st/stm32cubeide_1.17.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.make.win32_2.2.0.202409170845/tools/bin/sh: syntax error: unexpected "("
+make: *** [makefile:75: MdeE(V2).list] Error 2
+"make -j4 all" terminated with exit code 2. Build might be incomplete.
+
+09:46:08 Build Failed. 3 errors, 0 warnings. (took 522ms)
+

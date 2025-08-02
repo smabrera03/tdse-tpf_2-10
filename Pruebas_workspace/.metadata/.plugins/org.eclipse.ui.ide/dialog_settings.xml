@@ -7,13 +7,15 @@
 		<item key="WizardProjectsImportPage.STORE_CLOSE_CREATED_PROJECTS_ID" value="false"/>
 		<item key="WizardProjectsImportPage.STORE_HIDE_CONFLICTING_PROJECTS_ID" value="false"/>
 		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\MdeE"/>
+			<item value="C:\Users\Santiago\Desktop\Compu de santi\Proyectos personales\Binarios\Workspace\MdeE"/>
 			<item value="C:\Users\Santiago\Desktop\Compu de santi\Proyectos personales\Binarios\Workspace\tdse-tp2_01-model_integration"/>
 			<item value="C:\Users\Santiago\Desktop\Compu de santi\Proyectos personales\Binarios\Workspace\LCD_I2C"/>
 			<item value="C:\Users\Santiago\Desktop\facu\2025c1\TPF_TDSE\Pruebas_workspace\Teclado"/>
 		</list>
 		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
-			<item value="C:\Users\Santiago\Downloads\pruebaeeprom.zip"/>
 			<item value=""/>
+			<item value="C:\Users\Santiago\Downloads\pruebaeeprom.zip"/>
 		</list>
 	</section>
 	<section name="SmartImportWizard">

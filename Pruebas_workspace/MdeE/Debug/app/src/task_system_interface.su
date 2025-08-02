@@ -1,0 +1,6 @@
+../app/src/task_system_interface.c:76:6:init_queue_event_task_system	16	static
+../app/src/task_system_interface.c:88:6:put_event_task_system	16	static
+../app/src/task_system_interface.c:97:18:get_event_task_system	16	static
+../app/src/task_system_interface.c:111:6:any_event_task_system	4	static
+../app/src/task_system_interface.c:116:6:put_Carta	16	static
+../app/src/task_system_interface.c:166:6:get_Carta	16	static

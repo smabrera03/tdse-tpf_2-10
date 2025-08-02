@@ -1,0 +1,2 @@
+../app/src/task_actuator_interface.c:63:6:put_event_led	1
+../app/src/task_actuator_interface.c:73:6:put_event_display	1

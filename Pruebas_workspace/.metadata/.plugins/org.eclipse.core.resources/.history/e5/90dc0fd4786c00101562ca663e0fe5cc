@@ -1,0 +1,129 @@
+/*
+ * Copyright (c) 2023 Juan Manuel Cruz <jcruz@fi.uba.ar> <jcruz@frba.utn.edu.ar>.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * 3. Neither the name of the copyright holder nor the names of its
+ *    contributors may be used to endorse or promote products derived from
+ *    this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+ * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * @file   : task_actuator_attribute.h
+ * @date   : Set 26, 2023
+ * @author : Juan Manuel Cruz <jcruz@fi.uba.ar> <jcruz@frba.utn.edu.ar>
+ * @version	v1.0.0
+ */
+
+#ifndef TASK_INC_TASK_ACTUATOR_ATTRIBUTESH_
+#define TASK_INC_TASK_ACTUATOR_ATTRIBUTE_H_
+
+/********************** CPP guard ********************************************/
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/********************** inclusions *******************************************/
+
+/********************** macros ***********************************************/
+
+/********************** typedef **********************************************/
+
+/* Eventos que excitan a las LED */
+typedef enum led_ev {EV_LED_ROJA_ON, EV_LED_VERDE_ON, EV_LED_AMARILLA_ON, EV_LED_AMARILLA_OFF} led_ev_t;
+
+/*Eventos que excitan al display*/
+typedef enum display_ev {EV_DIS_ENV, EV_DIS_Q} display_ev_t;
+
+/* Estados de las LEDS  */
+typedef enum led_st {ST_LED_OFF, ST_LED_ON} led_st_t;
+
+/*Estados del display*/
+typedef enum display_st {ST_DIS_PUNTOS, ST_DIS_MENU_ENVIDO} display_st_t;
+
+/* Id´s de las LEDs*/
+typedef enum led_id {ID_LED_ROJA, ID_LED_VERDE, ID_LED_AMARILLA} led_id_t;
+
+/*Id´s del display*/
+
+typedef enum display_id {ID_DISPLAY} display_id_t;
+
+
+/*Estructura de configuración para las LEDs*/
+typedef struct
+{
+	led_id_t			identifier;
+	GPIO_TypeDef *		gpio_port;
+	uint16_t			pin;
+	GPIO_PinState		led_on;
+	GPIO_PinState		led_off;
+	uint32_t 			delay; //tiempo que la led permanece encendida (en ms)(solo para las LED verde y roja)
+	/*uint32_t			tick_blink;
+	uint32_t			tick_pulse;*/ //esto no lo necesito
+	/*
+	 * ¿Pungo acá un puntero al handler del timmer? ¿Y al handler del i2c?
+	 * Hasta que no lo necesite no voy a agregar nada
+	 */
+} led_cfg_t;
+
+
+/*Estructura de datos para las leds*/
+typedef struct
+{
+	uint32_t			tick_init;//instante en el que se enciende la led (para la verde y roja)
+	led_st_t			state;
+	led_ev_t			event;
+	bool				flag;
+} led_dta_t;
+
+/*Estructura de configuración para el display*/
+typedef struct
+{
+	display_id_t		identifier;
+	I2C_HandleTypeDef	i2c_handler; //??? Tal vez lo usemos
+	uint32_t			direccion;
+	//¿Qué más? Después veo
+}display_cfg_t;
+
+/*Estructura de datos para el display*/
+typedef struct
+{
+	display_st_t		state;
+	display_ev_t		event;
+	bool 				flag;
+}display_dta_t;
+/********************** external data declaration ****************************/
+extern led_dta_t led_dta_list[];
+
+extern display_dta_t display_dta_list[];
+
+/********************** external functions declaration ***********************/
+
+/********************** End of CPP guard *************************************/
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* TASK_INC_TASK_ACTUATOR_ATTRIBUTE_H_ */
+
+/********************** end of file ******************************************/

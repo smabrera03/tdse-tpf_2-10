@@ -1,0 +1,5 @@
+../app/src/task_system.c:85:6:task_system_init	2
+../app/src/task_system.c:120:6:task_system_update	53
+../app/src/task_system.c:355:6:Maquina_de_estados_ronda	8
+../app/src/task_system.c:427:13:finalizar_ronda	5
+../app/src/task_system.c:470:16:calcularFE	4

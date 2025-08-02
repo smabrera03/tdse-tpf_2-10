@@ -174,6 +174,13 @@ int main(void)
 	//app_init();
   KEYPAD_Init(0, gu8_KeyStatesArr);
   KEYPAD_Scan(0);
+
+  GPIO_PinState lecturaC0 = HAL_GPIO_ReadPin(C0_GPIO_Port, C0_Pin);
+  GPIO_PinState lecturaC1 = HAL_GPIO_ReadPin(C1_GPIO_Port, C1_Pin);
+  GPIO_PinState lecturaC2 = HAL_GPIO_ReadPin(C2_GPIO_Port, C2_Pin);
+  GPIO_PinState lecturaC3 = HAL_GPIO_ReadPin(C3_GPIO_Port, C3_Pin);
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
