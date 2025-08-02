@@ -77,7 +77,7 @@ void EEPROM_Write (uint16_t page, uint16_t offset, uint8_t *data, uint16_t size)
 
 
         //HAL_Delay (5);  // Write cycle delay (5ms)
-        //Este delay lo comenté para no tener que esperar.
+        //Este delay lo comenté para no tener que esperar. Debería asegurarme de que no se escriba dos veces seguidas en memoria
 
         //Esto último simplemente gestiona como va a escribir el bichito y el cambio de página
     }
