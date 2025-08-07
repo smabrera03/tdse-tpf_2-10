@@ -6188,3 +6188,6 @@ C Model Exception: C Model Status [Element app.c does not exist.]
 	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:207)
 !SUBENTRY 1 org.eclipse.cdt.core 4 969 2025-08-07 11:53:33.074
 !MESSAGE Element app.c does not exist.
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-08-07 11:53:52.633
+!MESSAGE Started RMI Server, listening on port 41337
